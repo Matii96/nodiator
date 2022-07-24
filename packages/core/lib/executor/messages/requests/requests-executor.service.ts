@@ -10,7 +10,7 @@ import { MediatorOptions } from '../../../mediator.options';
 import { IRequest, IRequestHandler, IRequestPipeline } from '../../../messages';
 import { MessageTypes } from '../../../messages/message-types.enum';
 import { MessageTimeoutException } from '../../exceptions/message-timeout.exception';
-import { IProvidersInstantiator } from '../../interfaces/providers-instantiator.interface';
+import { ProvidersInstantiator } from '../../interfaces/providers-instantiator.type';
 import { IMessageExecutor } from '../../interfaces/message-executor.interface';
 import { ExecutorUtils } from '../../executor-utils';
 
@@ -18,7 +18,7 @@ export class RequestsExecutorService implements IMessageExecutor<IRequest, any> 
   constructor(
     private readonly mediatorOptions: MediatorOptions,
     private readonly messagesProviders: IMessagesProviders,
-    private readonly providersInstantiator: IProvidersInstantiator
+    private readonly providersInstantiator: ProvidersInstantiator
   ) {}
 
   async execute<TResult>(request: IRequest) {
@@ -33,7 +33,7 @@ export class RequestsExecutorService implements IMessageExecutor<IRequest, any> 
     if (!handlerType) {
       throw new NoHandlerException(ExecutorUtils.getTypeOfMessage(request));
     }
-    return this.providersInstantiator.instantiate(handlerType);
+    return this.providersInstantiator(handlerType);
   }
 
   private getSpecificHandler(specificProviders: Map<Type<IRequest>, IRequestsSpecificProviders>, request: IRequest) {
@@ -46,7 +46,9 @@ export class RequestsExecutorService implements IMessageExecutor<IRequest, any> 
       ...providers.global.pipelines,
       ...(requestTypeId ? providers.specific.get(requestTypeId).pipelines : []),
     ];
-    return Promise.all(pipelinesTypes.map((pipelineType) => this.providersInstantiator.instantiate(pipelineType)));
+    return Promise.all(
+      pipelinesTypes.map((pipelineType) => this.providersInstantiator<IRequestPipeline<IRequest, any>>(pipelineType))
+    );
   }
 
   private chainPipelines<TResult>(

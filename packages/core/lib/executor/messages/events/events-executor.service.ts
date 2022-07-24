@@ -5,7 +5,7 @@ import { MediatorOptions } from '../../../mediator.options';
 import { IEvent } from '../../../messages/event/interfaces/event.interface';
 import { IEventHandler, MessageTypes } from '../../../messages';
 import { MessageTimeoutException } from '../../exceptions/message-timeout.exception';
-import { IProvidersInstantiator } from '../../interfaces/providers-instantiator.interface';
+import { ProvidersInstantiator } from '../../interfaces/providers-instantiator.type';
 import { IMessageExecutor } from '../../interfaces/message-executor.interface';
 import { ExecutorUtils } from '../../executor-utils';
 
@@ -13,7 +13,7 @@ export class EventsExecutorService implements IMessageExecutor<IEvent, void> {
   constructor(
     private readonly mediatorOptions: MediatorOptions,
     private readonly messagesProviders: IMessagesProviders,
-    private readonly providersInstantiator: IProvidersInstantiator
+    private readonly providersInstantiator: ProvidersInstantiator
   ) {}
 
   async execute(event: IEvent) {
@@ -27,7 +27,7 @@ export class EventsExecutorService implements IMessageExecutor<IEvent, void> {
       ...providers.global.handlers,
       ...(providers.specific.get(ExecutorUtils.getTypeOfMessage(event))?.handlers || []),
     ];
-    return Promise.all(handlersTypes.map((handlerType) => this.providersInstantiator.instantiate(handlerType)));
+    return Promise.all(handlersTypes.map((handlerType) => this.providersInstantiator(handlerType)));
   }
 
   private handleEvent(event: IEvent, handler: IEventHandler<IEvent>) {

@@ -29,5 +29,13 @@
   "bugs": {
     "url": "https://github.com/Matii96/nodiator/issues"
   },
-  "homepage": "https://github.com/Matii96/nodiator"
+  "homepage": "https://github.com/Matii96/nodiator",
+  "devDependencies": {
+    "reflect-metadata": "0.1.13",
+    "rxjs": "^7.5.5"
+  },
+  "peerDependencies": {
+    "reflect-metadata": "0.1.13",
+    "rxjs": "^7.5.5"
+  }
 }

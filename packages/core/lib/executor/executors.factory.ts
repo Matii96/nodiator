@@ -12,11 +12,16 @@ export class ExecutorsFactory {
   private readonly executors: Record<MessageTypes, IMessageExecutor<IMessage, any>>;
 
   constructor(mediatorOptions: MediatorOptions, messagesProviders: IMessagesProviders) {
-    const providersInstantiator = mediatorOptions.providersInstantiator || new DefaultProvidersInstantiator();
+    let providersInstantiator = mediatorOptions.providersInstantiator || this.createDefaultProvidersInstantiator();
     this.executors = {
       [MessageTypes.REQUEST]: new RequestsExecutorService(mediatorOptions, messagesProviders, providersInstantiator),
       [MessageTypes.EVENT]: new EventsExecutorService(mediatorOptions, messagesProviders, providersInstantiator),
     };
+  }
+
+  private createDefaultProvidersInstantiator() {
+    const defaultProvidersInstantiator = new DefaultProvidersInstantiator();
+    return defaultProvidersInstantiator.instantiate.bind(defaultProvidersInstantiator);
   }
 
   create() {

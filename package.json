@@ -1,5 +1,5 @@
 {
-  "name": "root",
+  "name": "@nodiator/core",
   "private": true,
   "scripts": {
     "build": "lerna run build",
@@ -10,14 +10,8 @@
     "test": "jest",
     "test:cov": "jest --coverage"
   },
-  "dependencies": {
-    "uuid": "^8.3.2"
-  },
   "devDependencies": {
-    "@nestjs/common": "^8.0.0",
-    "@nestjs/core": "^8.0.0",
     "@types/jest": "^27.4.1",
-    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
     "eslint": "^8.11.0",
@@ -28,11 +22,5 @@
     "prettier": "^2.5.1",
     "ts-jest": "^27.1.4",
     "typescript": "^4.6.2"
-  },
-  "peerDependencies": {
-    "@nestjs/common": "^8.0.0",
-    "@nestjs/core": "^8.0.0",
-    "reflect-metadata": "0.1.13",
-    "rxjs": "^7.5.5"
   }
 }
