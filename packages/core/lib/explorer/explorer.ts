@@ -20,7 +20,6 @@ export class Explorer {
     for (const metadataKey of messagesTypeExplorer.metadataKeys) {
       messageTypeProviders.set(metadataKey, this.filterProviders(providers, metadataKey));
     }
-
     return messagesTypeExplorer.explore(messageTypeProviders);
   }
 

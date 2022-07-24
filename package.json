@@ -5,7 +5,7 @@
     "install": "lerna bootstrap -- --legacy-peer-deps",
     "build": "lerna run build",
     "watch": "lerna run watch --parallel",
-    "clean": "rimraf packages/**/dist",
+    "clean": "rimraf packages/**/dist && lerna clean -y",
     "lint": "eslint ./**/*.ts",
     "lint:fix": "eslint ./**/*.ts --fix",
     "test": "jest",
