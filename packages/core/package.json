@@ -32,11 +32,11 @@
   },
   "homepage": "https://github.com/Matii96/nodiator",
   "devDependencies": {
-    "reflect-metadata": "0.1.13",
-    "rxjs": "^7.5.5"
+    "rxjs": "^7.5.5",
+    "reflect-metadata": "^0.1.13"
   },
   "peerDependencies": {
-    "reflect-metadata": "0.1.13",
-    "rxjs": "^7.5.5"
+    "rxjs": "^7.5.5",
+    "reflect-metadata": "^0.1.13"
   }
 }
