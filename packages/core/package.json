@@ -4,6 +4,7 @@
   "description": "Mediator pattern implementation for node.js",
   "keywords": [
     "mediator",
+    "message broker",
     "event bus",
     "cqrs"
   ],

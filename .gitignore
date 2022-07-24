@@ -4,6 +4,7 @@
 # Compiled output
 **/dist
 **/node_modules
+**/package.json.lerna_backup
 
 # Logs
 **/logs

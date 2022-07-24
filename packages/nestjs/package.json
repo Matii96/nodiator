@@ -1,8 +1,11 @@
 {
-  "name": "@nodiator/nestjs",
+  "name": "@nodiator/nest",
   "version": "0.1.0",
-  "description": "Now I’m the model of a modern major general / The venerated Virginian veteran whose men are all / Lining up, to put me up on a pedestal / Writin’ letters to relatives / Embellishin’ my elegance and eloquence / But the elephant is in the room / The truth is in ya face when ya hear the British cannons go / BOOM",
-  "keywords": [],
+  "description": "Nodiator module for Nest",
+  "keywords": [
+    "mediator",
+    "nestjs"
+  ],
   "author": "Mateusz Fonfara <mateusz.fonfara96@gmail.com>",
   "license": "ISC",
   "main": "lib/nestjs.js",
@@ -11,7 +14,7 @@
     "test": "__tests__"
   },
   "files": [
-    "lib"
+    "dist"
   ],
   "repository": {
     "type": "git",
