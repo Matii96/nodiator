@@ -1,4 +1,4 @@
-import { Type } from '@nestjs/common';
+import { Type } from '../../utils/type.interface';
 
 export interface IMessageTypeProvider {
   metadata: any;

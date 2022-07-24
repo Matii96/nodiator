@@ -2,9 +2,8 @@ import { Type } from '../utils/type.interface';
 import { SCOPE_OPTIONS_METADATA } from '../messages/constants';
 import { ScopeOptions } from '../messages/interfaces/scope.options';
 import { IMessageProvider } from '../messages/interfaces/message-provider.interface';
-import { IProvidersInstantiator } from './interfaces/providers-instantiator.interface';
 
-export class DefaultProvidersInstantiator implements IProvidersInstantiator {
+export class DefaultProvidersInstantiator {
   private readonly registeredSingletons = new Map<Type<IMessageProvider>, IMessageProvider>();
 
   instantiate<TProvider extends IMessageProvider>(type: Type<TProvider>) {

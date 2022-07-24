@@ -10,14 +10,16 @@ import { MediatorOptions } from './mediator.options';
 
 export class Mediator extends Observable<IMessageState> {
   private readonly _subject = new Subject<IMessageState>();
+  private readonly _options: MediatorOptions;
   private readonly _messagesProviders: IMessagesProviders;
   private readonly _executor: Executor;
 
-  constructor(private readonly _options: MediatorOptions) {
+  constructor(options: MediatorOptions) {
     super();
     this.source = this._subject;
-    this._messagesProviders = new ExplorerFactory().create().explore(_options.providers);
-    this._executor = new ExecutorsFactory(_options, this._messagesProviders).create();
+    this._options = this.fillOptionsDefaultValues(options);
+    this._messagesProviders = new ExplorerFactory().create().explore(this._options.providers);
+    this._executor = new ExecutorsFactory(this._options, this._messagesProviders).create();
   }
 
   get messagesProviders() {
@@ -34,5 +36,9 @@ export class Mediator extends Observable<IMessageState> {
 
   async publish(...events: IEvent[]) {
     await Promise.all(events.map((event) => this._executor.execute(event, MessageTypes.EVENT)));
+  }
+
+  private fillOptionsDefaultValues(options: MediatorOptions): MediatorOptions {
+    return { eventsHandlingRetriesAttempts: 0, eventsHandlingRetriesDelay: 0, ...options };
   }
 }
