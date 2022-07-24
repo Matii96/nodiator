@@ -1,5 +1,8 @@
 {
   "packages": ["packages/*"],
   "useNx": false,
+  "publishConfig": {
+    "directory": "dist"
+  },
   "version": "0.1.0"
 }
