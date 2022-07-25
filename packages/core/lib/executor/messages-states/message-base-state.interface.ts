@@ -1,7 +1,8 @@
 import { MessageTypes } from '../../messages/message-types.enum';
 import { IMessage } from '../../messages/interfaces/message.interface';
 
-export interface IMessageState {
+export interface IMessageBaseState {
+  id: string;
   type: MessageTypes;
-  message: IMessage;
+  data: IMessage;
 }
