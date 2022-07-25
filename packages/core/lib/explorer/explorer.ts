@@ -3,16 +3,30 @@ import { IMessageProvider } from '../messages/interfaces/message-provider.interf
 import { IMessageTypeExplorer } from './interfaces/message-type-explorer.interface';
 import { IMessageTypeProvider } from './interfaces/message-type-provider.interface';
 import { IMessagesProviders } from './interfaces/explored-providers.interface';
+import { IProvidersValidator } from './interfaces/providers-validator.interface';
 
 export class Explorer {
-  constructor(private readonly messagesExplorers: IMessageTypeExplorer[]) {}
+  constructor(
+    private readonly messagesExplorers: IMessageTypeExplorer[],
+    private readonly providersValidator: IProvidersValidator
+  ) {}
 
   explore(providers: Type<IMessageProvider>[]) {
     const exploredProviders = {} as IMessagesProviders;
     for (const explorer of this.messagesExplorers) {
-      exploredProviders[explorer.type] = this.exploreMessageType(providers, explorer);
+      this.handleMessageExplorer(providers, exploredProviders, explorer);
     }
     return exploredProviders;
+  }
+
+  private handleMessageExplorer(
+    providers: Type<IMessageProvider>[],
+    exploredProviders: IMessagesProviders,
+    explorer: IMessageTypeExplorer
+  ) {
+    const explored = this.exploreMessageType(providers, explorer);
+    this.providersValidator.validate(explored.flattenedProviders);
+    exploredProviders[explorer.type] = explored.providers;
   }
 
   private exploreMessageType(providers: Type<IMessageProvider>[], messagesTypeExplorer: IMessageTypeExplorer) {

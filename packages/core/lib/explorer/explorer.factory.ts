@@ -3,6 +3,7 @@ import { IMessageTypeExplorer } from './interfaces/message-type-explorer.interfa
 import { RequestsExplorerService } from './messages/requests/requests-explorer.service';
 import { EventsExplorerService } from './messages/events/events-explorer.service';
 import { Explorer } from './explorer';
+import { ProvidersValidatorService } from './providers-validator.service';
 
 export class ExplorerFactory {
   private readonly messagesExplorersTypes: Type<IMessageTypeExplorer>[] = [
@@ -12,6 +13,6 @@ export class ExplorerFactory {
 
   create() {
     const messagesExplorers = this.messagesExplorersTypes.map((explorerType) => new explorerType());
-    return new Explorer(messagesExplorers);
+    return new Explorer(messagesExplorers, new ProvidersValidatorService());
   }
 }

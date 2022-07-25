@@ -10,6 +10,7 @@ import { IMessageTypeExplorer } from '../../interfaces/message-type-explorer.int
 import { IMessageTypeProvider } from '../../interfaces/message-type-provider.interface';
 import { MessageTypes } from '../../../messages/message-types.enum';
 import { IMessageMetadata } from '../../../messages/interfaces/message-metadata.interface';
+import { IMessageTypeExplorerResult } from '../../interfaces/message-type-explorer.result.interface';
 import {
   IRequestsGlobalProviders,
   IRequestsProviders,
@@ -22,10 +23,17 @@ export class RequestsExplorerService implements IMessageTypeExplorer {
   readonly type = MessageTypes.REQUEST;
   readonly metadataKeys = [GLOBAL_REQUEST_PIPELINE_METADATA, REQUEST_PIPELINE_METADATA, REQUEST_HANDLER_METADATA];
 
-  explore(messageTypeProviders: Map<string, IMessageTypeProvider[]>): IRequestsProviders {
-    return {
+  explore(messageTypeProviders: Map<string, IMessageTypeProvider[]>): IMessageTypeExplorerResult<IRequestsProviders> {
+    const providers: IRequestsProviders = {
       global: this.getGlobalProviders(messageTypeProviders),
       specific: this.getSpecificProviders(messageTypeProviders),
+    };
+    return {
+      providers,
+      flattenedProviders: [
+        ...providers.global.pipelines,
+        ...[...providers.specific.values()].flatMap((specific) => [...specific.pipelines, specific.handler]),
+      ],
     };
   }
 
@@ -63,7 +71,6 @@ export class RequestsExplorerService implements IMessageTypeExplorer {
       if (!(requestTypeMetadata && providers.has(requestType))) {
         throw new NoHandlerException(requestType);
       }
-
       providers.get(requestType).pipelines.push(pipeline.provider);
     }
   }
