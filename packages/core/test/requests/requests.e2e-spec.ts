@@ -4,8 +4,8 @@ import {
   MessageTimeoutException,
   MessageTypes,
   PlainObjectMessageException,
+  IRequestsProvidersSchema,
 } from '../../lib';
-import { IRequestsProvidersSchema } from '../../lib/providers-manager/messages/requests/interfaces/requests-providers-schema.interface';
 import {
   TestGlobalRequestPipeline,
   TestLaggingPipeline,
