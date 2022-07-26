@@ -1,9 +1,9 @@
 import { catchError, defer, lastValueFrom, retry, Subject, tap, throwError, timeout, TimeoutError } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
-import { IMessagesProviders } from '../../../explorer/interfaces/explored-providers.interface';
-import { IEventsProviders } from '../../../explorer/messages/events/interfaces/events-providers.interface';
 import { MediatorOptions } from '../../../mediator.options';
 import { IEvent } from '../../../messages/event/interfaces/event.interface';
+import { IEventsProvidersSchema } from '../../../providers-manager/messages/events/interfaces/events-providers-schema.interface';
+import { ProvidersManager } from '../../../providers-manager/providers-manager';
 import { IEventHandler, MessageTypes } from '../../../messages';
 import { MessageTimeoutException } from '../../exceptions/message-timeout.exception';
 import { ProvidersInstantiator } from '../../ports/providers-instantiator.port';
@@ -15,7 +15,7 @@ export class EventsExecutorService implements IMessageExecutor<IEvent, void> {
   constructor(
     private readonly subject: Subject<IMessageProcessingState>,
     private readonly mediatorOptions: MediatorOptions,
-    private readonly messagesProviders: IMessagesProviders,
+    private readonly providersManager: ProvidersManager,
     private readonly providersInstantiator: ProvidersInstantiator
   ) {}
 
@@ -31,7 +31,7 @@ export class EventsExecutorService implements IMessageExecutor<IEvent, void> {
   }
 
   private getHandlers(event: IEvent) {
-    const providers = this.messagesProviders[MessageTypes.EVENT] as IEventsProviders;
+    const providers = this.providersManager.get<IEventsProvidersSchema>(MessageTypes.EVENT);
     const handlersTypes = [
       ...providers.global.handlers,
       ...(providers.specific.get(ExecutorUtils.getTypeOfMessage(event))?.handlers || []),

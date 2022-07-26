@@ -27,9 +27,9 @@ export class RequestsProvidersChainerService implements IRequestsProvidersChaine
     provider: IRequestHandler<IRequest, TResult> | IRequestPipeline<IRequest, TResult>,
     next?: () => Promise<TResult>
   ) {
-    this.subject.next({ id, type: MessageTypes.REQUEST, data: request, provider });
-    return () =>
-      firstValueFrom(
+    return () => {
+      this.subject.next({ id, type: MessageTypes.REQUEST, data: request, provider });
+      return firstValueFrom(
         defer(() => provider.handle(request, next)).pipe(
           catchError((error) => {
             this.subject.next({ id, type: MessageTypes.REQUEST, data: request, provider, error });
@@ -37,5 +37,6 @@ export class RequestsProvidersChainerService implements IRequestsProvidersChaine
           })
         )
       );
+    };
   }
 }
