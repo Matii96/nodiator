@@ -1,6 +1,6 @@
 import { Type } from './utils/type.interface';
 import { IMessageProvider } from './messages/interfaces/message-provider.interface';
-import { ProvidersInstantiator } from './executor/interfaces/providers-instantiator.type';
+import { ProvidersInstantiator } from './executor/ports/providers-instantiator.port';
 
 export interface MediatorOptions {
   /**
@@ -28,7 +28,7 @@ export interface MediatorOptions {
   /**
    * Collection of providers for the mediator.
    */
-  providers: Type<IMessageProvider>[];
+  providers?: Type<IMessageProvider>[];
 
   /**
    * Custom factory for messages handlers.

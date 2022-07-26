@@ -6,14 +6,14 @@ import { MediatorOptions } from '../../../mediator.options';
 import { IEvent } from '../../../messages/event/interfaces/event.interface';
 import { IEventHandler, MessageTypes } from '../../../messages';
 import { MessageTimeoutException } from '../../exceptions/message-timeout.exception';
-import { ProvidersInstantiator } from '../../interfaces/providers-instantiator.type';
-import { IMessageExecutor } from '../../interfaces/message-executor.interface';
-import { MessageProcessingState } from '../../messages-states/message-processing-state.type';
+import { ProvidersInstantiator } from '../../ports/providers-instantiator.port';
+import { IMessageExecutor } from '../../ports/message-executor.port';
+import { IMessageProcessingState } from '../../interfaces/message-processing-state.interface';
 import { ExecutorUtils } from '../../executor-utils';
 
 export class EventsExecutorService implements IMessageExecutor<IEvent, void> {
   constructor(
-    private readonly subject: Subject<MessageProcessingState>,
+    private readonly subject: Subject<IMessageProcessingState>,
     private readonly mediatorOptions: MediatorOptions,
     private readonly messagesProviders: IMessagesProviders,
     private readonly providersInstantiator: ProvidersInstantiator
@@ -45,7 +45,7 @@ export class EventsExecutorService implements IMessageExecutor<IEvent, void> {
         this.mediatorOptions.eventsTimeout ? timeout(this.mediatorOptions.eventsTimeout) : tap(),
         catchError((err) => {
           const error = err instanceof TimeoutError ? new MessageTimeoutException(event) : err;
-          this.subject.next({ id, type: MessageTypes.EVENT, data: event, error });
+          this.subject.next({ id, type: MessageTypes.EVENT, data: event, provider: handler, error });
           return throwError(() => error);
         }),
         retry({

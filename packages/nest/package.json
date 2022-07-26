@@ -18,7 +18,7 @@
     "url": "git+https://github.com/Matii96/nodiator.git"
   },
   "scripts": {
-    "build": "tsc --build --force",
+    "build": "tsc --build tsconfig.build.json",
     "watch": "tsc --watch",
     "lint": "eslint ./lib/**/*.ts",
     "lint:fix": "eslint ./lib/**/*.ts --fix",

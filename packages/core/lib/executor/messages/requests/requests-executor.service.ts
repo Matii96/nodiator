@@ -8,20 +8,22 @@ import {
   IRequestsSpecificProviders,
 } from '../../../explorer/messages/requests/interfaces/requests-providers.interface';
 import { MediatorOptions } from '../../../mediator.options';
-import { IRequest, IRequestHandler, IRequestPipeline } from '../../../messages';
+import { IRequest, IRequestPipeline } from '../../../messages';
 import { MessageTypes } from '../../../messages/message-types.enum';
 import { MessageTimeoutException } from '../../exceptions/message-timeout.exception';
-import { ProvidersInstantiator } from '../../interfaces/providers-instantiator.type';
-import { IMessageExecutor } from '../../interfaces/message-executor.interface';
-import { MessageProcessingState } from '../../messages-states/message-processing-state.type';
+import { ProvidersInstantiator } from '../../ports/providers-instantiator.port';
+import { IMessageExecutor } from '../../ports/message-executor.port';
+import { IMessageProcessingState } from '../../interfaces/message-processing-state.interface';
 import { ExecutorUtils } from '../../executor-utils';
+import { IRequestsProvidersChainer } from './ports/requests-providers-chainer.port';
 
 export class RequestsExecutorService implements IMessageExecutor<IRequest, any> {
   constructor(
-    private readonly subject: Subject<MessageProcessingState>,
+    private readonly subject: Subject<IMessageProcessingState>,
     private readonly mediatorOptions: MediatorOptions,
     private readonly messagesProviders: IMessagesProviders,
-    private readonly providersInstantiator: ProvidersInstantiator
+    private readonly providersInstantiator: ProvidersInstantiator,
+    private readonly requestsProvidersChainer: IRequestsProvidersChainer
   ) {}
 
   async execute<TResult>(request: IRequest) {
@@ -29,7 +31,7 @@ export class RequestsExecutorService implements IMessageExecutor<IRequest, any> 
     const providers = this.messagesProviders[MessageTypes.REQUEST] as IRequestsProviders;
     const handler = await this.getHandler(providers, request);
     const pipelines = await this.getPipelines(providers, request);
-    const chain = this.chainPipelines<TResult>(request, id, pipelines, handler);
+    const chain = this.requestsProvidersChainer.chain<TResult>(id, request, pipelines, handler);
     return this.call(request, id, chain);
   }
 
@@ -54,27 +56,6 @@ export class RequestsExecutorService implements IMessageExecutor<IRequest, any> 
     return Promise.all(
       pipelinesTypes.map((pipelineType) => this.providersInstantiator<IRequestPipeline<IRequest, any>>(pipelineType))
     );
-  }
-
-  private chainPipelines<TResult>(
-    request: IRequest,
-    id: string,
-    pipelines: IRequestPipeline<IRequest, TResult>[],
-    handler: IRequestHandler<IRequest, TResult>
-  ) {
-    let next = () => {
-      this.subject.next({ id, type: MessageTypes.REQUEST, data: request, provider: handler });
-      return handler.handle(request);
-    };
-    for (let idx = pipelines.length - 1; idx >= 0; idx--) {
-      const pipeline = pipelines[idx];
-      const currentNext = next;
-      next = () => {
-        this.subject.next({ id, type: MessageTypes.REQUEST, data: request, provider: pipeline });
-        return pipeline.handle(request, currentNext);
-      };
-    }
-    return next;
   }
 
   private call<TResult>(request: IRequest, id: string, next: () => Promise<TResult>) {

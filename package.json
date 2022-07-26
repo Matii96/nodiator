@@ -3,13 +3,14 @@
   "private": true,
   "scripts": {
     "install": "lerna bootstrap -- --legacy-peer-deps",
-    "build": "lerna run build",
+    "build": "rimraf packages/**/dist && lerna run build",
     "watch": "lerna run watch --parallel",
     "clean": "rimraf packages/**/dist && lerna clean -y",
     "lint": "eslint ./**/*.ts",
     "lint:fix": "eslint ./**/*.ts --fix",
     "test": "jest",
-    "test:cov": "jest --coverage"
+    "test:cov": "jest --coverage",
+    "test:e2e": "jest --config jest-e2e.config.json"
   },
   "devDependencies": {
     "@types/jest": "^27.4.1",

@@ -6,7 +6,7 @@ import {
   REQUEST_PIPELINE_METADATA,
 } from '../../../messages/constants';
 import { IRequest, IRequestPipeline } from '../../../messages';
-import { IMessageTypeExplorer } from '../../interfaces/message-type-explorer.interface';
+import { IMessageTypeExplorer } from '../../ports/message-type-explorer.port';
 import { IMessageTypeProvider } from '../../interfaces/message-type-provider.interface';
 import { MessageTypes } from '../../../messages/message-types.enum';
 import { IMessageMetadata } from '../../../messages/interfaces/message-metadata.interface';

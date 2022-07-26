@@ -1,13 +1,13 @@
 import { Type } from '../utils/type.interface';
 import { IMessageProvider } from '../messages/interfaces/message-provider.interface';
-import { IMessageTypeExplorer } from './interfaces/message-type-explorer.interface';
+import { IMessageTypeExplorer } from './ports/message-type-explorer.port';
 import { IMessageTypeProvider } from './interfaces/message-type-provider.interface';
 import { IMessagesProviders } from './interfaces/explored-providers.interface';
 
 export class Explorer {
   constructor(private readonly messagesExplorers: IMessageTypeExplorer[]) {}
 
-  explore(providers: Type<IMessageProvider>[]) {
+  explore(providers: Set<Type<IMessageProvider>>) {
     const exploredProviders = {} as IMessagesProviders;
     for (const explorer of this.messagesExplorers) {
       exploredProviders[explorer.type] = this.exploreMessageType(providers, explorer);
@@ -15,7 +15,7 @@ export class Explorer {
     return exploredProviders;
   }
 
-  private exploreMessageType(providers: Type<IMessageProvider>[], messagesTypeExplorer: IMessageTypeExplorer) {
+  private exploreMessageType(providers: Set<Type<IMessageProvider>>, messagesTypeExplorer: IMessageTypeExplorer) {
     const messageTypeProviders = new Map<string, IMessageTypeProvider[]>();
     for (const metadataKey of messagesTypeExplorer.metadataKeys) {
       messageTypeProviders.set(metadataKey, this.filterProviders(providers, metadataKey));
@@ -23,8 +23,8 @@ export class Explorer {
     return messagesTypeExplorer.explore(messageTypeProviders);
   }
 
-  private filterProviders(providers: Type<IMessageProvider>[], metadataKey: string) {
-    return providers
+  private filterProviders(providers: Set<Type<IMessageProvider>>, metadataKey: string) {
+    return Array.from(providers)
       .map((provider) => this.extractMetadata(provider as Type<IMessageProvider>, metadataKey))
       .filter((provider) => provider);
   }

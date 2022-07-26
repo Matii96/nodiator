@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "Demonstration of nodiator using nest",
   "author": "Matii96",
-  "private": true,
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",

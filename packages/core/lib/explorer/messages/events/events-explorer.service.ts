@@ -2,7 +2,7 @@ import { Type } from '../../../utils/type.interface';
 import { EVENT_HANDLER_METADATA, GLOBAL_EVENT_HANDLER_METADATA } from '../../../messages/constants';
 import { IEvent } from '../../../messages/event/interfaces/event.interface';
 import { MessageTypes } from '../../../messages/message-types.enum';
-import { IMessageTypeExplorer } from '../../interfaces/message-type-explorer.interface';
+import { IMessageTypeExplorer } from '../../ports/message-type-explorer.port';
 import { IMessageTypeProvider } from '../../interfaces/message-type-provider.interface';
 import { IEventsProviders, IEventsSpecificProviders } from './interfaces/events-providers.interface';
 

@@ -1,5 +1,5 @@
 import { MessageTypes } from '../../messages/message-types.enum';
-import { IMessageTypeProvider } from './message-type-provider.interface';
+import { IMessageTypeProvider } from '../interfaces/message-type-provider.interface';
 
 export interface IMessageTypeExplorer {
   type: MessageTypes;

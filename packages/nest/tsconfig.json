@@ -1,8 +1,6 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist",
-  },
-  "include": ["./lib"],
-  "exclude": ["**/*.mock.ts", "**/*.mocks.ts", "**/*.spec.ts"]
+    "outDir": "./dist"
+  }
 }

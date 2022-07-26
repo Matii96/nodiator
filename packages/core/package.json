@@ -20,7 +20,7 @@
     "url": "git+https://github.com/Matii96/nodiator.git"
   },
   "scripts": {
-    "build": "tsc --build --force",
+    "build": "tsc --build tsconfig.build.json",
     "watch": "tsc --watch",
     "lint": "eslint ./lib/**/*.ts",
     "lint:fix": "eslint ./lib/**/*.ts --fix",
@@ -32,15 +32,14 @@
   },
   "homepage": "https://github.com/Matii96/nodiator",
   "dependencies": {
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "rxjs": "^7.5.5"
   },
   "devDependencies": {
     "@types/uuid": "^8.3.4",
-    "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.5.5"
+    "reflect-metadata": "^0.1.13"
   },
   "peerDependencies": {
-    "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.5.5"
+    "reflect-metadata": "^0.1.13"
   }
 }
