@@ -2,7 +2,7 @@
   "name": "@nodiator/core",
   "private": true,
   "scripts": {
-    "install": "lerna bootstrap --hoist -- --legacy-peer-deps",
+    "install": "lerna bootstrap -- --legacy-peer-deps",
     "build": "rimraf packages/**/dist && lerna run build",
     "watch": "lerna run watch --parallel",
     "clean": "rimraf packages/**/dist && lerna clean -y",
