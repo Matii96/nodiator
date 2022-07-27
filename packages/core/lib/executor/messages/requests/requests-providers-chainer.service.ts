@@ -29,8 +29,9 @@ export class RequestsProvidersChainerService implements IRequestsProvidersChaine
   ) {
     return () => {
       this.subject.next({ id, type: MessageTypes.REQUEST, data: request, provider });
+      const args = [request, next].filter((arg) => arg) as [IRequest, () => Promise<TResult>];
       return firstValueFrom(
-        defer(() => provider.handle(request, next)).pipe(
+        defer(() => provider.handle(...args)).pipe(
           catchError((error) => {
             this.subject.next({ id, type: MessageTypes.REQUEST, data: request, provider, error });
             return throwError(() => error);

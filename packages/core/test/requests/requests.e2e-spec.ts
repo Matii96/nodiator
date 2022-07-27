@@ -5,57 +5,59 @@ import {
   MessageTypes,
   PlainObjectMessageException,
   IRequestsProvidersSchema,
+  IRequest,
 } from '../../lib';
 import {
   TestGlobalRequestPipeline,
-  TestLaggingPipeline,
+  TestLaggingRequestPipeline,
   TestRequest,
   TestRequestHandler,
   TestRequestPipeline,
 } from './requests.mocks';
 
 describe('@nodiator/core requests (e2e)', () => {
+  const providers = [TestGlobalRequestPipeline, TestRequestPipeline, TestRequestHandler];
   let mediator: Mediator;
   let requestStates: IMessageProcessingState[];
 
   beforeEach(() => {
-    mediator = new Mediator({
-      providers: [TestGlobalRequestPipeline, TestRequestPipeline, TestRequestHandler],
-    });
+    providers.forEach((provider) => provider.handle.mockReset());
+    jest
+      .spyOn(TestGlobalRequestPipeline, 'handle')
+      .mockImplementation((request: IRequest, next: () => Promise<void>) => next());
+    jest
+      .spyOn(TestRequestPipeline, 'handle')
+      .mockImplementation((request: TestRequest, next: () => Promise<string>) => next());
+    jest.spyOn(TestRequestHandler, 'handle').mockImplementation(async (request: TestRequest) => request.property);
+
+    mediator = new Mediator({ providers });
     requestStates = [];
     mediator.subscribe((state) => requestStates.push(state));
   });
 
   describe('nodiator setup', () => {
-    it('should manually register handler and execute it', async () => {
-      const mediator = new Mediator();
-      mediator.providers.register(TestRequestHandler);
-
-      const testRequest = new TestRequest('success');
-      expect(await mediator.request<string>(testRequest)).toBe(testRequest.property);
-    });
-
     it('should retrieve requests providers schema', () => {
       const schema = mediator.providers.get<IRequestsProvidersSchema>(MessageTypes.REQUEST);
+
       const specific = new Map();
       specific.set(TestRequest, { pipelines: [TestRequestPipeline], handler: TestRequestHandler });
-
       expect(schema).toEqual({ global: { pipelines: [TestGlobalRequestPipeline] }, specific });
     });
   });
 
-  describe('full requests execution chain', () => {
+  describe('full request execution chain', () => {
     it('should return "success"', async () => {
       const testRequest = new TestRequest('success');
 
       expect(await mediator.request<string>(testRequest)).toBe(testRequest.property);
 
       const id = requestStates[0]?.id;
-      const expectedProvidersChain = [TestGlobalRequestPipeline, TestRequestPipeline, TestRequestHandler];
       requestStates.forEach(({ provider, ...props }, idx) => {
         expect(props).toEqual({ id, type: MessageTypes.REQUEST, data: testRequest });
-        expect(provider instanceof expectedProvidersChain[idx]).toBe(true);
+        expect(provider instanceof providers[idx]).toBe(true);
       });
+
+      providers.forEach((providerType) => expect(providerType.handle).toHaveBeenCalledTimes(1));
     });
 
     it('should reject plain object request', async () => {
@@ -70,7 +72,12 @@ describe('@nodiator/core requests (e2e)', () => {
 
     it('should timeout', async () => {
       const testRequest = new TestRequest('success');
-      const providers = [TestGlobalRequestPipeline, TestRequestPipeline, TestLaggingPipeline, TestRequestHandler];
+      const providers = [
+        TestGlobalRequestPipeline,
+        TestRequestPipeline,
+        TestLaggingRequestPipeline,
+        TestRequestHandler,
+      ];
       mediator = new Mediator({ providers, requestsTimeout: 1 });
       mediator.subscribe((state) => requestStates.push(state));
 
@@ -86,6 +93,11 @@ describe('@nodiator/core requests (e2e)', () => {
         expect(provider instanceof providers[idx]).toBe(true);
       });
       expect(requestStates[requestStates.length - 1].error).toBeInstanceOf(MessageTimeoutException);
+
+      expect(TestGlobalRequestPipeline.handle).toHaveBeenCalledTimes(1);
+      expect(TestRequestPipeline.handle).toHaveBeenCalledTimes(1);
+      expect(TestLaggingRequestPipeline.handle).toHaveBeenCalledTimes(1);
+      expect(TestRequestHandler.handle).not.toHaveBeenCalled();
     });
   });
 });
