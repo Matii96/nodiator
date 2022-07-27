@@ -19,3 +19,12 @@ export class TestLaggingEventHandler implements IEventHandler<TestEvent> {
   static handle = jest.fn(() => new Promise<void>((resolve) => setTimeout(resolve, 5)));
   handle = TestLaggingEventHandler.handle;
 }
+
+@EventHandler(TestEvent)
+export class TestFailingEventHandler implements IEventHandler<TestEvent> {
+  private attempts: number = 0;
+
+  handle = jest.fn(async (event: TestEvent) => {
+    if (++this.attempts < 3) throw new Error('some exception');
+  });
+}

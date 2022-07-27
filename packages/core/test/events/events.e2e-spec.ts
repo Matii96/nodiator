@@ -6,7 +6,13 @@ import {
   PlainObjectMessageException,
   IEventsProvidersSchema,
 } from '../../lib';
-import { TestEvent, TestEventHandler, TestGlobalEventHandler, TestLaggingEventHandler } from './events.mocks';
+import {
+  TestEvent,
+  TestEventHandler,
+  TestFailingEventHandler,
+  TestGlobalEventHandler,
+  TestLaggingEventHandler,
+} from './events.mocks';
 
 describe('@nodiator/core events (e2e)', () => {
   const providers = [TestGlobalEventHandler, TestEventHandler];
@@ -78,6 +84,31 @@ describe('@nodiator/core events (e2e)', () => {
       expect(eventStates[eventStates.length - 1].error).toBeInstanceOf(MessageTimeoutException);
 
       timeoutProviders.forEach((providerType) => expect(providerType.handle).toHaveBeenCalledTimes(1));
+    });
+  });
+
+  describe('events fallback', () => {
+    it('should fail on the first attempt', async () => {
+      mediator.providers.register(TestFailingEventHandler);
+      expect(mediator.publish(new TestEvent())).rejects.toThrowError();
+    });
+
+    it('should fail on the second attempt', async () => {
+      mediator = new Mediator({ providers, eventsHandlingRetriesAttempts: 1 });
+      mediator.providers.register(TestFailingEventHandler);
+      expect(mediator.publish(new TestEvent())).rejects.toThrowError();
+    });
+
+    it('should succeed on the third attempt', async () => {
+      const eventsHandlingRetriesDelay = 10;
+      mediator = new Mediator({ providers, eventsHandlingRetriesAttempts: 2, eventsHandlingRetriesDelay });
+      mediator.providers.register(TestFailingEventHandler);
+      mediator.subscribe((state) => eventStates.push(state));
+
+      const start = Date.now();
+      await mediator.publish(new TestEvent());
+      expect(eventStates).toHaveLength(5);
+      expect(Date.now() - start).toBeGreaterThanOrEqual(eventsHandlingRetriesDelay * 2);
     });
   });
 });
