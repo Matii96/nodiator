@@ -1,11 +1,14 @@
 import {
-  IMessageProcessingState,
   Mediator,
   MessageTimeoutException,
   MessageTypes,
   PlainObjectMessageException,
   IEventsProvidersSchema,
+  MediatorLoggingLevels,
+  IMediatorLogger,
 } from '../../lib';
+import { IEventProcessingState } from '../../lib/executor/messages/events/interfaces/event-processing-state.interface';
+import { MediatorLoggerMock } from '../common/mocks';
 import {
   TestEvent,
   TestEventHandler,
@@ -16,15 +19,17 @@ import {
 
 describe('@nodiator/core events (e2e)', () => {
   const providers = [TestGlobalEventHandler, TestEventHandler];
+  let logger: IMediatorLogger;
   let mediator: Mediator;
-  let eventStates: IMessageProcessingState[];
+  let eventStates: IEventProcessingState[];
 
   beforeEach(() => {
     providers.forEach((provider) => provider.handle.mockReset());
     jest.spyOn(TestGlobalEventHandler, 'handle').mockImplementation(async () => null);
     jest.spyOn(TestEventHandler, 'handle').mockImplementation(async () => null);
 
-    mediator = new Mediator({ providers });
+    logger = new MediatorLoggerMock();
+    mediator = new Mediator({ providers, logger, loggingLevel: MediatorLoggingLevels.DEBUG });
     eventStates = [];
     mediator.subscribe((state) => eventStates.push(state));
   });
@@ -46,12 +51,27 @@ describe('@nodiator/core events (e2e)', () => {
       await mediator.publish(testEvent);
 
       const id = eventStates[0]?.id;
-      eventStates.forEach(({ provider, ...props }, idx) => {
-        expect(props).toEqual({ id, type: MessageTypes.EVENT, data: testEvent });
-        expect(provider instanceof providers[idx]).toBe(true);
+      eventStates.slice(0, -1).forEach(({ provider, handled, ...props }) => {
+        expect(props).toEqual({
+          id,
+          messageType: MessageTypes.EVENT,
+          message: testEvent,
+        } as IEventProcessingState);
+        expect(providers.some((providerType) => provider instanceof providerType)).toBe(true);
+      });
+      expect(eventStates[eventStates.length - 1]).toEqual({
+        id,
+        messageType: MessageTypes.EVENT,
+        message: testEvent,
+        processed: true,
       });
 
       providers.forEach((providerType) => expect(providerType.handle).toHaveBeenCalledTimes(1));
+
+      expect(logger.debug).toHaveBeenCalledTimes(5);
+      expect(logger.info).toHaveBeenCalledTimes(2);
+      expect(logger.warn).toHaveBeenCalledTimes(0);
+      expect(logger.error).toHaveBeenCalledTimes(0);
     });
 
     it('should reject plain object request', async () => {
@@ -77,11 +97,16 @@ describe('@nodiator/core events (e2e)', () => {
         await task;
       } catch {}
       const id = eventStates[0]?.id;
-      eventStates.slice(0, -1).forEach(({ provider, ...props }, idx) => {
-        expect(props).toEqual({ id, type: MessageTypes.EVENT, data: testEvent });
-        expect(provider instanceof timeoutProviders[idx]).toBe(true);
+      eventStates.slice(0, -2).forEach(({ provider, handled, ...props }) => {
+        expect(props).toEqual({
+          id,
+          messageType: MessageTypes.EVENT,
+          message: testEvent,
+        } as IEventProcessingState);
+        expect(timeoutProviders.some((providerType) => provider instanceof providerType)).toBe(true);
       });
-      expect(eventStates[eventStates.length - 1].error).toBeInstanceOf(MessageTimeoutException);
+      expect(eventStates[eventStates.length - 2].error).toBeInstanceOf(MessageTimeoutException);
+      expect(eventStates[eventStates.length - 1].processed).toBe(true);
 
       timeoutProviders.forEach((providerType) => expect(providerType.handle).toHaveBeenCalledTimes(1));
     });
@@ -101,14 +126,26 @@ describe('@nodiator/core events (e2e)', () => {
 
     it('should succeed on the third attempt', async () => {
       const eventsHandlingRetriesDelay = 10;
-      mediator = new Mediator({ providers, eventsHandlingRetriesAttempts: 2, eventsHandlingRetriesDelay });
+      logger = new MediatorLoggerMock();
+      mediator = new Mediator({
+        providers,
+        eventsHandlingRetriesAttempts: 2,
+        eventsHandlingRetriesDelay,
+        logger,
+        loggingLevel: MediatorLoggingLevels.DEBUG,
+      });
       mediator.providers.register(TestFailingEventHandler);
       mediator.subscribe((state) => eventStates.push(state));
 
       const start = Date.now();
       await mediator.publish(new TestEvent());
-      expect(eventStates).toHaveLength(5);
+      expect(eventStates).toHaveLength(9);
       expect(Date.now() - start).toBeGreaterThanOrEqual(eventsHandlingRetriesDelay * 2);
+
+      expect(logger.debug).toHaveBeenCalledTimes(9);
+      expect(logger.info).toHaveBeenCalledTimes(2);
+      expect(logger.warn).toHaveBeenCalledTimes(0);
+      expect(logger.error).toHaveBeenCalledTimes(2);
     });
   });
 });

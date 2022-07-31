@@ -20,12 +20,7 @@
     "url": "git+https://github.com/Matii96/nodiator.git"
   },
   "scripts": {
-    "build": "tsc --build tsconfig.build.json",
-    "watch": "tsc --watch",
-    "lint": "eslint ./lib/**/*.ts",
-    "lint:fix": "eslint ./lib/**/*.ts --fix",
-    "test": "jest",
-    "test:cov": "jest --coverage"
+    "build": "tsc --build tsconfig.build.json"
   },
   "bugs": {
     "url": "https://github.com/Matii96/nodiator/issues"

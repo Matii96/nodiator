@@ -6,31 +6,25 @@ import { ProvidersManagerFactory } from './providers-manager/providers-manager.f
 import { Executor } from './executor/executor';
 import { ExecutorsFactory } from './executor/executors.factory';
 import { IMessageProcessingState } from './executor/interfaces/message-processing-state.interface';
-import { MediatorOptions } from './mediator.options';
+import { LoggerBootstraper } from './logging/logger.bootstraper';
+import { IMediatorLogger, MediatorOptions } from './mediator.options';
 
 export class Mediator extends Observable<IMessageProcessingState> {
   private readonly _subject = new Subject<IMessageProcessingState>();
   private readonly _options: MediatorOptions;
   private readonly _providersManager: ProvidersManager;
   private readonly _executor: Executor;
+  private readonly _logger: IMediatorLogger;
 
   constructor(options: MediatorOptions = {}) {
     super();
     this.source = this._subject;
-    this._options = this.fillOptionsDefaultValues(options);
-
-    this._providersManager = new ProvidersManagerFactory().create();
-    this._providersManager.register(...this._options.providers);
-
+    this._options = options;
+    this._logger = new LoggerBootstraper(this._options, this).logger;
+    this._providersManager = new ProvidersManagerFactory(this._logger).create();
+    this._providersManager.register(...(this._options.providers || []));
     this._executor = new ExecutorsFactory(this._options, this._providersManager, this._subject).create();
-  }
-
-  private fillOptionsDefaultValues(options: MediatorOptions): MediatorOptions {
-    return { providers: [], eventsHandlingRetriesAttempts: 0, eventsHandlingRetriesDelay: 0, ...options };
-  }
-
-  get options() {
-    return this._options;
+    this._logger.info(`Mediator initialized with ${this._options.providers?.length || 'no'} providers`);
   }
 
   get providers() {

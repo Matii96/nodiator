@@ -15,13 +15,13 @@ export interface MediatorOptions {
   eventsTimeout?: number;
   /**
    * Execution attempts count for each event handler.
-   * @default [0]
+   * @default 0
    */
 
   eventsHandlingRetriesAttempts?: number;
   /**
    * Deplay between each attept of event handling.
-   * @default [0]
+   * @default 0
    */
   eventsHandlingRetriesDelay?: number;
 
@@ -34,4 +34,30 @@ export interface MediatorOptions {
    * Custom factory for messages handlers.
    */
   providersInstantiator?: ProvidersInstantiator;
+
+  /**
+   * Custom logger implementation
+   */
+  logger?: IMediatorLogger;
+
+  /**
+   * Enables explicit logging
+   * @default 'NONE'
+   */
+  loggingLevel?: MediatorLoggingLevels;
+}
+
+export interface IMediatorLogger {
+  debug(msg: string): void;
+  info(msg: string): void;
+  warn(msg: string): void;
+  error(msg: string): void;
+}
+
+export enum MediatorLoggingLevels {
+  DEBUG,
+  INFO,
+  WARN,
+  ERROR,
+  NONE,
 }

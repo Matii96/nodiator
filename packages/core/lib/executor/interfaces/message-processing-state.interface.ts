@@ -4,16 +4,8 @@ import { IMessage } from '../../messages/interfaces/message.interface';
 
 export interface IMessageProcessingState {
   id: string;
-  type: MessageTypes;
-  data: IMessage;
-  provider?: IMessageProvider;
-  result?: any;
-}
-
-export interface IMessageProcessingState {
-  id: string;
-  type: MessageTypes;
-  data: IMessage;
+  messageType: MessageTypes;
+  message: IMessage;
   provider?: IMessageProvider;
   error?: Error;
 }

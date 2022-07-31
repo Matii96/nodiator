@@ -1,4 +1,5 @@
 import { Type } from '../utils/type.interface';
+import { IMediatorLogger } from '../mediator.options';
 import { MessageTypes } from '../messages';
 import { IMessageProvider } from '../messages/interfaces/message-provider.interface';
 import { IProviderTypeAdapter } from './ports/provider-type-adapter.port';
@@ -7,8 +8,10 @@ import { IMessagesProvidersSchema } from './interfaces/messages-providers-schema
 
 export class ProvidersManager {
   private readonly _providers = {} as IMessagesProvidersSchema;
+  private readonly _flattenedProviders = new Set<Type<IMessageProvider>>();
 
   constructor(
+    private readonly logger: IMediatorLogger,
     schemaDefiners: IMessageTypeProvidersSchemaDefiner[],
     private readonly _adapters: IProviderTypeAdapter<object>[]
   ) {
@@ -26,18 +29,26 @@ export class ProvidersManager {
   register(...providers: Type<IMessageProvider>[]) {
     for (const provider of providers) {
       this.registerProvider(provider);
+      this.logger.debug(`${provider.name} registered`);
     }
   }
 
   private registerProvider(provider: Type<IMessageProvider>) {
-    for (const adapter of Object.values(this._adapters)) {
-      const metadata = Reflect.getMetadata(adapter.metadataKey, provider);
-      if (metadata) {
-        adapter.register(this._providers[adapter.messageType], provider, metadata);
-        return;
-      }
+    if (this._flattenedProviders.has(provider)) {
+      this.logger.warn(`${provider.name} is already registered`);
+      return;
     }
+    for (const adapter of Object.values(this._adapters)) {
+      if (this.adaptProvider(adapter, provider)) return;
+    }
+    this.logger.warn(`${provider.name} is not a nodiator provider. Ignoring it`);
+  }
 
-    // TODO: warning
+  private adaptProvider(adapter: IProviderTypeAdapter<object>, provider: Type<IMessageProvider>): boolean {
+    const metadata = Reflect.getMetadata(adapter.metadataKey, provider);
+    if (!metadata) return false;
+    adapter.register(this._providers[adapter.messageType], provider, metadata);
+    this._flattenedProviders.add(provider);
+    return true;
   }
 }

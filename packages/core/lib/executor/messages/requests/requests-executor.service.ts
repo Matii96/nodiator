@@ -1,5 +1,4 @@
 import { catchError, defer, lastValueFrom, Subject, tap, throwError, timeout, TimeoutError } from 'rxjs';
-import { v4 as uuidv4 } from 'uuid';
 import { MediatorOptions } from '../../../mediator.options';
 import { IRequest, IRequestPipeline } from '../../../messages';
 import { IRequestsProvidersSchema } from '../../../providers-manager/messages/requests/interfaces/requests-providers-schema.interface';
@@ -8,25 +7,26 @@ import { ProvidersManager } from '../../../providers-manager/providers-manager';
 import { MessageTimeoutException } from '../../exceptions/message-timeout.exception';
 import { ProvidersInstantiator } from '../../ports/providers-instantiator.port';
 import { IMessageExecutor } from '../../ports/message-executor.port';
-import { IMessageProcessingState } from '../../interfaces/message-processing-state.interface';
 import { ExecutorUtils } from '../../executor-utils';
 import { IRequestsProvidersChainer } from './ports/requests-providers-chainer.port';
 import { NoHandlerException } from './exceptions/no-handler.exception';
+import { IRequestProcessingState } from './interfaces/request-processing-state.interface';
 
 export class RequestsExecutorService implements IMessageExecutor<IRequest, any> {
   constructor(
-    private readonly subject: Subject<IMessageProcessingState>,
+    private readonly subject: Subject<IRequestProcessingState>,
     private readonly mediatorOptions: MediatorOptions,
     private readonly providersManager: ProvidersManager,
     private readonly providersInstantiator: ProvidersInstantiator,
     private readonly requestsProvidersChainer: IRequestsProvidersChainer
   ) {}
 
-  async execute<TResult>(request: IRequest) {
-    const id = uuidv4();
+  async execute<TResult>(id: string, request: IRequest) {
     const providers = this.providersManager.get<IRequestsProvidersSchema>(MessageTypes.REQUEST);
-    const handler = await this.getHandler(providers, request);
-    const pipelines = await this.getPipelines(providers, request);
+    const [handler, pipelines] = await Promise.all([
+      this.getHandler(providers, request),
+      this.getPipelines(providers, request),
+    ]);
     const chain = this.requestsProvidersChainer.chain<TResult>(id, request, pipelines, handler);
     return this.call(request, id, chain);
   }
@@ -56,7 +56,7 @@ export class RequestsExecutorService implements IMessageExecutor<IRequest, any> 
         this.mediatorOptions.requestsTimeout ? timeout(this.mediatorOptions.requestsTimeout) : tap(),
         catchError((err) => {
           const error = err instanceof TimeoutError ? new MessageTimeoutException(request) : err;
-          this.subject.next({ id, type: MessageTypes.REQUEST, data: request, error });
+          this.subject.next({ id, messageType: MessageTypes.REQUEST, message: request, error });
           return throwError(() => error);
         })
       )

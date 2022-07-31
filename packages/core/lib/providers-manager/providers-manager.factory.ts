@@ -1,4 +1,5 @@
 import { Type } from '../utils/type.interface';
+import { IMediatorLogger } from '../mediator.options';
 import { IMessageTypeProvidersSchemaDefiner } from './ports/message-type-providers-schema-definer.port';
 import { IProviderTypeAdapter } from './ports/provider-type-adapter.port';
 import { ProvidersManager } from './providers-manager';
@@ -23,8 +24,11 @@ export class ProvidersManagerFactory {
     RequestsHandlersAdapter,
   ];
 
+  constructor(private readonly logger: IMediatorLogger) {}
+
   create() {
     return new ProvidersManager(
+      this.logger,
       this.schemaDefinersTypes.map((definer) => new definer()),
       this.adaptersTypes.map((adapter) => new adapter())
     );

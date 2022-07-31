@@ -3,7 +3,7 @@ import { MessageTypes } from '../messages';
 import { IMessage } from '../messages/interfaces/message.interface';
 import { MediatorOptions } from '../mediator.options';
 import { ProvidersManager } from '../providers-manager/providers-manager';
-import { DefaultProvidersInstantiator } from './default-providers.instantiator';
+import { DefaultProvidersInstantiator } from './default.providers.instantiator';
 import { IMessageExecutor } from './ports/message-executor.port';
 import { RequestsExecutorService } from './messages/requests/requests-executor.service';
 import { EventsExecutorService } from './messages/events/events-executor.service';

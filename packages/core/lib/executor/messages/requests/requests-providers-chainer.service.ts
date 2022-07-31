@@ -1,11 +1,11 @@
 import { catchError, defer, firstValueFrom, Subject, throwError } from 'rxjs';
 import { IRequest, IRequestHandler, IRequestPipeline } from '../../../messages';
 import { MessageTypes } from '../../../messages/message-types.enum';
-import { IMessageProcessingState } from '../../interfaces/message-processing-state.interface';
+import { IRequestProcessingState } from './interfaces/request-processing-state.interface';
 import { IRequestsProvidersChainer } from './ports/requests-providers-chainer.port';
 
 export class RequestsProvidersChainerService implements IRequestsProvidersChainer {
-  constructor(private readonly subject: Subject<IMessageProcessingState>) {}
+  constructor(private readonly subject: Subject<IRequestProcessingState>) {}
 
   chain<TResult>(
     id: string,
@@ -27,17 +27,25 @@ export class RequestsProvidersChainerService implements IRequestsProvidersChaine
     provider: IRequestHandler<IRequest, TResult> | IRequestPipeline<IRequest, TResult>,
     next?: () => Promise<TResult>
   ) {
-    return () => {
-      this.subject.next({ id, type: MessageTypes.REQUEST, data: request, provider });
+    return async () => {
+      this.subject.next({ id, messageType: MessageTypes.REQUEST, message: request, provider });
       const args = [request, next].filter((arg) => arg) as [IRequest, () => Promise<TResult>];
-      return firstValueFrom(
+      const result = await firstValueFrom(
         defer(() => provider.handle(...args)).pipe(
           catchError((error) => {
-            this.subject.next({ id, type: MessageTypes.REQUEST, data: request, provider, error });
+            this.subject.next({ id, messageType: MessageTypes.REQUEST, message: request, provider, error });
             return throwError(() => error);
           })
         )
       );
+      this.subject.next({
+        id,
+        messageType: MessageTypes.REQUEST,
+        message: request,
+        provider,
+        result: { value: result },
+      });
+      return result;
     };
   }
 }

@@ -6,7 +6,10 @@ import {
   PlainObjectMessageException,
   IRequestsProvidersSchema,
   IRequest,
+  IMediatorLogger,
+  MediatorLoggingLevels,
 } from '../../lib';
+import { MediatorLoggerMock } from '../common/mocks';
 import {
   TestGlobalRequestPipeline,
   TestLaggingRequestPipeline,
@@ -17,6 +20,7 @@ import {
 
 describe('@nodiator/core requests (e2e)', () => {
   const providers = [TestGlobalRequestPipeline, TestRequestPipeline, TestRequestHandler];
+  let logger: IMediatorLogger;
   let mediator: Mediator;
   let requestStates: IMessageProcessingState[];
 
@@ -30,7 +34,8 @@ describe('@nodiator/core requests (e2e)', () => {
       .mockImplementation((request: TestRequest, next: () => Promise<string>) => next());
     jest.spyOn(TestRequestHandler, 'handle').mockImplementation(async (request: TestRequest) => request.property);
 
-    mediator = new Mediator({ providers });
+    logger = new MediatorLoggerMock();
+    mediator = new Mediator({ providers, logger, loggingLevel: MediatorLoggingLevels.DEBUG });
     requestStates = [];
     mediator.subscribe((state) => requestStates.push(state));
   });
@@ -51,13 +56,29 @@ describe('@nodiator/core requests (e2e)', () => {
 
       expect(await mediator.request<string>(testRequest)).toBe(testRequest.property);
 
-      const id = requestStates[0]?.id;
-      requestStates.forEach(({ provider, ...props }, idx) => {
-        expect(props).toEqual({ id, type: MessageTypes.REQUEST, data: testRequest });
+      expect(requestStates).toHaveLength(6);
+      const id = requestStates[0].id;
+      requestStates.slice(0, 3).forEach(({ provider, ...props }, idx) => {
+        expect(props).toEqual({ id, messageType: MessageTypes.REQUEST, message: testRequest });
         expect(provider instanceof providers[idx]).toBe(true);
+      });
+      requestStates.slice(3).forEach(({ provider, ...props }, idx) => {
+        expect(props).toEqual({
+          id,
+          messageType: MessageTypes.REQUEST,
+          message: testRequest,
+          result: { value: testRequest.property },
+        });
+        expect(provider instanceof providers.slice().reverse()[idx]).toBe(true);
       });
 
       providers.forEach((providerType) => expect(providerType.handle).toHaveBeenCalledTimes(1));
+
+      await new Promise<void>((resolve) => setImmediate(resolve));
+      expect(logger.debug).toHaveBeenCalledTimes(10);
+      expect(logger.info).toHaveBeenCalledTimes(2);
+      expect(logger.warn).toHaveBeenCalledTimes(0);
+      expect(logger.error).toHaveBeenCalledTimes(0);
     });
 
     it('should reject plain object request', async () => {
@@ -78,7 +99,7 @@ describe('@nodiator/core requests (e2e)', () => {
         TestLaggingRequestPipeline,
         TestRequestHandler,
       ];
-      mediator = new Mediator({ providers, requestsTimeout: 1 });
+      mediator = new Mediator({ providers, logger, requestsTimeout: 1 });
       mediator.subscribe((state) => requestStates.push(state));
 
       const task = mediator.request<string>(testRequest);
@@ -89,15 +110,18 @@ describe('@nodiator/core requests (e2e)', () => {
       } catch {}
       const id = requestStates[0]?.id;
       requestStates.slice(0, -1).forEach(({ provider, ...props }, idx) => {
-        expect(props).toEqual({ id, type: MessageTypes.REQUEST, data: testRequest });
+        expect(props).toEqual({ id, messageType: MessageTypes.REQUEST, message: testRequest });
         expect(provider instanceof providers[idx]).toBe(true);
       });
       expect(requestStates[requestStates.length - 1].error).toBeInstanceOf(MessageTimeoutException);
 
-      expect(TestGlobalRequestPipeline.handle).toHaveBeenCalledTimes(1);
-      expect(TestRequestPipeline.handle).toHaveBeenCalledTimes(1);
-      expect(TestLaggingRequestPipeline.handle).toHaveBeenCalledTimes(1);
+      providers.slice(0, -1).forEach((providerType) => expect(providerType.handle).toHaveBeenCalledTimes(1));
       expect(TestRequestHandler.handle).not.toHaveBeenCalled();
+
+      expect(logger.debug).toHaveBeenCalledTimes(3);
+      expect(logger.info).toHaveBeenCalledTimes(1);
+      expect(logger.warn).toHaveBeenCalledTimes(0);
+      expect(logger.error).toHaveBeenCalledTimes(0);
     });
   });
 });
