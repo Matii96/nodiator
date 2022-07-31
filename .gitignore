@@ -1,5 +1,5 @@
 # npm
-*/**/package-lock.json
+packages/**/package-lock.json
 
 # Compiled output
 **/dist

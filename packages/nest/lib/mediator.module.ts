@@ -4,7 +4,7 @@ import { MediatorModuleAsyncOptions, MediatorModuleOptions } from './mediator.mo
 
 @Module({})
 export class MediatorModule {
-  static forRoot(options: MediatorModuleOptions): DynamicModule {
+  static forRoot(options: MediatorModuleOptions = {}): DynamicModule {
     const mediator = new Mediator({ ...options, providers: [] });
     return {
       global: true,

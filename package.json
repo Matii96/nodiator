@@ -1,11 +1,11 @@
 {
-  "name": "@nodiator/core",
+  "name": "nodiator",
   "private": true,
   "scripts": {
     "install": "lerna bootstrap -- --legacy-peer-deps",
     "build": "rimraf packages/**/dist && lerna run build",
     "watch": "lerna run watch --parallel",
-    "clean": "rimraf packages/**/dist && lerna clean -y",
+    "clean": "rimraf packages/**/dist && rimraf packages/**/package-lock.json && lerna clean -y",
     "lint": "eslint ./**/*.ts",
     "lint:fix": "eslint ./**/*.ts --fix",
     "test": "jest",

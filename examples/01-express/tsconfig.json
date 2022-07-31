@@ -2,7 +2,10 @@
   "compilerOptions": {
     "declaration": true,
     "removeComments": true,
-    "target": "es2017",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "target": "es6",
+    "module": "commonjs",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./"
