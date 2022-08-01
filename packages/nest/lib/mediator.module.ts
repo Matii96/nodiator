@@ -1,4 +1,4 @@
-import { DynamicModule, Inject, Module, OnApplicationBootstrap } from '@nestjs/common';
+import { DynamicModule, Inject, Module, OnModuleInit } from '@nestjs/common';
 import { Mediator } from '@nodiator/core';
 import { getMediatorToken } from './utils/get-mediator-token.util';
 import { MediatorModuleConfigurator } from './mediator.module.configurator';
@@ -13,7 +13,7 @@ import { FEATURE_MODULE_OPTIONS } from './constants';
 @Module({
   providers: [MediatorModuleConfigurator],
 })
-export class MediatorModule implements OnApplicationBootstrap {
+export class MediatorModule implements OnModuleInit {
   constructor(
     @Inject(FEATURE_MODULE_OPTIONS) private readonly featureOptions: MediatorForFeatureOptions,
     private readonly moduleConfigurator: MediatorModuleConfigurator
@@ -60,7 +60,7 @@ export class MediatorModule implements OnApplicationBootstrap {
   //   };
   // }
 
-  onApplicationBootstrap() {
+  onModuleInit() {
     if (this.featureOptions) {
       this.moduleConfigurator.configureFeature(this.featureOptions);
     }
