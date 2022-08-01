@@ -1,22 +1,40 @@
-import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import * as request from 'supertest';
+import { NoHandlerException } from '@nodiator/core';
+import { AccessProvider } from './mocks/access.provider';
 import { AppModule } from './mocks/app.module';
-import { allCatsResult } from './mocks/cats/db';
+import { TestRequest, TestRequestHandler } from './mocks/messages.mocks';
 
 describe('@nodiator/nest (e2e)', () => {
-  let app: INestApplication;
+  let request: TestRequest;
+  let accessProvider: AccessProvider;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
+    const app = await moduleFixture.createNestApplication().init();
 
-    app = moduleFixture.createNestApplication();
-    await app.init();
+    TestRequestHandler.instancesCounter = 0;
+    accessProvider = app.get(AccessProvider);
+    request = new TestRequest('success');
   });
 
-  it('/cats (GET)', () => {
-    return request(app.getHttpServer()).get('/cats').expect(200).expect(allCatsResult);
+  it('should respond with "success" from global mediator', async () => {
+    expect(await accessProvider.globalMediator.request<string>(request)).toEqual(request.property);
+  });
+
+  it('should respond with "success" from namespaced mediator', async () => {
+    expect(await accessProvider.namespace1Mediator.request<string>(request)).toEqual(request.property);
+  });
+
+  it('should throw NoHandlerException from namespaced mediator as the handler exists only in other namespace', () => {
+    expect(accessProvider.namespace2Mediator.request<string>(request)).rejects.toThrow(NoHandlerException);
+  });
+
+  it('should create 4 separate TestRequestHandler instances', async () => {
+    for (let i = 0; i < 4; i++) {
+      await accessProvider.globalMediator.request<string>(request);
+    }
+    expect(TestRequestHandler.instancesCounter).toBe(4);
   });
 });

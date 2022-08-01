@@ -27,21 +27,21 @@ export class ProvidersManager {
   }
 
   register(...providers: Type<IMessageProvider>[]) {
-    for (const provider of providers) {
-      this.registerProvider(provider);
-      this.logger.debug(`${provider.name} registered`);
-    }
+    return providers.filter((provider) => this.registerProvider(provider));
   }
 
   private registerProvider(provider: Type<IMessageProvider>) {
     if (this._flattenedProviders.has(provider)) {
       this.logger.warn(`${provider.name} is already registered`);
-      return;
+      return false;
     }
     for (const adapter of Object.values(this._adapters)) {
-      if (this.adaptProvider(adapter, provider)) return;
+      if (!this.adaptProvider(adapter, provider)) continue;
+      this.logger.debug(`${provider.name} registered`);
+      return true;
     }
     this.logger.warn(`${provider.name} is not a nodiator provider. Ignoring it`);
+    return false;
   }
 
   private adaptProvider(adapter: IProviderTypeAdapter<object>, provider: Type<IMessageProvider>): boolean {

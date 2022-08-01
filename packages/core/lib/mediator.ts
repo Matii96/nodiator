@@ -24,7 +24,10 @@ export class Mediator extends Observable<IMessageProcessingState> {
     this._providersManager = new ProvidersManagerFactory(this._logger).create();
     this._providersManager.register(...(this._options.providers || []));
     this._executor = new ExecutorsFactory(this._options, this._providersManager, this._subject).create();
-    this._logger.info(`Mediator initialized with ${this._options.providers?.length || 'no'} providers`);
+
+    const providersCountString =
+      this._options.providers?.length > 0 ? ` with ${this._options.providers.length} providers` : '';
+    this._logger.info(`Mediator initialized${providersCountString}`);
   }
 
   get providers() {

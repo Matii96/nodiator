@@ -29,9 +29,7 @@
     "@nestjs/core": "^9.0.7",
     "@nestjs/testing": "^9.0.7",
     "@nodiator/core": "^0.1.0",
-    "@types/supertest": "^2.0.12",
-    "reflect-metadata": "^0.1.13",
-    "supertest": "^6.2.4"
+    "reflect-metadata": "^0.1.13"
   },
   "peerDependencies": {
     "@nestjs/common": "^9.0.7",

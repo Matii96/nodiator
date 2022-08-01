@@ -3,11 +3,6 @@ import { MediatorOptions } from '@nodiator/core';
 
 export interface MediatorForFeatureOptions {
   /**
-   * Feature module reference
-   */
-  module: Type<any>;
-
-  /**
    * Allows to define multiple mediators identified by namespace. To inject scoped mediator use `@InjectMediator('namespace')`
    */
   namespace: string;
