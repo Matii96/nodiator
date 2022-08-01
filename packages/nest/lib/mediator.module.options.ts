@@ -1,9 +1,26 @@
-import { ModuleMetadata } from '@nestjs/common';
+import { ModuleMetadata, Type } from '@nestjs/common';
 import { MediatorOptions } from '@nodiator/core';
 
-export interface MediatorModuleOptions extends Omit<MediatorOptions, 'providers' | 'providersInstantiator'> {}
+export interface MediatorForFeatureOptions {
+  /**
+   * Feature module reference
+   */
+  module: Type<any>;
+
+  /**
+   * Allows to define multiple mediators identified by namespace. To inject scoped mediator use `@InjectMediator('namespace')`
+   */
+  namespace: string;
+}
+
+export interface MediatorModuleOptions extends Omit<MediatorOptions, 'providers' | 'providersInstantiator' | 'logger'> {
+  /**
+   * Allows to define multiple mediators identified by namespace. To inject scoped mediator use
+   */
+  namespace?: string;
+}
 
 export interface MediatorModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
-  useFactory?: (...args: any[]) => Promise<MediatorModuleOptions>;
+  useFactory?: (...args: any[]) => Promise<MediatorModuleOptions[]>;
   inject?: any[];
 }

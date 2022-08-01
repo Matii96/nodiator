@@ -1,15 +1,47 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { DynamicModule, Inject, Module, OnApplicationBootstrap } from '@nestjs/common';
 import { Mediator } from '@nodiator/core';
-import { MediatorModuleAsyncOptions, MediatorModuleOptions } from './mediator.module.options';
+import { getMediatorToken } from './utils/get-mediator-token.util';
+import { MediatorModuleConfigurator } from './mediator.module.configurator';
+import { MediatorModuleOptionsValidator } from './mediator.module.options.validator';
+import {
+  MediatorForFeatureOptions,
+  MediatorModuleAsyncOptions,
+  MediatorModuleOptions,
+} from './mediator.module.options';
+import { FEATURE_MODULE_OPTIONS } from './constants';
 
-@Module({})
-export class MediatorModule {
-  static forRoot(options: MediatorModuleOptions = {}): DynamicModule {
-    const mediator = new Mediator({ ...options, providers: [] });
+@Module({
+  providers: [MediatorModuleConfigurator],
+})
+export class MediatorModule implements OnApplicationBootstrap {
+  constructor(
+    @Inject(FEATURE_MODULE_OPTIONS) private readonly featureOptions: MediatorForFeatureOptions,
+    private readonly moduleConfigurator: MediatorModuleConfigurator
+  ) {}
+
+  static forRoot(...configurations: MediatorModuleOptions[]): DynamicModule {
+    configurations = configurations.length > 0 ? configurations : [{}];
+    MediatorModuleOptionsValidator.validate(configurations);
     return {
       global: true,
       module: MediatorModule,
-      providers: [{ provide: Mediator, useValue: mediator }],
+      providers: [
+        { provide: FEATURE_MODULE_OPTIONS, useValue: null },
+        ...configurations.map((configuration) => ({
+          provide: getMediatorToken(configuration.namespace),
+          inject: [MediatorModuleConfigurator],
+          useFactory: (optionsFactory: MediatorModuleConfigurator) =>
+            new Mediator(optionsFactory.configureRoot(configuration)),
+        })),
+      ],
+      exports: configurations.map(({ namespace }) => getMediatorToken(namespace)),
+    };
+  }
+
+  static forFeature(options: MediatorForFeatureOptions): DynamicModule {
+    return {
+      module: MediatorModule,
+      providers: [{ provide: FEATURE_MODULE_OPTIONS, useValue: options }],
     };
   }
 
@@ -27,4 +59,10 @@ export class MediatorModule {
   //     ]
   //   };
   // }
+
+  onApplicationBootstrap() {
+    if (this.featureOptions) {
+      this.moduleConfigurator.configureFeature(this.featureOptions);
+    }
+  }
 }

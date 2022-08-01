@@ -7,7 +7,7 @@ import { allCatsResult } from './mocks/cats/db';
 describe('@nodiator/nest (e2e)', () => {
   let app: INestApplication;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -17,6 +17,6 @@ describe('@nodiator/nest (e2e)', () => {
   });
 
   it('/cats (GET)', () => {
-    request(app.getHttpServer()).get('/cats').expect(200).expect(allCatsResult);
+    return request(app.getHttpServer()).get('/cats').expect(200).expect(allCatsResult);
   });
 });

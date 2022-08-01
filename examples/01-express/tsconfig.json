@@ -3,7 +3,7 @@
     "declaration": true,
     "removeComments": true,
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "target": "es6",
     "module": "commonjs",
     "sourceMap": true,
