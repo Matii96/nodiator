@@ -1,7 +1,7 @@
-import { Mediator, MediatorLoggingLevels } from '../../lib';
-import { TestEvent, TestEventHandler, TestGlobalEventHandler } from '../events/events.mocks';
-import { TestRequest, TestRequestHandler } from '../requests/requests.mocks';
-import { MediatorLoggerMock } from './mocks';
+import { Mediator, MediatorLoggingLevels } from '../lib';
+import { MediatorLoggerMock } from '../lib/logging/logging.mocks';
+import { TestEvent, TestEventHandler, TestGlobalEventHandler } from './events/events.mocks';
+import { TestRequest, TestRequestHandler } from './requests/requests.mocks';
 
 describe('@nodiator/core common (e2e)', () => {
   describe('nodiator setup', () => {

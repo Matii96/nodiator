@@ -8,7 +8,7 @@ import {
   IMediatorLogger,
   IEventProcessingState,
 } from '../../lib';
-import { MediatorLoggerMock } from '../common/mocks';
+import { MediatorLoggerMock } from '../../lib/logging/logging.mocks';
 import {
   TestEvent,
   TestEventHandler,

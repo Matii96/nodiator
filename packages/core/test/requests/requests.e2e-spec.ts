@@ -9,7 +9,7 @@ import {
   IMediatorLogger,
   MediatorLoggingLevels,
 } from '../../lib';
-import { MediatorLoggerMock } from '../common/mocks';
+import { MediatorLoggerMock } from '../../lib/logging/logging.mocks';
 import {
   TestGlobalRequestPipeline,
   TestLaggingRequestPipeline,

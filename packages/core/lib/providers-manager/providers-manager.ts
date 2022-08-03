@@ -5,6 +5,7 @@ import { IMessageProvider } from '../messages/interfaces/message-provider.interf
 import { IProviderTypeAdapter } from './ports/provider-type-adapter.port';
 import { IMessageTypeProvidersSchemaDefiner } from './ports/message-type-providers-schema-definer.port';
 import { IMessagesProvidersSchema } from './interfaces/messages-providers-schema.interface';
+import { IMessageTypeProvidersSchema } from './interfaces/message-type-providers-schema.interface';
 
 export class ProvidersManager {
   private readonly _providers = {} as IMessagesProvidersSchema;
@@ -21,7 +22,7 @@ export class ProvidersManager {
   }
 
   get(): IMessagesProvidersSchema;
-  get<TProvidersSchema>(messageType: MessageTypes): TProvidersSchema;
+  get<TProvidersSchema extends IMessageTypeProvidersSchema>(messageType: MessageTypes): TProvidersSchema;
   get(messageType?: MessageTypes) {
     return messageType === undefined ? this._providers : this._providers[messageType];
   }
@@ -35,7 +36,7 @@ export class ProvidersManager {
       this.logger.warn(`${provider.name} is already registered`);
       return false;
     }
-    for (const adapter of Object.values(this._adapters)) {
+    for (const adapter of this._adapters) {
       if (!this.adaptProvider(adapter, provider)) continue;
       this.logger.debug(`${provider.name} registered`);
       return true;
