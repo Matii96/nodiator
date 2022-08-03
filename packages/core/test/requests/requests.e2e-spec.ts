@@ -50,74 +50,150 @@ describe('@nodiator/core requests (e2e)', () => {
     });
   });
 
-  describe('full request execution chain', () => {
+  describe('requests handling', () => {
+    const testRequest = new TestRequest('success');
+
     it('should return "success"', async () => {
-      const testRequest = new TestRequest('success');
-
       expect(await mediator.request<string>(testRequest)).toBe(testRequest.property);
+    });
 
-      expect(requestStates).toHaveLength(6);
+    it('should call all providers', async () => {
+      await mediator.request<string>(testRequest);
+      providers.forEach((providerType) => expect(providerType.handle).toHaveBeenCalledTimes(1));
+    });
+
+    it('should emit request handling steps', async () => {
+      await mediator.request<string>(testRequest);
       const id = requestStates[0].id;
-      requestStates.slice(0, 3).forEach(({ provider, ...props }, idx) => {
-        expect(props).toEqual({ id, messageType: MessageTypes.REQUEST, message: testRequest });
-        expect(provider instanceof providers[idx]).toBe(true);
-      });
-      requestStates.slice(3).forEach(({ provider, ...props }, idx) => {
-        expect(props).toEqual({
+      expect(requestStates).toEqual([
+        {
           id,
           messageType: MessageTypes.REQUEST,
           message: testRequest,
+          provider: new TestGlobalRequestPipeline(),
+        },
+        {
+          id,
+          messageType: MessageTypes.REQUEST,
+          message: testRequest,
+          provider: new TestRequestPipeline(),
+        },
+        {
+          id,
+          messageType: MessageTypes.REQUEST,
+          message: testRequest,
+          provider: new TestRequestHandler(),
+        },
+        {
+          id,
+          messageType: MessageTypes.REQUEST,
+          message: testRequest,
+          provider: new TestRequestHandler(),
           result: { value: testRequest.property },
-        });
-        expect(provider instanceof providers.slice().reverse()[idx]).toBe(true);
-      });
+        },
+        {
+          id,
+          messageType: MessageTypes.REQUEST,
+          message: testRequest,
+          provider: new TestRequestPipeline(),
+          result: { value: testRequest.property },
+        },
+        {
+          id,
+          messageType: MessageTypes.REQUEST,
+          message: testRequest,
+          provider: new TestGlobalRequestPipeline(),
+          result: { value: testRequest.property },
+        },
+      ]);
+    });
 
-      providers.forEach((providerType) => expect(providerType.handle).toHaveBeenCalledTimes(1));
-
+    it('should log request handling steps', async () => {
+      await mediator.request<string>(testRequest);
       await new Promise<void>((resolve) => setImmediate(resolve));
       expect(logger.debug).toHaveBeenCalledTimes(10);
       expect(logger.info).toHaveBeenCalledTimes(2);
       expect(logger.warn).toHaveBeenCalledTimes(0);
       expect(logger.error).toHaveBeenCalledTimes(0);
     });
+  });
 
+  describe('passing plain object', () => {
     it('should reject plain object request', async () => {
       const task = mediator.request<string>({ property: 'property' });
       expect(task).rejects.toThrow(PlainObjectMessageException);
+    });
 
+    it('should not have emitted any request state', async () => {
       try {
-        await task;
+        await mediator.request<string>({ property: 'property' });
       } catch {}
       expect(requestStates).toHaveLength(0);
     });
+  });
 
-    it('should timeout', async () => {
-      const testRequest = new TestRequest('success');
-      const providers = [
-        TestGlobalRequestPipeline,
-        TestRequestPipeline,
-        TestLaggingRequestPipeline,
-        TestRequestHandler,
-      ];
+  describe('handling timeouts', () => {
+    const testRequest = new TestRequest('success');
+    const providers = [TestGlobalRequestPipeline, TestRequestPipeline, TestLaggingRequestPipeline, TestRequestHandler];
+
+    beforeEach(() => {
       mediator = new Mediator({ providers, logger, requestsTimeout: 1 });
-      mediator.subscribe((state) => requestStates.push(state));
+    });
 
+    it('should throw timeout exception', async () => {
       const task = mediator.request<string>(testRequest);
-      expect(task).rejects.toThrow(MessageTimeoutException);
-
+      expect(mediator.request<string>(testRequest)).rejects.toThrow(MessageTimeoutException);
       try {
         await task;
       } catch {}
-      const id = requestStates[0]?.id;
-      requestStates.slice(0, -1).forEach(({ provider, ...props }, idx) => {
-        expect(props).toEqual({ id, messageType: MessageTypes.REQUEST, message: testRequest });
-        expect(provider instanceof providers[idx]).toBe(true);
-      });
-      expect(requestStates[requestStates.length - 1].error).toBeInstanceOf(MessageTimeoutException);
+    });
 
+    it('should emit request handling steps', async () => {
+      mediator.subscribe((state) => requestStates.push(state));
+      try {
+        await mediator.request<string>(testRequest);
+      } catch {}
+      const id = requestStates[0]?.id;
+      expect(requestStates).toEqual([
+        {
+          id,
+          messageType: 0,
+          message: testRequest,
+          provider: new TestGlobalRequestPipeline(),
+        },
+        {
+          id,
+          messageType: 0,
+          message: testRequest,
+          provider: new TestRequestPipeline(),
+        },
+        {
+          id,
+          messageType: 0,
+          message: testRequest,
+          provider: new TestLaggingRequestPipeline(),
+        },
+        {
+          id,
+          messageType: 0,
+          message: testRequest,
+          error: new MessageTimeoutException(testRequest),
+        },
+      ]);
+    });
+
+    it('should call all providers excluding the handler', async () => {
+      try {
+        await mediator.request<string>(testRequest);
+      } catch {}
       providers.slice(0, -1).forEach((providerType) => expect(providerType.handle).toHaveBeenCalledTimes(1));
       expect(TestRequestHandler.handle).not.toHaveBeenCalled();
+    });
 
+    it('should log request handling steps', async () => {
+      try {
+        await mediator.request<string>(testRequest);
+      } catch {}
       expect(logger.debug).toHaveBeenCalledTimes(3);
       expect(logger.info).toHaveBeenCalledTimes(1);
       expect(logger.warn).toHaveBeenCalledTimes(0);

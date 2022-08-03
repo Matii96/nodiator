@@ -22,9 +22,10 @@ export class TestLaggingEventHandler implements IEventHandler<TestEvent> {
 
 @EventHandler(TestEvent)
 export class TestFailingEventHandler implements IEventHandler<TestEvent> {
-  private attempts: number = 0;
+  static readonly exception = new Error('some exception');
+  attempts: number = 0;
 
   handle = jest.fn(async (event: TestEvent) => {
-    if (++this.attempts < 3) throw new Error('some exception');
+    if (++this.attempts < 3) throw TestFailingEventHandler.exception;
   });
 }
