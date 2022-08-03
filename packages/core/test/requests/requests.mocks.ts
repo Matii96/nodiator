@@ -26,7 +26,7 @@ export class TestRequestPipeline implements IRequestPipeline<TestRequest, string
 @RequestPipeline(TestRequest)
 export class TestLaggingRequestPipeline implements IRequestPipeline<TestRequest, string> {
   static handle = jest.fn((request: TestRequest, next: () => Promise<string>) =>
-    new Promise((resolve) => setTimeout(resolve, 5)).then(() => next())
+    new Promise((resolve) => setTimeout(resolve, 500)).then(() => next())
   );
   handle = TestLaggingRequestPipeline.handle;
 }

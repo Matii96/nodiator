@@ -137,6 +137,12 @@ describe('@nodiator/core requests (e2e)', () => {
     const providers = [TestGlobalRequestPipeline, TestRequestPipeline, TestLaggingRequestPipeline, TestRequestHandler];
 
     beforeEach(() => {
+      TestLaggingRequestPipeline.handle.mockReset();
+      jest
+        .spyOn(TestLaggingRequestPipeline, 'handle')
+        .mockImplementation((request: TestRequest, next: () => Promise<string>) =>
+          new Promise((resolve) => setTimeout(resolve, 500)).then(() => next())
+        );
       mediator = new Mediator({ providers, logger, requestsTimeout: 1 });
     });
 
@@ -154,6 +160,7 @@ describe('@nodiator/core requests (e2e)', () => {
         await mediator.request<string>(testRequest);
       } catch {}
       const id = requestStates[0]?.id;
+
       expect(requestStates).toEqual([
         {
           id,
@@ -186,7 +193,10 @@ describe('@nodiator/core requests (e2e)', () => {
       try {
         await mediator.request<string>(testRequest);
       } catch {}
-      providers.slice(0, -1).forEach((providerType) => expect(providerType.handle).toHaveBeenCalledTimes(1));
+
+      expect(TestGlobalRequestPipeline.handle).toHaveBeenCalledTimes(1);
+      expect(TestRequestPipeline.handle).toHaveBeenCalledTimes(1);
+      expect(TestLaggingRequestPipeline.handle).toHaveBeenCalledTimes(1);
       expect(TestRequestHandler.handle).not.toHaveBeenCalled();
     });
 
