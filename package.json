@@ -8,8 +8,8 @@
     "clean": "rimraf packages/**/dist && rimraf packages/**/package-lock.json && lerna clean -y",
     "lint": "eslint ./**/*.ts",
     "lint:fix": "eslint ./**/*.ts --fix",
-    "test": "jest --config jest-unit.config.json",
-    "test:cov": "jest --config jest-unit.config.json --coverage",
+    "test": "jest",
+    "test:cov": "jest --coverage",
     "test:e2e": "jest --config jest-e2e.config.json"
   },
   "devDependencies": {
