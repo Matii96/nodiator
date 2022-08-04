@@ -3,7 +3,7 @@
   "rootDir": ".",
   "testEnvironment": "node",
   "testRegex": "\\.spec.ts$",
-  "coveragePathIgnorePatterns": ["<rootDir>/.*/dist/"],
+  "coveragePathIgnorePatterns": ["<rootDir>/.*/dist/", "<rootDir>/.*\\.mocks\\.ts"],
   "transform": {
     "^.+\\.ts$": "ts-jest"
   },

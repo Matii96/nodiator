@@ -12,10 +12,13 @@ export class RequestsErrorLoggingBehaviour implements ILoggingBehaviour {
   }
 
   private handle(state: IRequestProcessingState) {
+    const requestString = `${state.message.constructor.name} (id=${state.id}})`;
+    const errorString = state.error.stack || state.error.message || state.error;
+
     this.logger.error(
-      `  -- ${state.provider.constructor.name} failed to handle ${state.message.constructor.name} (id=${state.id}}). ${
-        state.error.stack || state.error.message || state.error
-      }`
+      state.provider
+        ? `  -- ${state.provider.constructor.name} failed to handle ${requestString}. ${errorString}`
+        : `${state.message.constructor.name} failed. ${errorString}`
     );
   }
 }

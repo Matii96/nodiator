@@ -131,7 +131,7 @@ describe('@nodiator/core requests (e2e)', () => {
     const providers = [TestGlobalRequestPipeline, TestRequestPipeline, TestLaggingRequestPipeline, TestRequestHandler];
 
     beforeEach(() => {
-      mediator = MediatorFactory.create({ providers, logger, requestsTimeout: 1 });
+      mediator = MediatorFactory.create({ providers, logger, loggingLevel: 'INFO', requestsTimeout: 1 });
     });
 
     it('should throw timeout exception', async () => {
@@ -192,10 +192,9 @@ describe('@nodiator/core requests (e2e)', () => {
       try {
         await mediator.request<string>(testRequest);
       } catch {}
-      expect(logger.debug).toHaveBeenCalledTimes(3);
-      expect(logger.info).toHaveBeenCalledTimes(1);
+      expect(logger.info).toHaveBeenCalledTimes(2);
       expect(logger.warn).toHaveBeenCalledTimes(0);
-      expect(logger.error).toHaveBeenCalledTimes(0);
+      expect(logger.error).toHaveBeenCalledTimes(1);
     });
   });
 });
