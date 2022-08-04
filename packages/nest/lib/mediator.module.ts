@@ -1,13 +1,8 @@
 import { DynamicModule, Module, Type } from '@nestjs/common';
-import { Mediator } from '@nodiator/core';
 import { getMediatorToken } from './utils/get-mediator-token.util';
 import { MediatorModuleConfigurator } from './mediator.module.configurator';
 import { MediatorModuleOptionsValidator } from './mediator.module.options.validator';
-import {
-  MediatorForFeatureOptions,
-  MediatorModuleAsyncOptions,
-  MediatorModuleOptions,
-} from './mediator.module.options';
+import { MediatorForFeatureOptions, MediatorModuleOptions } from './mediator.module.options';
 import { NAMESPACE_MEDIATOR } from './constants';
 
 @Module({
@@ -47,19 +42,4 @@ export class MediatorModule {
       ],
     };
   }
-
-  // static forRootAsync(options: MediatorModuleAsyncOptions): DynamicModule {
-  //   return {
-  //     global: true,
-  //     module: MediatorModule,
-  //     imports: options.imports,
-  //     providers: [
-  //       {
-  //         provide: MEDIATOR_MODULE_OPTIONS,
-  //         inject: options.inject || [],
-  //         useFactory: async (...args: any[]) => this.fillDefaultValues(await options.useFactory(...args)),
-  //       },
-  //     ]
-  //   };
-  // }
 }

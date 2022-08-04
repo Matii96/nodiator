@@ -24,14 +24,14 @@ describe('@nodiator/core events (e2e)', () => {
   let eventStates: IEventProcessingState[];
 
   beforeEach(() => {
-    providers.forEach((provider) => provider.handle.mockReset());
-    jest.spyOn(TestGlobalEventHandler, 'handle').mockImplementation(async () => null);
-    jest.spyOn(TestEventHandler, 'handle').mockImplementation(async () => null);
-
     logger = new MediatorLoggerMock();
     mediator = new Mediator({ providers, logger, loggingLevel: MediatorLoggingLevels.DEBUG });
     eventStates = [];
     mediator.subscribe((state) => eventStates.push(state));
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   describe('nodiator setup', () => {

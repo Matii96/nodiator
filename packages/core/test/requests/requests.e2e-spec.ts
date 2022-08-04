@@ -25,19 +25,14 @@ describe('@nodiator/core requests (e2e)', () => {
   let requestStates: IMessageProcessingState[];
 
   beforeEach(() => {
-    providers.forEach((provider) => provider.handle.mockReset());
-    jest
-      .spyOn(TestGlobalRequestPipeline, 'handle')
-      .mockImplementation((request: IRequest, next: () => Promise<void>) => next());
-    jest
-      .spyOn(TestRequestPipeline, 'handle')
-      .mockImplementation((request: TestRequest, next: () => Promise<string>) => next());
-    jest.spyOn(TestRequestHandler, 'handle').mockImplementation(async (request: TestRequest) => request.property);
-
     logger = new MediatorLoggerMock();
     mediator = new Mediator({ providers, logger, loggingLevel: MediatorLoggingLevels.DEBUG });
     requestStates = [];
     mediator.subscribe((state) => requestStates.push(state));
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   describe('nodiator setup', () => {
@@ -137,12 +132,6 @@ describe('@nodiator/core requests (e2e)', () => {
     const providers = [TestGlobalRequestPipeline, TestRequestPipeline, TestLaggingRequestPipeline, TestRequestHandler];
 
     beforeEach(() => {
-      TestLaggingRequestPipeline.handle.mockReset();
-      jest
-        .spyOn(TestLaggingRequestPipeline, 'handle')
-        .mockImplementation((request: TestRequest, next: () => Promise<string>) =>
-          new Promise((resolve) => setTimeout(resolve, 500)).then(() => next())
-        );
       mediator = new Mediator({ providers, logger, requestsTimeout: 1 });
     });
 

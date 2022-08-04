@@ -16,7 +16,10 @@ export class MediatorModuleConfigurator {
       ...options,
       providersInstantiator: (providerType) => this.moduleRef.resolve(providerType, undefined, { strict: false }),
     });
-    const registeredProviders = mediator.providers.register(...(options.namespace ? [] : this.listProviders()));
+    const registeredProviders = mediator.providers.register({
+      providers: options.namespace ? [] : this.listProviders(),
+      silent: true,
+    });
     this.scopeProviders(registeredProviders);
     return mediator;
   }
@@ -30,7 +33,10 @@ export class MediatorModuleConfigurator {
         ? new NamespaceNotInitializedException(options.namespace)
         : err;
     }
-    const registeredProviders = mediator.providers.register(...this.listProviders(module));
+    const registeredProviders = mediator.providers.register({
+      providers: this.listProviders(module),
+      silent: true,
+    });
     this.scopeProviders(registeredProviders);
     return mediator;
   }
@@ -40,7 +46,6 @@ export class MediatorModuleConfigurator {
       const scopeOptions: ScopeOptions = Reflect.getMetadata(SCOPE_OPTIONS_METADATA, providerType);
       Injectable({ scope: scopeOptions?.scoped ? Scope.REQUEST : Scope.DEFAULT })(providerType);
     }
-    return providers;
   }
 
   private listProviders(module?: Type<any>) {

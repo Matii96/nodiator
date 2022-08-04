@@ -51,5 +51,13 @@ describe('ProvidersManager', () => {
     it('should skip provider registration - no matching metadata key', () => {
       expect(manager.register(class {})).toHaveLength(0);
     });
+
+    it('should supress logging', () => {
+      manager.register({ providers: [ProviderMock], silent: true });
+      expect(logger.debug).not.toHaveBeenCalled();
+      expect(logger.info).not.toHaveBeenCalled();
+      expect(logger.warn).not.toHaveBeenCalled();
+      expect(logger.error).not.toHaveBeenCalled();
+    });
   });
 });

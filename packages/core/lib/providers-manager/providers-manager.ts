@@ -6,6 +6,7 @@ import { IProviderTypeAdapter } from './ports/provider-type-adapter.port';
 import { IMessageTypeProvidersSchemaDefiner } from './ports/message-type-providers-schema-definer.port';
 import { IMessagesProvidersSchema } from './interfaces/messages-providers-schema.interface';
 import { IMessageTypeProvidersSchema } from './interfaces/message-type-providers-schema.interface';
+import { ProvidersManagerOptions } from './providers-manager.options';
 
 export class ProvidersManager {
   private readonly _providers = {} as IMessagesProvidersSchema;
@@ -27,21 +28,29 @@ export class ProvidersManager {
     return messageType === undefined ? this._providers : this._providers[messageType];
   }
 
-  register(...providers: Type<IMessageProvider>[]) {
-    return providers.filter((provider) => this.registerProvider(provider));
+  register(...providers: Type<IMessageProvider>[]): Type<IMessageProvider>[];
+  register(args: ProvidersManagerOptions): Type<IMessageProvider>[];
+  register(...providersOrOptions: (Type<IMessageProvider> | ProvidersManagerOptions)[]) {
+    const optionsProviders = (<ProvidersManagerOptions>providersOrOptions[0])?.providers;
+    if (optionsProviders) {
+      return optionsProviders.filter((provider) =>
+        this.registerProvider(provider, (<ProvidersManagerOptions>providersOrOptions[0]).silent)
+      );
+    }
+    return providersOrOptions.filter((provider: Type<IMessageProvider>) => this.registerProvider(provider));
   }
 
-  private registerProvider(provider: Type<IMessageProvider>) {
+  private registerProvider(provider: Type<IMessageProvider>, silent = false) {
     if (this._flattenedProviders.has(provider)) {
-      this.logger.warn(`${provider.name} is already registered`);
+      if (!silent) this.logger.warn(`${provider.name} is already registered`);
       return false;
     }
     for (const adapter of this._adapters) {
       if (!this.adaptProvider(adapter, provider)) continue;
-      this.logger.debug(`${provider.name} registered`);
+      if (!silent) this.logger.debug(`${provider.name} registered`);
       return true;
     }
-    this.logger.warn(`${provider.name} is not a nodiator provider. Ignoring it`);
+    if (!silent) this.logger.warn(`${provider.name} is not a nodiator provider. Ignoring it`);
     return false;
   }
 

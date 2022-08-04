@@ -2,7 +2,7 @@ import { IMediatorLogger } from '../../mediator.options';
 
 export class DefaultMediatorLogger implements IMediatorLogger {
   private standardizeMessage(msg: string) {
-    return `[Nodiator] ${msg}`;
+    return `[Mediator] ${msg}`;
   }
 
   debug(msg: string) {

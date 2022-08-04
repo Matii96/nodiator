@@ -2,7 +2,7 @@ import { Logger } from '@nestjs/common';
 
 export class MediatorLogger extends Logger {
   constructor(namespace?: string) {
-    super(`Nodiator${namespace ? `-${namespace}` : ''}`);
+    super(`Mediator${namespace ? `-${namespace}` : ''}`);
   }
 
   info(msg: string) {
