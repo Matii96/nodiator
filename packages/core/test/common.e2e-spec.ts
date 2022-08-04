@@ -1,4 +1,4 @@
-import { Mediator, MediatorLoggingLevels } from '../lib';
+import { MediatorFactory } from '../lib';
 import { MediatorLoggerMock } from '../lib/logging/logging.mocks';
 import { TestEvent, TestEventHandler, TestGlobalEventHandler } from './events/events.mocks';
 import { TestRequest, TestRequestHandler } from './requests/requests.mocks';
@@ -7,7 +7,7 @@ describe('@nodiator/core common (e2e)', () => {
   describe('nodiator setup', () => {
     it('should manually register handler and execute it', async () => {
       const logger = new MediatorLoggerMock();
-      const mediator = new Mediator({ logger, loggingLevel: MediatorLoggingLevels.INFO });
+      const mediator = MediatorFactory.create({ logger, loggingLevel: 'INFO' });
       mediator.providers.register(TestRequestHandler, TestGlobalEventHandler, TestEventHandler);
 
       const testEvent = new TestEvent();

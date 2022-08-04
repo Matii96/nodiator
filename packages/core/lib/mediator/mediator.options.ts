@@ -1,6 +1,6 @@
-import { Type } from './utils/type.interface';
-import { IMessageProvider } from './messages/interfaces/message-provider.interface';
-import { ProvidersInstantiator } from './executor/ports/providers-instantiator.port';
+import { ProvidersInstantiator } from '../executor';
+import { IMessageProvider } from '../messages';
+import { Type } from '../utils/type.interface';
 
 export interface MediatorOptions {
   /**
@@ -54,10 +54,4 @@ export interface IMediatorLogger {
   error(msg: string): void;
 }
 
-export enum MediatorLoggingLevels {
-  DEBUG,
-  INFO,
-  WARN,
-  ERROR,
-  NONE,
-}
+export type MediatorLoggingLevels = 'DEBUG' | 'INFO' | 'WARN' | 'ERROR' | 'NONE';

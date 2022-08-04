@@ -1,4 +1,4 @@
-import { IMediatorLogger } from '../../mediator.options';
+import { IMediatorLogger } from '../../mediator/mediator.options';
 
 export class BlankMediatorLogger implements IMediatorLogger {
   debug() {}

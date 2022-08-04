@@ -10,11 +10,11 @@ import {
   timeout,
   TimeoutError,
 } from 'rxjs';
-import { MediatorOptions } from '../../../mediator.options';
+import { MediatorOptions } from '../../../mediator/mediator.options';
 import { IEvent } from '../../../messages/event/interfaces/event.interface';
 import { IEventsProvidersSchema } from '../../../providers-manager/messages/events/interfaces/events-providers-schema.interface';
-import { ProvidersManager } from '../../../providers-manager/providers-manager';
 import { IEventHandler, MessageTypes } from '../../../messages';
+import { IProvidersManager } from '../../../providers-manager/ports/providers-manager.port';
 import { MessageTimeoutException } from '../../exceptions/message-timeout.exception';
 import { ProvidersInstantiator } from '../../ports/providers-instantiator.port';
 import { IMessageExecutor } from '../../ports/message-executor.port';
@@ -25,7 +25,7 @@ export class EventsExecutorService implements IMessageExecutor<IEvent, void> {
   constructor(
     private readonly subject: Subject<IEventProcessingState>,
     private readonly mediatorOptions: MediatorOptions,
-    private readonly providersManager: ProvidersManager,
+    private readonly providersManager: IProvidersManager,
     private readonly providersInstantiator: ProvidersInstantiator
   ) {}
 

@@ -2,9 +2,10 @@
   "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": ".",
   "testEnvironment": "node",
-  "testRegex": "spec.ts$",
+  "testRegex": "\\.spec.ts$",
   "coveragePathIgnorePatterns": ["<rootDir>/.*/dist/"],
   "transform": {
     "^.+\\.ts$": "ts-jest"
-  }
+  },
+  "maxWorkers": 4
 }

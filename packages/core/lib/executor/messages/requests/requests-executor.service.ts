@@ -1,9 +1,8 @@
 import { catchError, defer, lastValueFrom, Subject, tap, throwError, timeout, TimeoutError } from 'rxjs';
-import { MediatorOptions } from '../../../mediator.options';
+import { MediatorOptions } from '../../../mediator/mediator.options';
 import { IRequest, IRequestPipeline } from '../../../messages';
 import { IRequestsProvidersSchema } from '../../../providers-manager/messages/requests/interfaces/requests-providers-schema.interface';
 import { MessageTypes } from '../../../messages/message-types.enum';
-import { ProvidersManager } from '../../../providers-manager/providers-manager';
 import { MessageTimeoutException } from '../../exceptions/message-timeout.exception';
 import { ProvidersInstantiator } from '../../ports/providers-instantiator.port';
 import { IMessageExecutor } from '../../ports/message-executor.port';
@@ -11,12 +10,13 @@ import { ExecutorUtils } from '../../executor-utils';
 import { IRequestsProvidersChainer } from './ports/requests-providers-chainer.port';
 import { NoHandlerException } from './exceptions/no-handler.exception';
 import { IRequestProcessingState } from './interfaces/request-processing-state.interface';
+import { IProvidersManager } from '../../../providers-manager/ports/providers-manager.port';
 
 export class RequestsExecutorService implements IMessageExecutor<IRequest, any> {
   constructor(
     private readonly subject: Subject<IRequestProcessingState>,
     private readonly mediatorOptions: MediatorOptions,
-    private readonly providersManager: ProvidersManager,
+    private readonly providersManager: IProvidersManager,
     private readonly providersInstantiator: ProvidersInstantiator,
     private readonly requestsProvidersChainer: IRequestsProvidersChainer
   ) {}

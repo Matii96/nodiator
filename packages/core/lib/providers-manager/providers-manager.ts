@@ -1,14 +1,15 @@
 import { Type } from '../utils/type.interface';
-import { IMediatorLogger } from '../mediator.options';
 import { MessageTypes } from '../messages';
 import { IMessageProvider } from '../messages/interfaces/message-provider.interface';
+import { IMediatorLogger } from '../mediator/mediator.options';
 import { IProviderTypeAdapter } from './ports/provider-type-adapter.port';
 import { IMessageTypeProvidersSchemaDefiner } from './ports/message-type-providers-schema-definer.port';
 import { IMessagesProvidersSchema } from './interfaces/messages-providers-schema.interface';
 import { IMessageTypeProvidersSchema } from './interfaces/message-type-providers-schema.interface';
 import { ProvidersManagerOptions } from './providers-manager.options';
+import { IProvidersManager } from './ports/providers-manager.port';
 
-export class ProvidersManager {
+export class ProvidersManager implements IProvidersManager {
   private readonly _providers = {} as IMessagesProvidersSchema;
   private readonly _flattenedProviders = new Set<Type<IMessageProvider>>();
 

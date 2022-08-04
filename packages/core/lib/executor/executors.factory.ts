@@ -1,14 +1,14 @@
 import { Subject } from 'rxjs';
 import { MessageTypes } from '../messages';
 import { IMessage } from '../messages/interfaces/message.interface';
-import { MediatorOptions } from '../mediator.options';
-import { ProvidersManager } from '../providers-manager/providers-manager';
+import { MediatorOptions } from '../mediator/mediator.options';
 import { DefaultProvidersInstantiator } from './default.providers.instantiator';
 import { IMessageExecutor } from './ports/message-executor.port';
 import { RequestsExecutorService } from './messages/requests/requests-executor.service';
 import { EventsExecutorService } from './messages/events/events-executor.service';
 import { IMessageProcessingState } from './interfaces/message-processing-state.interface';
 import { RequestsProvidersChainerService } from './messages/requests/requests-providers-chainer.service';
+import { IProvidersManager } from '../providers-manager/ports/providers-manager.port';
 import { Executor } from './executor';
 
 export class ExecutorsFactory {
@@ -16,7 +16,7 @@ export class ExecutorsFactory {
 
   constructor(
     mediatorOptions: MediatorOptions,
-    providersManager: ProvidersManager,
+    providersManager: IProvidersManager,
     subject: Subject<IMessageProcessingState>
   ) {
     const providersInstantiator = mediatorOptions.providersInstantiator || this.createDefaultProvidersInstantiator();

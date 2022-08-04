@@ -2,6 +2,12 @@ import { MessageTypes } from '../messages';
 import { IMessageTypeProvidersSchema } from './interfaces/message-type-providers-schema.interface';
 import { IMessageTypeProvidersSchemaDefiner } from './ports/message-type-providers-schema-definer.port';
 import { IProviderTypeAdapter } from './ports/provider-type-adapter.port';
+import { IProvidersManager } from './ports/providers-manager.port';
+
+export class ProvidersManagerMock implements IProvidersManager {
+  get = jest.fn();
+  register = jest.fn(() => []);
+}
 
 export class MessageTypeProvidersSchemaDefinerMock implements IMessageTypeProvidersSchemaDefiner {
   readonly messageType = MessageTypes.REQUEST;

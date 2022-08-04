@@ -1,4 +1,4 @@
-import { IMediatorLogger } from '../mediator.options';
+import { IMediatorLogger } from '../mediator/mediator.options';
 
 export class MediatorLoggerMock implements IMediatorLogger {
   debug = jest.fn();

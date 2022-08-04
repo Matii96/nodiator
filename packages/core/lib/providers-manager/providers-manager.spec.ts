@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { MediatorLoggerMock } from '../logging/logging.mocks';
-import { IMediatorLogger } from '../mediator.options';
+import { IMediatorLogger } from '../mediator/mediator.options';
 import { IMessageTypeProvidersSchemaDefiner } from './ports/message-type-providers-schema-definer.port';
 import { IProviderTypeAdapter } from './ports/provider-type-adapter.port';
 import { IMessageTypeProvidersSchema } from './interfaces/message-type-providers-schema.interface';
@@ -9,11 +9,12 @@ import {
   ProviderMock,
   ProviderTypeAdapterMock,
 } from './providers-manager.mocks';
+import { IProvidersManager } from './ports/providers-manager.port';
 import { ProvidersManager } from './providers-manager';
 
 describe('ProvidersManager', () => {
   let logger: IMediatorLogger;
-  let manager: ProvidersManager;
+  let manager: IProvidersManager;
   let adapters: IProviderTypeAdapter<object>[];
   let schemaDefiners: IMessageTypeProvidersSchemaDefiner[];
 

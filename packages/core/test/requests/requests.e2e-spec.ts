@@ -1,13 +1,12 @@
 import {
+  IMediator,
   IMessageProcessingState,
-  Mediator,
   MessageTimeoutException,
   MessageTypes,
   PlainObjectMessageException,
   IRequestsProvidersSchema,
-  IRequest,
   IMediatorLogger,
-  MediatorLoggingLevels,
+  MediatorFactory,
 } from '../../lib';
 import { MediatorLoggerMock } from '../../lib/logging/logging.mocks';
 import {
@@ -21,12 +20,12 @@ import {
 describe('@nodiator/core requests (e2e)', () => {
   const providers = [TestGlobalRequestPipeline, TestRequestPipeline, TestRequestHandler];
   let logger: IMediatorLogger;
-  let mediator: Mediator;
+  let mediator: IMediator;
   let requestStates: IMessageProcessingState[];
 
   beforeEach(() => {
     logger = new MediatorLoggerMock();
-    mediator = new Mediator({ providers, logger, loggingLevel: MediatorLoggingLevels.DEBUG });
+    mediator = MediatorFactory.create({ providers, logger, loggingLevel: 'DEBUG' });
     requestStates = [];
     mediator.subscribe((state) => requestStates.push(state));
   });
@@ -132,7 +131,7 @@ describe('@nodiator/core requests (e2e)', () => {
     const providers = [TestGlobalRequestPipeline, TestRequestPipeline, TestLaggingRequestPipeline, TestRequestHandler];
 
     beforeEach(() => {
-      mediator = new Mediator({ providers, logger, requestsTimeout: 1 });
+      mediator = MediatorFactory.create({ providers, logger, requestsTimeout: 1 });
     });
 
     it('should throw timeout exception', async () => {
