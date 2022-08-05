@@ -13,7 +13,7 @@ export class RequestsHandlingEndedLoggingBehaviour implements ILoggingBehaviour 
 
   private handle(state: IRequestProcessingState) {
     this.logger.debug(
-      `  -- finished ${state.message.constructor.name} (id=${state.id}}) handling by ${state.provider.constructor.name}`
+      ` -- finished ${state.message.constructor.name} (id=${state.id}}) handling by ${state.provider.constructor.name}`
     );
   }
 }

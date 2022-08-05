@@ -17,7 +17,7 @@ export class RequestsErrorLoggingBehaviour implements ILoggingBehaviour {
 
     this.logger.error(
       state.provider
-        ? `  -- ${state.provider.constructor.name} failed to handle ${requestString}. ${errorString}`
+        ? ` -- ${state.provider.constructor.name} failed to handle ${requestString}. ${errorString}`
         : `${state.message.constructor.name} failed. ${errorString}`
     );
   }

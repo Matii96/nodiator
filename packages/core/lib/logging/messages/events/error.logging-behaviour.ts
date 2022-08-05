@@ -13,7 +13,7 @@ export class EventsErrorLoggingBehaviour implements ILoggingBehaviour {
 
   private handle(state: IEventProcessingState) {
     this.logger.error(
-      `  -- ${state.provider.constructor.name} failed to handle ${state.message.constructor.name} (id=${state.id}}). ${
+      ` -- ${state.provider.constructor.name} failed to handle ${state.message.constructor.name} (id=${state.id}}). ${
         state.error.stack || state.error.message || state.error
       }`
     );

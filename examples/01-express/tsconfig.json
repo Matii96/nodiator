@@ -4,6 +4,8 @@
     "removeComments": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "target": "es6",
     "module": "commonjs",
     "sourceMap": true,
