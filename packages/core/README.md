@@ -40,13 +40,13 @@ export class SomeEventHandler implements IEventHandler<SomeEvent> {
   }
 }
 
-const mediator = MediatorFactory.create({ providers: [ExampleRequestHandler] });
+const mediator = MediatorFactory.create({ providers: [ExampleRequestHandler, SomeEventHandler] });
 
 console.log(await mediator.request<string>(new ExampleRequest())); // output: ok
 await mediator.publish(new SomeEvent()); // output: SomeEvent handled
 ```
 
-## Messages
+## 📖 Messages documentation
 
 Supported types are:
 
@@ -55,11 +55,56 @@ Supported types are:
 
 ## Providers scope
 
-todo
+Each provider is lazy-created upon it's first call by default.
+
+One that's done the its instance is saved internally for application lifetime. This behaviour can be changed into instatiting provider for each seperate call by setting `scoped` flag in given provider's decorator.
+
+```ts
+@RequestHandler({ request: ExampleRequest, scoped: true })
+export class ExampleRequestHandler implements IRequestHandler<ExampleRequest, string> {
+  ...
+}
+```
+
+Custom providers instantiator can be defined as mediator configuration as well.
+
+```ts
+const mediator = MediatorFactory.create({
+  providers: [ExampleRequestHandler, SomeEventHandler],
+  providersInstantiator: (ProviderType) => new ProviderType(),
+});
+```
+
+Above example implementation is identical with call-scoped instatiting.
 
 ## Logging
 
-todo
+Mediator supports following levels of logging: `DEBUG`, `INFO`, `WARN`, `ERROR` and `NONE`. The default one is `INFO` and allows all logs to be visible besides those marked as `DEBUG`. They are logged via `console` methods.
+
+Both of those behaviours can be modified in the mediator configuration.
+
+```ts
+class CustomLogger implements IMediatorLogger {
+  debug(msg: string) {
+    ...
+  }
+  info(msg: string) {
+    ...
+  }
+  warn(msg: string) {
+    ...
+  }
+  error(msg: string) {
+    ...
+  }
+}
+
+const mediator = MediatorFactory.create({
+  providers: [ExampleRequestHandler, SomeEventHandler],
+  logger: new CustomLogger()
+  loggingLevel: 'DEBUG',
+});
+```
 
 ## License
 
