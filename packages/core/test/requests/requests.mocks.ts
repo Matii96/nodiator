@@ -1,5 +1,6 @@
 import {
   GlobalRequestPipeline,
+  IGlobalRequestPipeline,
   IRequest,
   IRequestHandler,
   IRequestPipeline,
@@ -12,8 +13,8 @@ export class TestRequest {
 }
 
 @GlobalRequestPipeline()
-export class TestGlobalRequestPipeline implements IRequestPipeline<IRequest, void> {
-  static handle = jest.fn((request: IRequest, next: () => Promise<void>) => next());
+export class TestGlobalRequestPipeline implements IGlobalRequestPipeline {
+  static handle = jest.fn((request: IRequest, next: () => Promise<unknown>) => next());
   handle = TestGlobalRequestPipeline.handle;
 }
 

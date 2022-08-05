@@ -1,10 +1,10 @@
-import { GlobalRequestPipeline, IRequest, IRequestPipeline } from '@nodiator/core';
+import { GlobalRequestPipeline, IRequest, IGlobalRequestPipeline } from '@nodiator/core';
 import { HistoryEntry } from './history-entry';
 import { HistoryRepository } from './history.repository';
 
 @GlobalRequestPipeline()
-export class HistoryPipeline implements IRequestPipeline<IRequest, any> {
-  async handle(request: IRequest, next: () => Promise<any>) {
+export class HistoryPipeline implements IGlobalRequestPipeline {
+  async handle(request: IRequest, next: () => Promise<unknown>) {
     const start = new Date();
     const result = await next();
     HistoryRepository.register(

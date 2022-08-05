@@ -22,7 +22,6 @@ const port = 3000;
 const app = express();
 const mediator = MediatorFactory.create({
   providers: [
-    HistoryPipeline,
     GetHistoryUseCaseHandler,
     CreateItemUseCaseHandler,
     DeleteItemUseCaseHandler,
@@ -32,6 +31,9 @@ const mediator = MediatorFactory.create({
   ],
   loggingLevel: 'DEBUG',
 });
+
+// Post creatation registration
+mediator.providers.register(HistoryPipeline);
 
 app.get('/history', async (req: Request, res: Response) => {
   const result = await mediator.request<GetHistoryUseCaseResult>(new GetHistoryUseCase());

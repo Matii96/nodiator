@@ -1,9 +1,9 @@
-import { EventHandler, GlobalEventHandler, IEvent, IEventHandler } from '../../lib';
+import { EventHandler, GlobalEventHandler, IEventHandler, IGlobalEventHandler } from '../../lib';
 
 export class TestEvent {}
 
 @GlobalEventHandler()
-export class TestGlobalEventHandler implements IEventHandler<IEvent> {
+export class TestGlobalEventHandler implements IGlobalEventHandler {
   static handle = jest.fn(async () => null);
   handle = TestGlobalEventHandler.handle;
 }
