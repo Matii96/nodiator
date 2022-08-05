@@ -18,8 +18,8 @@ Nodiator aims to address this problem by providing configurable mediator object 
 
 ## Packages
 
-- [Core](packages/core/README.md) - project implementation for vanilla node.js
-- [Nest](packages/nest/README.md) - nestjs integration
+- [Core](https://github.com/Matii96/nodiator/packages/core/README.md) - project implementation for vanilla node.js
+- [Nest](https://github.com/Matii96/nodiator/packages/nest/README.md) - nestjs integration
 
 ## Examples
 
@@ -49,4 +49,4 @@ See also the full list of [contributors](https://github.com/Matii96/nodiator/con
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE file](LICENSE) for details.
+This project is licensed under the MIT License - see the [LICENSE file](https://github.com/Matii96/nodiator/LICENSE) for details.

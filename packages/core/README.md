@@ -50,8 +50,8 @@ await mediator.publish(new SomeEvent()); // output: SomeEvent handled
 
 How the mediator will behave depends upon type of message. Supported types are:
 
-- [Events](docs/events.md)
-- [Requests](docs/requests.md)
+- [Events](https://github.com/Matii96/nodiator/packages/core/docs/events.md)
+- [Requests](https://github.com/Matii96/nodiator/packages/core/docs/requests.md)
 
 ## Providers scope
 
@@ -63,4 +63,4 @@ todo
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE file](LICENSE) for details.
+This project is licensed under the MIT License - see the [LICENSE file](https://github.com/Matii96/nodiator/LICENSE) for details.
