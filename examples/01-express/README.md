@@ -1,6 +1,6 @@
 # Mediator + Express + TypeScript example integration
 
-1. Proceed with monorepo installation
+1. Proceed with Local development steps
 2. Run via `npm run start:dev` or `yarn start:dev`
 3. Example API is running on localhost:3000
 

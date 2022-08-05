@@ -21,6 +21,10 @@ Nodiator aims to address this problem by providing configurable mediator object 
 - [Core](packages/core/README.md) - project implementation for vanilla node.js
 - [Nest](packages/nest/README.md) - nestjs integration
 
+## Examples
+
+- [Express + typescript](examples/01-express/README.md)
+
 ## Local development
 
 ```bash
