@@ -1,11 +1,18 @@
-# `core`
+<h1 align="center">Nodiator</h1>
 
-> TODO: description
+<div align="center">
 
-## Usage
+Flexible [mediator](https://refactoring.guru/design-patterns/mediator) pattern implementation for [Node.js](https://nodejs.org).
 
-```
-const core = require('core');
+[![MIT Licensed](https://img.shields.io/badge/License-MIT-brightgreen)](/LICENSE) ![ci](https://github.com/Matii96/nodiator/workflows/Release/badge.svg)
 
-// TODO: DEMONSTRATE API
-```
+</div>
+
+## 💡 Idea
+
+When application grows in size it becomes more and more complicated task to control dataflow between objects / modules. Modifying one of them may lead to unwanted "shotgun surgery" resulting in 💥 of other features of our application.
+
+Other problem are extra indirect actions like logging or caching moved directly to eg. business parts of code effectively preventing us from easily unplugging off one of the middle actions from the application.
+
+In such cases [mediator](https://refactoring.guru/design-patterns/mediator) pattern comes to the rescue.
+Nodiator aims to address this problem by providing configurable mediator object serving as a communication hub.

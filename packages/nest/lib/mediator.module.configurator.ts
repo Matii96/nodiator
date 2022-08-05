@@ -1,6 +1,6 @@
 import { Injectable, Scope, Type } from '@nestjs/common';
 import { ModuleRef, ModulesContainer } from '@nestjs/core';
-import { Mediator, IMessageProvider, ScopeOptions, SCOPE_OPTIONS_METADATA } from '@nodiator/core';
+import { IMediator, IMessageProvider, MediatorFactory, ScopeOptions, SCOPE_OPTIONS_METADATA } from '@nodiator/core';
 import { NamespaceNotInitializedException } from './exceptions/namespace-not-initialized.exception';
 import { MediatorForFeatureOptions, MediatorModuleOptions } from './mediator.module.options';
 import { MediatorLogger } from './mediator.logger';
@@ -11,7 +11,7 @@ export class MediatorModuleConfigurator {
   constructor(private readonly modulesContainer: ModulesContainer, private readonly moduleRef: ModuleRef) {}
 
   configureRoot(options: MediatorModuleOptions) {
-    const mediator = new Mediator({
+    const mediator = MediatorFactory.create({
       logger: new MediatorLogger(options.namespace),
       ...options,
       providersInstantiator: (providerType) => this.moduleRef.resolve(providerType, undefined, { strict: false }),
@@ -25,7 +25,7 @@ export class MediatorModuleConfigurator {
   }
 
   configureFeature(module: Type<any>, options: MediatorForFeatureOptions) {
-    let mediator: Mediator;
+    let mediator: IMediator;
     try {
       mediator = this.moduleRef.get(getMediatorToken(options.namespace), { strict: false });
     } catch (err) {
