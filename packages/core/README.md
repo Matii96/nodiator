@@ -48,7 +48,7 @@ await mediator.publish(new SomeEvent()); // output: SomeEvent handled
 
 ## Messages
 
-How the mediator will behave depends upon type of message. Supported types are:
+Supported types are:
 
 - [Events](https://github.com/Matii96/nodiator/packages/core/docs/events.md)
 - [Requests](https://github.com/Matii96/nodiator/packages/core/docs/requests.md)
