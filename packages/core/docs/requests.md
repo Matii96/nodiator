@@ -1,6 +1,6 @@
 # Requests
 
-They work in synchronous way returning response. Thus each request may only have one handler. They can be used to implement simple Use-case or CQRS patterns.
+They work in synchronous way returning response. Thus each request may only have one handler. They can be used to implement simple Use-case or more sophisticated CQRS patterns.
 
 ## Handlers
 
@@ -75,5 +75,5 @@ console.log(await mediator.request<string>(new ExampleRequest()));
 ## Execution flow
 
 <div align="center">
-  <img src="./handling.svg" alt="Execution flow"/>
+  <img src="assets/requests-handling.svg" alt="Execution flow"/>
 </div>
