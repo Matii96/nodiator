@@ -58,8 +58,8 @@ When mediator is initialized then it can handle objects called messages. You can
 
 How the mediator will behave depends upon type of message. Supported types are:
 
-- [Events](docs/events)
-- [Requests](docs/requests)
+- [Events](docs/events.md)
+- [Requests](docs/requests.md)
 
 ## Providers scope
 

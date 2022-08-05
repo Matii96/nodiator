@@ -74,4 +74,6 @@ console.log(await mediator.request<string>(new ExampleRequest()));
 
 ## Execution flow
 
-<img src="./handling.svg" alt="Execution flow"/>
+<div align="center">
+  <img src="./handling.svg" alt="Execution flow"/>
+</div>
