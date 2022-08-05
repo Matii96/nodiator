@@ -8,6 +8,10 @@ Flexible [mediator](https://refactoring.guru/design-patterns/mediator) pattern i
 
 </div>
 
+## Usage
+
+Mediator handles objects called messages. You can think of them as simple dtos as they role is to transport data in given context. They are then passed to providers - handlers, pipelines and other pieces of code interested in given message.
+
 ## Installation
 
 ```bash
@@ -41,10 +45,6 @@ const mediator = MediatorFactory.create({ providers: [ExampleRequestHandler] });
 console.log(await mediator.request<string>(new ExampleRequest())); // output: ok
 await mediator.publish(new SomeEvent()); // output: SomeEvent handled
 ```
-
-## Approach
-
-When mediator is initialized then it can handle objects called messages. You can think of them as simple dtos as they role is to transport data in given context. They are then passed to providers - handlers, pipelines and other pieces of code interested in given message.
 
 ## Messages
 
