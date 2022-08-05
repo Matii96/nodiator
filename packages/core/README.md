@@ -10,9 +10,23 @@ Flexible [mediator](https://refactoring.guru/design-patterns/mediator) pattern i
 
 ## 💡 Idea
 
-When application grows in size it becomes more and more complicated task to control dataflow between objects / modules. Modifying one of them may lead to unwanted "shotgun surgery" resulting in 💥 of other features of our application.
+When application grows in size it becomes more and more complicated task to control dataflow between objects / modules. Modifying one of them may lead to unwanted "shotgun surgery" resulting in breaking other features of the application.
 
 Other problem are extra indirect actions like logging or caching moved directly to eg. business parts of code effectively preventing us from easily unplugging off one of the middle actions from the application.
 
 In such cases [mediator](https://refactoring.guru/design-patterns/mediator) pattern comes to the rescue.
-Nodiator aims to address this problem by providing configurable mediator object serving as a communication hub.
+Nodiator aims to address this problem by providing configurable broker object serving as a communication hub.
+
+## 🔌 Installation
+
+```bash
+npm i @nodiator/core
+```
+
+or
+
+```bash
+yarn add @nodiator/core
+```
+
+## 🚀 Quick Start
