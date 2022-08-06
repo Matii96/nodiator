@@ -4,9 +4,19 @@
 
 Flexible [mediator](https://refactoring.guru/design-patterns/mediator) pattern implementation for [Node.js](https://nodejs.org).
 
-[![MIT Licensed](https://img.shields.io/badge/License-MIT-brightgreen)](/LICENSE) ![ci](https://github.com/Matii96/nodiator/workflows/Release/badge.svg)
+[![MIT Licensed](https://img.shields.io/badge/License-MIT-brightgreen)](/LICENSE)
+[![NPM version](https://img.shields.io/npm/v/@nodiator/core.svg)](https://www.npmjs.com/package/@nodiator/core)
+[![Build Status](https://github.com/Matii96/nodiator/workflows/tests/badge.svg?branch=main)](https://github.com/Matii96/nodiator/actions?workflow=tests)
 
 </div>
+
+## 💡 Idea
+
+When application grows in size it becomes more and more complicated to control dataflow between objects / modules. Modifying one of them may lead to unwanted "shotgun surgery" resulting in breaking other features of the application.
+
+Other problem are extra indirect actions like logging or caching moved directly to eg. business parts of code effectively preventing us from easily unplugging any of the middle actions from application.
+
+Nodiator aims to address this problem by providing configurable mediator object serving as a communication hub.
 
 ## Usage
 

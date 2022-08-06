@@ -2,27 +2,37 @@
   "name": "nodiator",
   "private": true,
   "scripts": {
-    "setup": "lerna bootstrap --hoist -- --legacy-peer-deps && npm run build",
+    "postinstall": "lerna bootstrap --hoist -- --legacy-peer-deps && husky install",
     "build": "rimraf packages/**/dist && lerna run build",
-    "watch": "lerna run watch --parallel",
     "clean": "rimraf packages/**/dist && rimraf packages/**/package-lock.json && lerna clean -y",
-    "lint": "eslint ./**/*.ts",
-    "lint:fix": "eslint ./**/*.ts --fix",
-    "test": "jest --config jest-units.config.json",
+    "lint:staged": "eslint $(git diff --name-only --cached \"*.ts\")",
+    "test": "lerna run --stream --since HEAD --exclude-dependents test",
+    "test:e2e": "lerna run --stream --since HEAD test:e2e",
     "test:cov": "jest --config jest-units.config.json --coverage",
-    "test:e2e": "jest --config jest-e2e.config.json"
+    "precommit": "concurrently \"npm:lint:staged\" \"npm:test\" \"npm:test:e2e\""
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.0.3",
+    "@commitlint/config-conventional": "^17.0.3",
     "@types/jest": "^27.4.1",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
+    "commitizen": "^4.2.5",
+    "concurrently": "^7.3.0",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^8.0.0",
     "jest": "^27.5.1",
     "lerna": "^5.1.8",
     "prettier": "^2.5.1",
     "ts-jest": "^27.1.4",
     "typescript": "^4.7.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

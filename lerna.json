@@ -1,5 +1,12 @@
 {
   "packages": ["packages/*", "examples/*"],
-  "useNx": false,
+  "command": {
+    "version": {
+      "conventionalCommits": true,
+      "createRelease": "github",
+      "message": "chore(release): %s"
+    }
+  },
+  "ignoreChanges": ["**/*.mock.ts", "**/*.mocks.ts", "**/*.spec.ts", "**/*.e2e-spec.ts", "**/*.md"],
   "version": "0.1.0"
 }

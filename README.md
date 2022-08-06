@@ -4,7 +4,9 @@
 
 Flexible [mediator](https://refactoring.guru/design-patterns/mediator) pattern implementation for [Node.js](https://nodejs.org).
 
-[![MIT Licensed](https://img.shields.io/badge/License-MIT-brightgreen)](/LICENSE) ![ci](https://github.com/Matii96/nodiator/workflows/Release/badge.svg)
+[![MIT Licensed](https://img.shields.io/badge/License-MIT-brightgreen)](/LICENSE)
+[![NPM version](https://img.shields.io/npm/v/@nodiator/core.svg)](https://www.npmjs.com/package/@nodiator/core)
+[![Build Status](https://github.com/Matii96/nodiator/workflows/tests/badge.svg?branch=main)](https://github.com/Matii96/nodiator/actions?workflow=tests)
 
 </div>
 
@@ -27,15 +29,32 @@ Nodiator aims to address this problem by providing configurable mediator object 
 
 ## Local development
 
+1. Install dependencies
+
 ```bash
 npm i
 # or
 yarn install
 ```
 
+2. Run initial build for internal dependencies
+
 ```bash
-# symlink packages
-npm run setup
+npm run build
+```
+
+3. Test with
+
+```bash
+npm run lint
+npm run test
+npm run test:e2e
+```
+
+4. Commit with
+
+```bash
+npx cz
 ```
 
 ## Authors
