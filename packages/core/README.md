@@ -106,6 +106,8 @@ const mediator = MediatorFactory.create({
 });
 ```
 
+In addition to that the mediator object extends RxJS Observable and can be subscribed to. It emits all messages state changes - starting handlers execution, errors etc.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE file](https://github.com/Matii96/nodiator/LICENSE) for details.
