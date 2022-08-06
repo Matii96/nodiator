@@ -224,6 +224,7 @@ describe('@nodiator/core events (e2e)', () => {
     it('should emit event handling steps', async () => {
       await mediator.publish(testEvent);
       const id = eventStates[0]?.id;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       expect(eventStates.map(({ provider, ...state }) => state)).toEqual([
         {
           id,

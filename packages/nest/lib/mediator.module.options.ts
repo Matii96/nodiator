@@ -1,4 +1,4 @@
-import { ModuleMetadata, Type } from '@nestjs/common';
+import { ModuleMetadata } from '@nestjs/common';
 import { MediatorOptions } from '@nodiator/core';
 
 export interface MediatorForFeatureOptions {

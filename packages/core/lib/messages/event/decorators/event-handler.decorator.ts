@@ -43,7 +43,7 @@ export function EventHandler(options: EventHandlerMultipleOptions): ClassDecorat
 export function EventHandler(
   ...eventOrOptions: (EventType | EventHandlerSingleOptions | EventHandlerMultipleOptions)[]
 ): ClassDecorator {
-  return (target: Function) => {
+  return (target) => {
     let eventsTypes: Set<EventType>;
     switch (typeof eventOrOptions[0]) {
       case 'function':

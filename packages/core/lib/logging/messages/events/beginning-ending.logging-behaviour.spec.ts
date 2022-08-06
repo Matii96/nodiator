@@ -4,20 +4,18 @@ import { IMediatorLogger } from '../../../mediator/mediator.options';
 import { MessageTypes } from '../../../messages';
 import { TestEvent } from '../../../messages/messages.mocks';
 import { MediatorLoggerMock } from '../../logging.mocks';
-import { ILoggingBehaviour } from '../../ports/logging-behaviour.port';
 import { EventsBeginningEndingLoggingBehaviour } from './beginning-ending.logging-behaviour';
 
 describe('EventsBeginningEndingLoggingBehaviour', () => {
   let id: string;
   let logger: IMediatorLogger;
   let source: Subject<IEventProcessingState>;
-  let behaviour: ILoggingBehaviour;
 
   beforeAll(() => {
     id = 'id';
     logger = new MediatorLoggerMock();
     source = new Subject();
-    behaviour = new EventsBeginningEndingLoggingBehaviour(logger, source.asObservable());
+    new EventsBeginningEndingLoggingBehaviour(logger, source.asObservable());
   });
 
   afterEach(() => {

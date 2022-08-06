@@ -6,7 +6,7 @@ export class ExecutorUtils {
   static getTypeOfMessage(message: IMessage): Type<IMessage> {
     const prototype = Object.getPrototypeOf(message);
     if (prototype === Object.prototype) {
-      throw new PlainObjectMessageException(message);
+      throw new PlainObjectMessageException(message as Record<string, unknown>);
     }
     return prototype.constructor;
   }

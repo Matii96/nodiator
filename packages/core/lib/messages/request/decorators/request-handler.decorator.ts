@@ -28,7 +28,7 @@ export function RequestHandler(request: RequestType): ClassDecorator;
 export function RequestHandler(options: RequestHandlerOptions): ClassDecorator;
 
 export function RequestHandler(requestOrOptions: RequestType | RequestHandlerOptions): ClassDecorator {
-  return (target: Function) => {
+  return (target) => {
     let requestType: RequestType;
     switch (typeof requestOrOptions) {
       case 'function':

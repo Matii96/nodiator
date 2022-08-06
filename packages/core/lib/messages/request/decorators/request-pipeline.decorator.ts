@@ -40,7 +40,7 @@ export function RequestPipeline(options: RequestPipelineMultipleOptions): ClassD
 export function RequestPipeline(
   ...requestOrOptions: (RequestType | RequestPipelineSingleOptions | RequestPipelineMultipleOptions)[]
 ): ClassDecorator {
-  return (target: Function) => {
+  return (target) => {
     switch (typeof requestOrOptions[0]) {
       case 'function':
         Reflect.defineMetadata(REQUEST_PIPELINE_METADATA, new Set(requestOrOptions), target);

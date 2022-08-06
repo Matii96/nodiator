@@ -6,7 +6,7 @@ import { ScopeOptions } from '../../interfaces/scope.options';
  * @param options options specifying scope of injectable
  */
 export function GlobalRequestPipeline(options?: ScopeOptions): ClassDecorator {
-  return (target: Function) => {
+  return (target) => {
     Reflect.defineMetadata(GLOBAL_REQUEST_PIPELINE_METADATA, true, target);
     Reflect.defineMetadata(SCOPE_OPTIONS_METADATA, options, target);
   };
