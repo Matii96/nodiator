@@ -20,7 +20,7 @@ Nodiator aims to address this problem by providing configurable mediator object 
 
 ## Packages
 
-- [Core](hhttps://github.com/Matii96/nodiator/tree/main/packages/core) - project implementation for vanilla node.js
+- [Core](https://github.com/Matii96/nodiator/tree/main/packages/core) - project implementation for vanilla node.js
 - [Nest](https://github.com/Matii96/nodiator/tree/main/packages/nest) - nestjs integration
 
 ## Examples
