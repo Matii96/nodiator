@@ -60,8 +60,8 @@ await mediator.publish(new SomeEvent()); // output: SomeEvent handled
 
 Supported types are:
 
-- [Events](https://github.com/Matii96/nodiator/packages/core/docs/events.md)
-- [Requests](https://github.com/Matii96/nodiator/packages/core/docs/requests.md)
+- [Events](https://github.com/Matii96/nodiator/tree/main/packages/core/docs/events.md)
+- [Requests](https://github.com/Matii96/nodiator/tree/main/packages/core/docs/requests.md)
 
 ## Providers scope
 
