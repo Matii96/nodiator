@@ -1,6 +1,10 @@
 {
   "packages": ["packages/*", "examples/*"],
+  "useWorkspaces": true,
   "command": {
+    "run": {
+      "npmClient": "yarn"
+    },
     "version": {
       "conventionalCommits": true,
       "createRelease": "github",

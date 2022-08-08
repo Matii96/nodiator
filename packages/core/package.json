@@ -27,8 +27,8 @@
   },
   "homepage": "https://github.com/Matii96/nodiator",
   "dependencies": {
-    "uuid": "^8.3.2",
-    "rxjs": "^7.5.5"
+    "rxjs": "^7.5.5",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/uuid": "^8.3.4",
