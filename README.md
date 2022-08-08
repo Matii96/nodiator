@@ -6,7 +6,8 @@ Flexible [mediator](https://refactoring.guru/design-patterns/mediator) pattern i
 
 [![MIT Licensed](https://img.shields.io/badge/License-MIT-brightgreen)](/LICENSE)
 [![NPM version](https://img.shields.io/npm/v/@nodiator/core.svg)](https://www.npmjs.com/package/@nodiator/core)
-[![Build Status](https://github.com/Matii96/nodiator/workflows/tests/badge.svg?branch=main)](https://github.com/Matii96/nodiator/actions?workflow=tests)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli)
+[![Build Status](https://github.com/Matii96/nodiator/workflows/main-push/badge.svg?branch=main)](https://github.com/Matii96/nodiator/actions?workflow=main-push)
 
 </div>
 
@@ -29,32 +30,36 @@ Nodiator aims to address this problem by providing configurable mediator object 
 
 ## Local development
 
-1. Install dependencies
+Project uses [yarn workspaces](https://yarnpkg.com/features/workspaces) in combination with [lerna](https://lerna.js.org). To initialize the project run
 
 ```bash
-npm i
-# or
-yarn install
+yarn
 ```
 
-2. Run initial build for internal dependencies
+### Building packages
+
+As project uses typescript for the package to be seen as other packages dependency they need to be built first.
 
 ```bash
-npm run build
+yarn build
 ```
 
-3. Test with
+### Testing
 
 ```bash
-npm run lint
-npm run test
-npm run test:e2e
+yarn lint:staged  # linting staged files
+yarn test         # running unit tests for packages changed since HEAD
+yarn test:cov     # running unit tests for whole repo with coverage report
+yarn test:e2e     # running e2e tests for packages changed since HEAD with packages dependent on them
+yarn precommit    # combining lint:staged, test and test:e2e
 ```
 
-4. Commit with
+### Commits
+
+The project follows [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0) standard. To conveniently create commit message use [commitizen](https://commitizen-tools.github.io/commitizen) by typing
 
 ```bash
-npx cz
+yarn cz
 ```
 
 ## Authors

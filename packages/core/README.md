@@ -6,7 +6,8 @@ Flexible [mediator](https://refactoring.guru/design-patterns/mediator) pattern i
 
 [![MIT Licensed](https://img.shields.io/badge/License-MIT-brightgreen)](/LICENSE)
 [![NPM version](https://img.shields.io/npm/v/@nodiator/core.svg)](https://www.npmjs.com/package/@nodiator/core)
-[![Build Status](https://github.com/Matii96/nodiator/workflows/tests/badge.svg?branch=main)](https://github.com/Matii96/nodiator/actions?workflow=tests)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli)
+[![Build Status](https://github.com/Matii96/nodiator/workflows/main-push/badge.svg?branch=main)](https://github.com/Matii96/nodiator/actions?workflow=main-push)
 
 </div>
 
