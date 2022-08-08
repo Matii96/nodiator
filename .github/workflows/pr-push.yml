@@ -1,0 +1,120 @@
+name: pr-push
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  setup:
+    uses: ./.github/workflows/setup.yml
+
+  build:
+    runs-on: ubuntu-latest
+    needs: setup
+    outputs:
+      changed_packages: ${{ steps.changed_packages.outputs.changed_packages }}
+    steps:
+      - name: Checkout current branch
+        uses: actions/checkout@v3
+        env:
+          PULL_REQUEST_COMMITS: ${{ github.event.pull_request.commits }}
+        with:
+          fetch-depth: $(( $PULL_REQUEST_COMMITS + 1 ))
+      - name: Check for changes
+        id: changed_packages
+        run: echo "::set-output name=changed_packages::$(git diff origin/${{ github.base_ref }}...origin/${{ github.head_ref }} --name-only "./packages/**" | wc -l | xargs)"
+      - name: Load yarn & node modules
+        if: steps.changed_packages.outputs.changed_packages != '0'
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-yarn-node-modules
+        with:
+          path: ./node_modules
+          key: lock-${{ hashFiles('./yarn.lock') }}
+      - name: Cache build output
+        if: steps.changed_packages.outputs.changed_packages != '0'
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-build
+        with:
+          path: ./packages/*/dist
+          key: packages-pr${{ github.event.number }}-${{ hashFiles('./packages/**') }}
+      - name: Build changed projects
+        if: steps.changed_packages.outputs.changed_packages != '0'
+        run: yarn lerna run build --stream --since origin/${{ github.base_ref }}...origin/${{ github.head_ref }} --include-dependencies
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Checkout current branch
+        uses: actions/checkout@v3
+        env:
+          PULL_REQUEST_COMMITS: ${{ github.event.pull_request.commits }}
+        with:
+          fetch-depth: $(( $PULL_REQUEST_COMMITS + 1 ))
+      - name: Load yarn & node modules
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-yarn-node-modules
+        with:
+          path: ./node_modules
+          key: lock-${{ hashFiles('./yarn.lock') }}
+      - name: Run lint on changed files
+        run: yarn eslint $(git diff origin/${{ github.base_ref }}...origin/${{ github.head_ref }} --name-only \"*.ts\" | xargs)
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    needs: build
+    if: needs.build.outputs.changed_packages != '0'
+    steps:
+      - name: Checkout current branch
+        uses: actions/checkout@v3
+        env:
+          PULL_REQUEST_COMMITS: ${{ github.event.pull_request.commits }}
+        with:
+          fetch-depth: $(( $PULL_REQUEST_COMMITS + 1 ))
+      - name: Load yarn & node modules
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-yarn-node-modules
+        with:
+          path: ./node_modules
+          key: lock-${{ hashFiles('./yarn.lock') }}
+      - name: Load build output
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-build
+        with:
+          path: ./packages/*/dist
+          key: packages-pr${{ github.event.number }}-${{ hashFiles('./packages/**') }}
+      - name: Run unit tests in changed projects
+        run: yarn lerna run test --stream --since origin/${{ github.base_ref }}...origin/${{ github.head_ref }} --exclude-dependents
+
+  e2e-tests:
+    runs-on: ubuntu-latest
+    needs: build
+    if: needs.build.outputs.changed_packages != '0'
+    steps:
+      - name: Checkout current branch
+        uses: actions/checkout@v3
+        env:
+          PULL_REQUEST_COMMITS: ${{ github.event.pull_request.commits }}
+        with:
+          fetch-depth: $(( $PULL_REQUEST_COMMITS + 1 ))
+      - name: Load yarn & node modules
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-yarn-node-modules
+        with:
+          path: ./node_modules
+          key: lock-${{ hashFiles('./yarn.lock') }}
+      - name: Load build output
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-build
+        with:
+          path: ./packages/*/dist
+          key: packages-pr${{ github.event.number }}-${{ hashFiles('./packages/**') }}
+      - name: Run e2e tests in changed projects
+        run: yarn lerna run test:e2e --stream --since origin/${{ github.base_ref }}...origin/${{ github.head_ref }} --include-dependents
