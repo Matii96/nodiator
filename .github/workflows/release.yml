@@ -117,4 +117,8 @@ jobs:
       - name: Publish version
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: yarn lerna version -y
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          echo "access=public" >> .npmrc
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
+          yarn lerna publish from-package --force-publish
