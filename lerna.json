@@ -11,6 +11,6 @@
       "message": "chore(release): %s"
     }
   },
-  "ignoreChanges": ["**/*.mock.ts", "**/*.mocks.ts", "**/*.spec.ts", "**/*.e2e-spec.ts", "**/*.md"],
+  "ignoreChanges": ["**/*.md"],
   "version": "0.1.0"
 }
