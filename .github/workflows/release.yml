@@ -82,7 +82,7 @@ jobs:
   npm-release:
     runs-on: ubuntu-latest
     if: needs.preview.outputs.changed_packages != '0'
-    enviroment: prod
+    environment: prod
     needs:
       - e2e-tests
       - preview
