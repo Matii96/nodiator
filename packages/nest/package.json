@@ -1,6 +1,6 @@
 {
   "name": "@nodiator/nest",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "description": "Nodiator module for Nest",
   "keywords": [
     "mediator",
@@ -29,7 +29,7 @@
     "@nestjs/core": "^9.0.7",
     "@nestjs/platform-express": "^9.0.8",
     "@nestjs/testing": "^9.0.7",
-    "@nodiator/core": "^0.1.0",
+    "@nodiator/core": "^1.1.0",
     "reflect-metadata": "^0.1.13"
   },
   "peerDependencies": {
