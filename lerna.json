@@ -1,21 +1,14 @@
 {
-  "packages": [
-    "packages/*",
-    "examples/*"
-  ],
+  "packages": ["packages/*", "examples/*"],
+  "npmClient": "yarn",
   "useWorkspaces": true,
   "command": {
-    "run": {
-      "npmClient": "yarn"
-    },
     "version": {
       "conventionalCommits": true,
       "createRelease": "github",
       "message": "chore(release): %s"
     }
   },
-  "ignoreChanges": [
-    "**/*.md"
-  ],
+  "ignoreChanges": ["**/*.md"],
   "version": "1.1.0"
 }

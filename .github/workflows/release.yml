@@ -121,4 +121,4 @@ jobs:
         run: |
           echo "access=public" >> .npmrc
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
-          yarn lerna publish from-package --force-publish
+          yarn lerna publish --force-publish -y
