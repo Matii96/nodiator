@@ -121,4 +121,4 @@ In addition to that the mediator object extends RxJS Observable and can be subsc
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE file](https://github.com/Matii96/nodiator/LICENSE) for details.
+This project is licensed under the MIT License - see the [LICENSE file](https://github.com/Matii96/nodiator/tree/main/LICENSE) for details.

@@ -73,4 +73,4 @@ See also the full list of [contributors](https://github.com/Matii96/nodiator/con
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE file](https://github.com/Matii96/nodiator/LICENSE) for details.
+This project is licensed under the MIT License - see the [LICENSE file](https://github.com/Matii96/nodiator/tree/main/LICENSE) for details.
