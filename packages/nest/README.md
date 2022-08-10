@@ -27,6 +27,8 @@ export class GetAllCatsUseCaseHandler implements IRequestHandler<GetAllCatsUseCa
 }
 ```
 
+To import and utilize mediator module use
+
 ```ts
 // cats.controller.ts
 @Controller('cats')
@@ -52,6 +54,8 @@ export class CatsModule {}
 })
 export class AppModule {}
 ```
+
+In addition to that the `forRoot` method accepts configuration object.
 
 ### Namespaces
 
