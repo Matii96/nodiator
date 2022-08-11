@@ -8,7 +8,7 @@
   "scripts": {
     "postinstall": "husky install",
     "build": "lerna run build --stream",
-    "lint:staged": "eslint $(git diff --name-only --cached \"*.ts\" | xargs)",
+    "lint:staged": "eslint $(git diff --diff-filter=ACM --name-only --cached \"*.ts\" | xargs)",
     "test": "lerna run test --stream --since HEAD --exclude-dependents",
     "test:e2e": "lerna run test:e2e --stream --since HEAD",
     "test:cov": "jest --config jest-units.config.json --coverage",

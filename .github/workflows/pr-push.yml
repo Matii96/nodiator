@@ -8,7 +8,7 @@ jobs:
   setup:
     uses: ./.github/workflows/setup.yml
 
-  build:
+  pr-build:
     runs-on: ubuntu-latest
     needs: setup
     outputs:
@@ -43,7 +43,7 @@ jobs:
         if: steps.changed_packages.outputs.changed_packages != '0'
         run: yarn lerna run build --stream --since origin/${{ github.base_ref }}...origin/${{ github.head_ref }} --include-dependencies
 
-  lint:
+  pr-lint:
     runs-on: ubuntu-latest
     needs: setup
     steps:
@@ -61,19 +61,14 @@ jobs:
           path: ./node_modules
           key: lock-${{ hashFiles('./yarn.lock') }}
       - name: Run lint on changed files
-        run: yarn eslint $(git diff origin/${{ github.base_ref }}...origin/${{ github.head_ref }} --name-only \"*.ts\" | xargs)
+        run: yarn eslint $(git diff origin/${{ github.base_ref }}...origin/${{ github.head_ref }} --diff-filter=ACM --name-only \"*.ts\" | xargs)
 
   unit-tests:
     runs-on: ubuntu-latest
-    needs: build
-    if: needs.build.outputs.changed_packages != '0'
+    needs: pr-build
+    if: needs.pr-build.outputs.changed_packages != '0'
     steps:
-      - name: Checkout current branch
-        uses: actions/checkout@v3
-        env:
-          PULL_REQUEST_COMMITS: ${{ github.event.pull_request.commits }}
-        with:
-          fetch-depth: $(( $PULL_REQUEST_COMMITS + 1 ))
+      - uses: actions/checkout@v3
       - name: Load yarn & node modules
         uses: actions/cache@v3
         env:
@@ -88,13 +83,20 @@ jobs:
         with:
           path: ./packages/*/dist
           key: packages-pr${{ github.event.number }}-${{ hashFiles('./packages/**') }}
-      - name: Run unit tests in changed projects
-        run: yarn lerna run test --stream --since origin/${{ github.base_ref }}...origin/${{ github.head_ref }} --exclude-dependents
+      - name: Cache coverage output
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-coverage
+        with:
+          path: ./coverage/clover.xml
+          key: coverage-${{ hashFiles('./packages/*/lib/**') }}
+      - name: Run unit tests with coverage
+        run: yarn run test:cov
 
-  e2e-tests:
+  pr-e2e-tests:
     runs-on: ubuntu-latest
-    needs: build
-    if: needs.build.outputs.changed_packages != '0'
+    needs: pr-build
+    if: needs.pr-build.outputs.changed_packages != '0'
     steps:
       - name: Checkout current branch
         uses: actions/checkout@v3
@@ -118,3 +120,22 @@ jobs:
           key: packages-pr${{ github.event.number }}-${{ hashFiles('./packages/**') }}
       - name: Run e2e tests in changed projects
         run: yarn lerna run test:e2e --stream --since origin/${{ github.base_ref }}...origin/${{ github.head_ref }} --include-dependents
+
+  codecov:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    steps:
+      - uses: actions/checkout@v3
+      - name: Load coverage output
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-coverage
+        with:
+          path: ./coverage/clover.xml
+          key: coverage-${{ hashFiles('./packages/*/lib/**') }}
+      - name: Upload report to codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/clover.xml
+          flags: unittests
+          verbose: true
