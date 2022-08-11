@@ -137,4 +137,5 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           files: ./coverage/clover.xml
+          flags: unittests
           verbose: true
