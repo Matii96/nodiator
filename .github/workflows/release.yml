@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: setup
     concurrency:
-      group: npm-release
+      group: create-release
       cancel-in-progress: false
     outputs:
       changed_packages: ${{ steps.changed_packages.outputs.changed_packages }}
@@ -79,7 +79,7 @@ jobs:
       - name: Preview changelogs
         run: git --no-pager diff "*CHANGELOG.md"
 
-  npm-release:
+  create-release:
     runs-on: ubuntu-latest
     if: needs.preview.outputs.changed_packages != '0'
     environment: prod
@@ -87,10 +87,8 @@ jobs:
       - e2e-tests
       - preview
     concurrency:
-      group: npm-release
+      group: create-release
       cancel-in-progress: false
-    env:
-      BOT_NAME: github-actions[bot]
     steps:
       - name: Checkout current branch
         uses: actions/checkout@v3
@@ -117,8 +115,23 @@ jobs:
       - name: Publish version
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: yarn lerna version -y
+
+  npm-release:
+    runs-on: ubuntu-latest
+    environment: prod
+    needs: create-release
+    env:
+      BOT_NAME: github-actions[bot]
+    steps:
+      - name: Checkout current branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Publish version
+        env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           echo "access=public" >> .npmrc
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
-          yarn lerna publish --force-publish -y
+          yarn lerna publish from-package -y
