@@ -19,7 +19,7 @@ jobs:
         env:
           PULL_REQUEST_COMMITS: ${{ github.event.pull_request.commits }}
         with:
-          fetch-depth: $(( $PULL_REQUEST_COMMITS + 1 ))
+          fetch-depth: $(( $PULL_REQUEST_COMMITS + 2 ))
       - name: Check for changes
         id: changed_packages
         run: echo "::set-output name=changed_packages::$(git diff origin/${{ github.base_ref }}...origin/${{ github.head_ref }} --name-only "./packages/**" | wc -l | xargs)"
@@ -52,7 +52,7 @@ jobs:
         env:
           PULL_REQUEST_COMMITS: ${{ github.event.pull_request.commits }}
         with:
-          fetch-depth: $(( $PULL_REQUEST_COMMITS + 1 ))
+          fetch-depth: $(( $PULL_REQUEST_COMMITS + 2 ))
       - name: Load yarn & node modules
         uses: actions/cache@v3
         env:
@@ -103,7 +103,7 @@ jobs:
         env:
           PULL_REQUEST_COMMITS: ${{ github.event.pull_request.commits }}
         with:
-          fetch-depth: $(( $PULL_REQUEST_COMMITS + 1 ))
+          fetch-depth: $(( $PULL_REQUEST_COMMITS + 2 ))
       - name: Load yarn & node modules
         uses: actions/cache@v3
         env:
