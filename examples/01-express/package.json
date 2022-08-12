@@ -1,7 +1,7 @@
 {
   "name": "nodiator-example-express",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Demonstration of nodiator using express",
   "main": "dist/main.js",
   "scripts": {
@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/Matii96/nodiator#readme",
   "dependencies": {
-    "@nodiator/core": "^1.1.0",
+    "@nodiator/core": "^1.1.1",
     "express": "^4.18.1",
     "uuid": "^8.3.2"
   },
