@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.2](https://github.com/Matii96/nodiator/compare/v1.1.1...v1.1.2) (2022-08-12)
+
+
+### Bug Fixes
+
+* **nest:** changed peer dependency of nodiator core to ^1.0.0 ([4af3a3c](https://github.com/Matii96/nodiator/commit/4af3a3ca1105acea6a3cbda57cd27ce5229bf9b9))
+
+
+
+
+
 ## [1.1.1](https://github.com/Matii96/nodiator/compare/v1.1.0...v1.1.1) (2022-08-12)
 
 
