@@ -121,7 +121,6 @@ jobs:
 
   npm-release:
     runs-on: ubuntu-latest
-    environment: prod
     needs: create-release
     steps:
       - name: Checkout current branch
