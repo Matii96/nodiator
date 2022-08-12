@@ -89,6 +89,8 @@ jobs:
     concurrency:
       group: create-release
       cancel-in-progress: false
+    env:
+      BOT_NAME: github-actions[bot]
     steps:
       - name: Checkout current branch
         uses: actions/checkout@v3
@@ -121,8 +123,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: prod
     needs: create-release
-    env:
-      BOT_NAME: github-actions[bot]
     steps:
       - name: Checkout current branch
         uses: actions/checkout@v3
