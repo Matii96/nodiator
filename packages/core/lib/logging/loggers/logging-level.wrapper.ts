@@ -1,12 +1,12 @@
 import { IMediatorLogger, MediatorLoggingLevels } from '../../mediator/mediator.options';
 
 export class LoggingLevelWrapper implements IMediatorLogger {
-  private readonly _acceptedLevels = ['DEBUG', 'INFO', 'WARN', 'ERROR'];
+  private readonly _acceptedLevels: MediatorLoggingLevels[] = ['debug', 'info', 'warn', 'error'];
 
   constructor(private readonly base: IMediatorLogger, private readonly level: MediatorLoggingLevels) {}
 
   debug(msg: string) {
-    if (this.level === 'DEBUG') this.base.debug(msg);
+    if (this.level === 'debug') this.base.debug(msg);
   }
 
   info(msg: string) {

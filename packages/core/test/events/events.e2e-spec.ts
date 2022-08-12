@@ -25,7 +25,7 @@ describe('@nodiator/core events (e2e)', () => {
 
   beforeEach(() => {
     logger = new MediatorLoggerMock();
-    mediator = MediatorFactory.create({ providers, logger, loggingLevel: 'DEBUG' });
+    mediator = MediatorFactory.create({ providers, logger, loggingLevel: 'debug' });
     eventStates = [];
     mediator.subscribe((state) => eventStates.push(state));
   });
@@ -209,7 +209,7 @@ describe('@nodiator/core events (e2e)', () => {
         eventsHandlingRetriesAttempts: 2,
         eventsHandlingRetriesDelay,
         logger,
-        loggingLevel: 'DEBUG',
+        loggingLevel: 'debug',
       });
       mediator.providers.register(TestFailingEventHandler);
       mediator.subscribe((state) => eventStates.push(state));

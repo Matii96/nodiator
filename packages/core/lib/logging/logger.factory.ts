@@ -8,7 +8,7 @@ export class LoggerFactory {
   constructor(private readonly options: LoggerFactoryOptions) {}
 
   create(): IMediatorLogger {
-    return this.options.loggingLevel && this.options.loggingLevel !== 'NONE'
+    return this.options.loggingLevel && this.options.loggingLevel !== 'none'
       ? new LoggingLevelWrapper(this.options.logger || new DefaultMediatorLogger(), this.options.loggingLevel)
       : new BlankMediatorLogger();
   }
