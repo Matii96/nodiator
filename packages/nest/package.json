@@ -27,16 +27,16 @@
   },
   "homepage": "https://github.com/Matii96/nodiator",
   "devDependencies": {
-    "@nestjs/common": "^9.0.7",
-    "@nestjs/core": "^9.0.7",
-    "@nestjs/platform-express": "^9.0.8",
-    "@nestjs/testing": "^9.0.7",
+    "@nestjs/common": "^8.0.0",
+    "@nestjs/core": "^8.0.0",
+    "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/testing": "^8.0.0",
     "@nodiator/core": "^1.1.0",
     "reflect-metadata": "^0.1.13"
   },
   "peerDependencies": {
-    "@nestjs/common": "^9.0.7",
-    "@nestjs/core": "^9.0.7",
+    "@nestjs/common": "^8.0.0",
+    "@nestjs/core": "^8.0.0",
     "@nodiator/core": "^0.1.0",
     "reflect-metadata": "^0.1.13"
   }

@@ -1744,10 +1744,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/common@npm:^9.0.7":
-  version: 9.0.8
-  resolution: "@nestjs/common@npm:9.0.8"
+"@nestjs/common@npm:^8.0.0":
+  version: 8.4.7
+  resolution: "@nestjs/common@npm:8.4.7"
   dependencies:
+    axios: 0.27.2
     iterare: 1.2.1
     tslib: 2.4.0
     uuid: 8.3.2
@@ -1764,13 +1765,13 @@ __metadata:
       optional: true
     class-validator:
       optional: true
-  checksum: eeb5d0622cc7faed3cfea555a61c6b456cf927fa70e3cb0f4ff54b0616649b13d3e20a30ce13db510e9e54dcd79b4ed615b545da8e4b6bb1751c819f83e34934
+  checksum: b3fa20618d4e60f9f5089215c800f2deb5d08b9f88443102b066036d7bacf17ff5926ad5ff0ef7ace42feb8e0ca561dc7e75fd05dbd028f5e675d5e7062eb685
   languageName: node
   linkType: hard
 
-"@nestjs/core@npm:^9.0.7":
-  version: 9.0.8
-  resolution: "@nestjs/core@npm:9.0.8"
+"@nestjs/core@npm:^8.0.0":
+  version: 8.4.7
+  resolution: "@nestjs/core@npm:8.4.7"
   dependencies:
     "@nuxtjs/opencollective": 0.3.2
     fast-safe-stringify: 2.1.1
@@ -1780,10 +1781,10 @@ __metadata:
     tslib: 2.4.0
     uuid: 8.3.2
   peerDependencies:
-    "@nestjs/common": ^9.0.0
-    "@nestjs/microservices": ^9.0.0
-    "@nestjs/platform-express": ^9.0.0
-    "@nestjs/websockets": ^9.0.0
+    "@nestjs/common": ^8.0.0
+    "@nestjs/microservices": ^8.0.0
+    "@nestjs/platform-express": ^8.0.0
+    "@nestjs/websockets": ^8.0.0
     reflect-metadata: ^0.1.12
     rxjs: ^7.1.0
   peerDependenciesMeta:
@@ -1793,13 +1794,13 @@ __metadata:
       optional: true
     "@nestjs/websockets":
       optional: true
-  checksum: b79d7d4c532942aeff3675820449466cdfd3cbecb0b11026b86cb5d44369a3ec90938913dff92b26338a8c95175371ffa8b4185657ca81d01cb4cdb3646fe8a3
+  checksum: 58d18b04e03cdae4b06e06f1a60705cdbe2e81824e0a85d0be422cf8dbd39c263287196b85939718659d7eeedc2856f29744487931dbe5c2695fcd374a5fbe40
   languageName: node
   linkType: hard
 
-"@nestjs/platform-express@npm:^9.0.8":
-  version: 9.0.8
-  resolution: "@nestjs/platform-express@npm:9.0.8"
+"@nestjs/platform-express@npm:^8.0.0":
+  version: 8.4.7
+  resolution: "@nestjs/platform-express@npm:8.4.7"
   dependencies:
     body-parser: 1.20.0
     cors: 2.8.5
@@ -1807,28 +1808,28 @@ __metadata:
     multer: 1.4.4-lts.1
     tslib: 2.4.0
   peerDependencies:
-    "@nestjs/common": ^9.0.0
-    "@nestjs/core": ^9.0.0
-  checksum: edf78ad51e59cde1deceabc74f013600c17ab0e2208adf433631d34d139a7f8197e017fb462b3337273e705cede6291567e6cd798ceb49d0addb541de17a06b0
+    "@nestjs/common": ^8.0.0
+    "@nestjs/core": ^8.0.0
+  checksum: 41d3e35adfb2d3f54c9d4a7ce94525fac0be3119caa0bba8b5607c8345cef964a6893891c541d2f4e7a677cc4f91045bc3cb23e4bf29df9ba84a76e70eefd3e6
   languageName: node
   linkType: hard
 
-"@nestjs/testing@npm:^9.0.7":
-  version: 9.0.8
-  resolution: "@nestjs/testing@npm:9.0.8"
+"@nestjs/testing@npm:^8.0.0":
+  version: 8.4.7
+  resolution: "@nestjs/testing@npm:8.4.7"
   dependencies:
     tslib: 2.4.0
   peerDependencies:
-    "@nestjs/common": ^9.0.0
-    "@nestjs/core": ^9.0.0
-    "@nestjs/microservices": ^9.0.0
-    "@nestjs/platform-express": ^9.0.0
+    "@nestjs/common": ^8.0.0
+    "@nestjs/core": ^8.0.0
+    "@nestjs/microservices": ^8.0.0
+    "@nestjs/platform-express": ^8.0.0
   peerDependenciesMeta:
     "@nestjs/microservices":
       optional: true
     "@nestjs/platform-express":
       optional: true
-  checksum: 5f3351fb31a18e0bcc69be23786318fe6c0ec96bc54d249dfe3b95c4bf97738eb45598a77a35cc5833ef4c423416cea4969cb3ada95ec8da5620587f21fc55d1
+  checksum: 5514f2638ad1dcdabe3c13fa35f8d73dbae5924c051a9747f19c2bbb5491998a3261e6a43562af8a4f67af4fe4a5b6b97406712e3aa28da5d5e3ace0fbab7112
   languageName: node
   linkType: hard
 
@@ -1859,7 +1860,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nodiator/core@^0.1.0, @nodiator/core@workspace:packages/core":
+"@nodiator/core@^1.1.0, @nodiator/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@nodiator/core@workspace:packages/core"
   dependencies:
@@ -1876,15 +1877,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nodiator/nest@workspace:packages/nest"
   dependencies:
-    "@nestjs/common": ^9.0.7
-    "@nestjs/core": ^9.0.7
-    "@nestjs/platform-express": ^9.0.8
-    "@nestjs/testing": ^9.0.7
-    "@nodiator/core": ^0.1.0
+    "@nestjs/common": ^8.0.0
+    "@nestjs/core": ^8.0.0
+    "@nestjs/platform-express": ^8.0.0
+    "@nestjs/testing": ^8.0.0
+    "@nodiator/core": ^1.1.0
     reflect-metadata: ^0.1.13
   peerDependencies:
-    "@nestjs/common": ^9.0.7
-    "@nestjs/core": ^9.0.7
+    "@nestjs/common": ^8.0.0
+    "@nestjs/core": ^8.0.0
     "@nodiator/core": ^0.1.0
     reflect-metadata: ^0.1.13
   languageName: unknown
@@ -2968,6 +2969,16 @@ __metadata:
   version: 1.0.0
   resolution: "at-least-node@npm:1.0.0"
   checksum: 463e2f8e43384f1afb54bc68485c436d7622acec08b6fad269b421cb1d29cebb5af751426793d0961ed243146fe4dc983402f6d5a51b720b277818dbf6f2e49e
+  languageName: node
+  linkType: hard
+
+"axios@npm:0.27.2":
+  version: 0.27.2
+  resolution: "axios@npm:0.27.2"
+  dependencies:
+    follow-redirects: ^1.14.9
+    form-data: ^4.0.0
+  checksum: 38cb7540465fe8c4102850c4368053c21683af85c5fdf0ea619f9628abbcb59415d1e22ebc8a6390d2bbc9b58a9806c874f139767389c862ec9b772235f06854
   languageName: node
   linkType: hard
 
@@ -4877,6 +4888,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"follow-redirects@npm:^1.14.9":
+  version: 1.15.1
+  resolution: "follow-redirects@npm:1.15.1"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: 6aa4e3e3cdfa3b9314801a1cd192ba756a53479d9d8cca65bf4db3a3e8834e62139245cd2f9566147c8dfe2efff1700d3e6aefd103de4004a7b99985e71dd533
+  languageName: node
+  linkType: hard
+
 "form-data@npm:^3.0.0":
   version: 3.0.1
   resolution: "form-data@npm:3.0.1"
@@ -4885,6 +4906,17 @@ __metadata:
     combined-stream: ^1.0.8
     mime-types: ^2.1.12
   checksum: b019e8d35c8afc14a2bd8a7a92fa4f525a4726b6d5a9740e8d2623c30e308fbb58dc8469f90415a856698933c8479b01646a9dff33c87cc4e76d72aedbbf860d
+  languageName: node
+  linkType: hard
+
+"form-data@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "form-data@npm:4.0.0"
+  dependencies:
+    asynckit: ^0.4.0
+    combined-stream: ^1.0.8
+    mime-types: ^2.1.12
+  checksum: 01135bf8675f9d5c61ff18e2e2932f719ca4de964e3be90ef4c36aacfc7b9cb2fceb5eca0b7e0190e3383fe51c5b37f4cb80b62ca06a99aaabfcfd6ac7c9328c
   languageName: node
   linkType: hard
 
@@ -7314,7 +7346,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "nodiator-example-express@workspace:examples/01-express"
   dependencies:
-    "@nodiator/core": ^0.1.0
+    "@nodiator/core": ^1.1.0
     "@types/express": ^4.17.13
     "@types/uuid": ^8.3.4
     express: ^4.18.1
