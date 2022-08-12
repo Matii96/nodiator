@@ -25,7 +25,7 @@ describe('@nodiator/core requests (e2e)', () => {
 
   beforeEach(() => {
     logger = new MediatorLoggerMock();
-    mediator = MediatorFactory.create({ providers, logger, loggingLevel: 'DEBUG' });
+    mediator = MediatorFactory.create({ providers, logger, loggingLevel: 'debug' });
     requestStates = [];
     mediator.subscribe((state) => requestStates.push(state));
   });
@@ -131,7 +131,7 @@ describe('@nodiator/core requests (e2e)', () => {
     const providers = [TestGlobalRequestPipeline, TestRequestPipeline, TestLaggingRequestPipeline, TestRequestHandler];
 
     beforeEach(() => {
-      mediator = MediatorFactory.create({ providers, logger, loggingLevel: 'INFO', requestsTimeout: 1 });
+      mediator = MediatorFactory.create({ providers, logger, loggingLevel: 'info', requestsTimeout: 1 });
     });
 
     it('should throw timeout exception', async () => {

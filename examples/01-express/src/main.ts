@@ -29,7 +29,7 @@ const mediator = MediatorFactory.create({
     GetItemUseCaseHandler,
     UpdateItemUseCaseHandler,
   ],
-  loggingLevel: 'DEBUG',
+  loggingLevel: 'debug',
 });
 
 // Post creatation registration

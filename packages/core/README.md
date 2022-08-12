@@ -114,7 +114,7 @@ class CustomLogger implements IMediatorLogger {
 const mediator = MediatorFactory.create({
   providers: [ExampleRequestHandler, SomeEventHandler],
   logger: new CustomLogger()
-  loggingLevel: 'DEBUG',
+  loggingLevel: 'debug',
 });
 ```
 

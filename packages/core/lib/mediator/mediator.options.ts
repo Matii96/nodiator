@@ -54,4 +54,4 @@ export interface IMediatorLogger {
   error(msg: string): void;
 }
 
-export type MediatorLoggingLevels = 'DEBUG' | 'INFO' | 'WARN' | 'ERROR' | 'NONE';
+export type MediatorLoggingLevels = 'debug' | 'info' | 'warn' | 'error' | 'none';
