@@ -1,4 +1,4 @@
-import { DuplicatedNamespacesException } from './exceptions/duplicated-namespaces.exception';
+import { DuplicatedNamespacesException } from '../exceptions/duplicated-namespaces.exception';
 import { MediatorModuleOptions } from './mediator.module.options';
 
 export class MediatorModuleOptionsValidator {

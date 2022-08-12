@@ -1,8 +1,8 @@
 import { DynamicModule, Module, Type } from '@nestjs/common';
 import { getMediatorToken } from './utils/get-mediator-token.util';
-import { MediatorModuleConfigurator } from './mediator.module.configurator';
-import { MediatorModuleOptionsValidator } from './mediator.module.options.validator';
-import { MediatorForFeatureOptions, MediatorModuleOptions } from './mediator.module.options';
+import { MediatorModuleConfigurator } from './configurator/mediator.module.configurator';
+import { MediatorModuleOptionsValidator } from './options/mediator.module.options.validator';
+import { MediatorForFeatureOptions, MediatorModuleOptions } from './options/mediator.module.options';
 import { NAMESPACE_MEDIATOR } from './constants';
 
 @Module({
