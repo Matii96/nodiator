@@ -88,10 +88,10 @@ jobs:
         env:
           cache-name: cache-coverage
         with:
-          path: ./COVERAGE_RESULT
+          path: ./coverage/clover.xml
           key: coverage-${{ hashFiles('./packages/*/lib/**') }}
       - name: Run unit tests with coverage
-        run: yarn run test:cov > COVERAGE_RESULT
+        run: yarn run test:cov
 
   pr-e2e-tests:
     runs-on: ubuntu-latest
@@ -131,10 +131,11 @@ jobs:
         env:
           cache-name: cache-coverage
         with:
-          path: ./COVERAGE_RESULT
+          path: ./coverage/clover.xml
           key: coverage-${{ hashFiles('./packages/*/lib/**') }}
       - name: Upload report to codecov
         uses: codecov/codecov-action@v3
         with:
+          files: ./coverage/clover.xml
           flags: unittests
           verbose: true
