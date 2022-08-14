@@ -4,7 +4,7 @@ import { MessageTypes } from '../../../messages/message-types.enum';
 import { IRequestProcessingState } from './interfaces/request-processing-state.interface';
 import { IRequestsProvidersChainer } from './ports/requests-providers-chainer.port';
 
-export class RequestsProvidersChainerService implements IRequestsProvidersChainer {
+export class RequestsProvidersChainer implements IRequestsProvidersChainer {
   constructor(private readonly subject: Subject<IRequestProcessingState>) {}
 
   chain<TResult>(

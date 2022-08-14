@@ -5,6 +5,11 @@
   "passWithNoTests": true,
   "testRegex": "\\.spec.ts$",
   "coveragePathIgnorePatterns": ["<rootDir>/examples", "<rootDir>/.*/dist/", "<rootDir>/.*\\.mocks\\.ts"],
+  "coverageThreshold": {
+    "global": {
+      "lines": 90
+    }
+  },
   "transform": {
     "^.+\\.ts$": "ts-jest"
   },

@@ -21,7 +21,7 @@ import { IMessageExecutor } from '../../ports/message-executor.port';
 import { ExecutorUtils } from '../../executor-utils';
 import { IEventProcessingState } from './interfaces/event-processing-state.interface';
 
-export class EventsExecutorService implements IMessageExecutor<IEvent, void> {
+export class EventsExecutor implements IMessageExecutor<IEvent, void> {
   constructor(
     private readonly subject: Subject<IEventProcessingState>,
     private readonly mediatorOptions: MediatorOptions,
