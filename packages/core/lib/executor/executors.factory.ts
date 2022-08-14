@@ -4,8 +4,8 @@ import { IMessage } from '../messages/interfaces/message.interface';
 import { MediatorOptions } from '../mediator/mediator.options';
 import { DefaultProvidersInstantiator } from './default.providers.instantiator';
 import { IMessageExecutor } from './ports/message-executor.port';
-import { RequestsExecutorService } from './messages/requests/requests-executor.service';
-import { EventsExecutorService } from './messages/events/events-executor.service';
+import { RequestsExecutor } from './messages/requests/requests.executor';
+import { EventsExecutor } from './messages/events/events.executor';
 import { IMessageProcessingState } from './interfaces/message-processing-state.interface';
 import { RequestsProvidersChainerService } from './messages/requests/requests-providers-chainer.service';
 import { IProvidersManager } from '../providers-manager/ports/providers-manager.port';
@@ -21,19 +21,14 @@ export class ExecutorsFactory {
   ) {
     const providersInstantiator = mediatorOptions.providersInstantiator || this.createDefaultProvidersInstantiator();
     this.executors = {
-      [MessageTypes.REQUEST]: new RequestsExecutorService(
+      [MessageTypes.REQUEST]: new RequestsExecutor(
         subject,
         mediatorOptions,
         providersManager,
         providersInstantiator,
         new RequestsProvidersChainerService(subject)
       ),
-      [MessageTypes.EVENT]: new EventsExecutorService(
-        subject,
-        mediatorOptions,
-        providersManager,
-        providersInstantiator
-      ),
+      [MessageTypes.EVENT]: new EventsExecutor(subject, mediatorOptions, providersManager, providersInstantiator),
     };
   }
 

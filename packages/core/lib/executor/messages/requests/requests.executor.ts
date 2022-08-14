@@ -12,7 +12,7 @@ import { NoHandlerException } from './exceptions/no-handler.exception';
 import { IRequestProcessingState } from './interfaces/request-processing-state.interface';
 import { IProvidersManager } from '../../../providers-manager/ports/providers-manager.port';
 
-export class RequestsExecutorService implements IMessageExecutor<IRequest, any> {
+export class RequestsExecutor implements IMessageExecutor<IRequest, any> {
   constructor(
     private readonly subject: Subject<IRequestProcessingState>,
     private readonly mediatorOptions: MediatorOptions,

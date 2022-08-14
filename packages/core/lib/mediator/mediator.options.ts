@@ -1,4 +1,4 @@
-import { ProvidersInstantiator } from '../executor';
+import { ProvidersInstantiator } from '../executor/ports/providers-instantiator.port';
 import { IMessageProvider } from '../messages';
 import { Type } from '../utils/type.interface';
 

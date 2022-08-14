@@ -114,7 +114,7 @@ describe('@nodiator/core events (e2e)', () => {
     });
   });
 
-  describe('handling timeouts', () => {
+  describe('timeouts handling', () => {
     const testEvent = new TestEvent();
     const timeoutProviders = [...providers, TestLaggingEventHandler];
 
