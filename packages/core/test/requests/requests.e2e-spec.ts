@@ -126,7 +126,7 @@ describe('@nodiator/core requests (e2e)', () => {
     });
   });
 
-  describe('handling timeouts', () => {
+  describe('timeouts handling', () => {
     const testRequest = new TestRequest('success');
     const providers = [TestGlobalRequestPipeline, TestRequestPipeline, TestLaggingRequestPipeline, TestRequestHandler];
 

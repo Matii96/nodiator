@@ -7,7 +7,7 @@ import { IMessageExecutor } from './ports/message-executor.port';
 import { RequestsExecutor } from './messages/requests/requests.executor';
 import { EventsExecutor } from './messages/events/events.executor';
 import { IMessageProcessingState } from './interfaces/message-processing-state.interface';
-import { RequestsProvidersChainerService } from './messages/requests/requests-providers-chainer.service';
+import { RequestsProvidersChainer } from './messages/requests/requests-providers.chainer';
 import { IProvidersManager } from '../providers-manager/ports/providers-manager.port';
 import { Executor } from './executor';
 
@@ -26,7 +26,7 @@ export class ExecutorsFactory {
         mediatorOptions,
         providersManager,
         providersInstantiator,
-        new RequestsProvidersChainerService(subject)
+        new RequestsProvidersChainer(subject)
       ),
       [MessageTypes.EVENT]: new EventsExecutor(subject, mediatorOptions, providersManager, providersInstantiator),
     };

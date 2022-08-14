@@ -1,15 +1,21 @@
 import { IEventHandler } from './event';
-import { IRequestHandler } from './request';
+import { IRequestHandler, IRequestPipeline } from './request';
 
+// Requests
 export class TestRequest {
   constructor(readonly property = '') {}
 }
 
-export class TestEvent {}
+export class TestRequestPipeline implements IRequestPipeline<TestRequest, any> {
+  handle = jest.fn((request: TestRequest, next: () => Promise<any>) => next());
+}
 
-export class TestRequestHandler implements IRequestHandler<TestRequest, void> {
+export class TestRequestHandler implements IRequestHandler<TestRequest, any> {
   handle = jest.fn(async () => undefined);
 }
+
+// Events
+export class TestEvent {}
 
 export class TestEventHandler implements IEventHandler<TestRequest> {
   handle = jest.fn(async () => undefined);
