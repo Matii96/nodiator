@@ -79,7 +79,7 @@ jobs:
       - name: Preview changelogs
         run: git --no-pager diff "*CHANGELOG.md"
 
-  npm-release:
+  release:
     runs-on: ubuntu-latest
     if: needs.preview.outputs.changed_packages != '0'
     environment: prod
@@ -118,8 +118,4 @@ jobs:
       - name: Publish version
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          echo "access=public" >> .npmrc
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
-          yarn lerna publish -y
+        run: yarn lerna version -y
