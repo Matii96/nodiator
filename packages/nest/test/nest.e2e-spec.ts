@@ -1,3 +1,4 @@
+import { lastValueFrom } from 'rxjs';
 import { Test, TestingModule } from '@nestjs/testing';
 import { NoHandlerException } from '@nodiator/core';
 import { AccessProvider } from './mocks/access.provider';
@@ -15,25 +16,31 @@ describe('@nodiator/nest (e2e)', () => {
     const app = await moduleFixture.createNestApplication().init();
 
     TestRequestHandler.instancesCounter = 0;
-    accessProvider = app.get(AccessProvider);
     request = new TestRequest('success');
+    accessProvider = app.get(AccessProvider);
   });
 
-  it('should respond with "success" from global mediator', async () => {
-    expect(await accessProvider.globalMediator.request<string>(request)).toEqual(request.property);
+  it('should respond with "success" from global mediator', (done) => {
+    accessProvider.globalMediator.request<string>(request).subscribe((response) => {
+      expect(response).toEqual(request.property);
+      done();
+    });
   });
 
-  it('should respond with "success" from namespaced mediator', async () => {
-    expect(await accessProvider.namespace1Mediator.request<string>(request)).toEqual(request.property);
+  it('should respond with "success" from namespaced mediator', (done) => {
+    accessProvider.namespace1Mediator.request<string>(request).subscribe((response) => {
+      expect(response).toEqual(request.property);
+      done();
+    });
   });
 
   it('should throw NoHandlerException from namespaced mediator as the handler exists only in other namespace', () => {
-    expect(accessProvider.namespace2Mediator.request<string>(request)).rejects.toThrow(NoHandlerException);
+    expect(() => accessProvider.namespace2Mediator.request<string>(request)).toThrow(NoHandlerException);
   });
 
   it('should create 4 separate TestRequestHandler instances', async () => {
     for (let i = 0; i < 4; i++) {
-      await accessProvider.globalMediator.request<string>(request);
+      await lastValueFrom(accessProvider.globalMediator.request<string>(request));
     }
     expect(TestRequestHandler.instancesCounter).toBe(4);
   });
