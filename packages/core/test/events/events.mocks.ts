@@ -4,7 +4,7 @@ export class TestEvent {}
 
 @GlobalEventHandler()
 export class TestGlobalEventHandler implements IGlobalEventHandler {
-  static handle = jest.fn(async () => null);
+  static handle = jest.fn(async () => {});
   handle = TestGlobalEventHandler.handle;
 }
 
@@ -16,7 +16,7 @@ export class TestEventHandler implements IEventHandler<TestEvent> {
 
 @EventHandler(TestEvent)
 export class TestLaggingEventHandler implements IEventHandler<TestEvent> {
-  static handle = jest.fn(() => new Promise<void>((resolve) => setTimeout(resolve, 5)));
+  static handle = jest.fn(() => new Promise<void>((resolve) => setTimeout(resolve, 10)));
   handle = TestLaggingEventHandler.handle;
 }
 

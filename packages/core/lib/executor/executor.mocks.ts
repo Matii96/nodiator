@@ -1,3 +1,4 @@
+import { of } from 'rxjs';
 import { IMessage } from '../messages';
 import { Type } from '../utils/type.interface';
 import { IRequestsProvidersChainer } from './messages/requests/ports/requests-providers-chainer.port';
@@ -16,5 +17,5 @@ export class MessageExecutorMock implements IMessageExecutor<IMessage, void> {
 export const providersInstantiatorMock: ProvidersInstantiator = (type: Type<any>) => new type();
 
 export class RequestsProvidersChainerMock implements IRequestsProvidersChainer {
-  chain = jest.fn(() => async () => undefined);
+  chain = jest.fn(() => of());
 }

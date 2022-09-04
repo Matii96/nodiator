@@ -1,4 +1,4 @@
-import { Observable, Subject } from 'rxjs';
+import { from, mergeMap, Observable, Subject } from 'rxjs';
 import { IMessageProcessingState } from '../executor';
 import { IExecutor } from '../executor/ports/executor.port';
 import { IEvent, IRequest, MessageTypes } from '../messages';
@@ -27,11 +27,11 @@ export class Mediator extends Observable<IMessageProcessingState> implements IMe
     return this._providersManager;
   }
 
-  async request<TResult>(request: IRequest) {
+  request<TResult>(request: IRequest) {
     return this._executor.execute<TResult>(request, MessageTypes.REQUEST);
   }
 
-  async publish(...events: IEvent[]) {
-    await Promise.all(events.map((event) => this._executor.execute(event, MessageTypes.EVENT)));
+  publish(...events: IEvent[]) {
+    return from(events).pipe(mergeMap((event) => this._executor.execute<IEvent>(event, MessageTypes.EVENT)));
   }
 }

@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Subject } from 'rxjs';
+import { delay, firstValueFrom, of, Subject } from 'rxjs';
 import { TestRequest, TestRequestHandler, TestRequestPipeline } from '../../../messages/messages.mocks';
 import { IRequestProcessingState } from './interfaces/request-processing-state.interface';
 import { IRequestsProvidersChainer } from './ports/requests-providers-chainer.port';
@@ -27,11 +27,24 @@ describe('RequestsProvidersChainer', () => {
       jest.spyOn(handler, 'handle').mockResolvedValueOnce(request.property);
     });
 
-    it('should run pipeline and handler for request', async () => {
+    it('should run pipeline and handler for request', (done) => {
+      chainer.chain(id, request, [pipeline], handler).subscribe((result) => {
+        expect(result).toEqual(request.property);
+        expect(pipeline.handle).toHaveBeenCalledTimes(1);
+        expect(handler.handle).toHaveBeenCalledTimes(1);
+        done();
+      });
+    });
+
+    it('should not start execution until subscribed', (done) => {
       const chain = chainer.chain(id, request, [pipeline], handler);
-      expect(await chain()).toEqual(request.property);
-      expect(pipeline.handle).toHaveBeenCalledTimes(1);
-      expect(handler.handle).toHaveBeenCalledTimes(1);
+      of(1)
+        .pipe(delay(5))
+        .subscribe(() => {
+          expect(pipeline.handle).not.toHaveBeenCalled();
+          expect(handler.handle).not.toHaveBeenCalled();
+          chain.subscribe(() => done());
+        });
     });
   });
 
@@ -42,8 +55,8 @@ describe('RequestsProvidersChainer', () => {
       jest.spyOn(handler, 'handle').mockRejectedValueOnce(someException);
     });
 
-    it('should throw timeout exception', async () => {
-      const task = chainer.chain(id, request, [pipeline], handler)();
+    it('should throw exception', async () => {
+      const task = firstValueFrom(chainer.chain(id, request, [pipeline], handler));
       expect(task).rejects.toThrowError(someException);
       try {
         await task;

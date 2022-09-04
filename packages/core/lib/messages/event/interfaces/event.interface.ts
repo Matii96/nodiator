@@ -1,3 +1,3 @@
 import { IMessage } from '../../interfaces/message.interface';
 
-export type IEvent = IMessage;
+export interface IEvent extends IMessage {}

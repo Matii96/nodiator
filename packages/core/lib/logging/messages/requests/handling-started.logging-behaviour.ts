@@ -7,7 +7,7 @@ import { ILoggingBehaviour } from '../../ports/logging-behaviour.port';
 export class RequestsHandlingStartedLoggingBehaviour implements ILoggingBehaviour {
   constructor(private readonly logger: IMediatorLogger, source: Observable<IRequestProcessingState>) {
     source
-      .pipe(filter((state) => state.messageType === MessageTypes.REQUEST && state.provider && !state.result))
+      .pipe(filter((state) => state.messageType === MessageTypes.REQUEST && state.provider && !state.response))
       .subscribe((state) => this.handle(state));
   }
 

@@ -1,6 +1,5 @@
 import 'reflect-metadata';
-import { Subject } from 'rxjs';
-import { IRequest } from '../../../messages';
+import { delay, firstValueFrom, Observable, of, Subject } from 'rxjs';
 import { TestRequest, TestRequestHandler } from '../../../messages/messages.mocks';
 import { IRequestsProvidersSchema } from '../../../providers-manager';
 import { IProvidersManager } from '../../../providers-manager/ports/providers-manager.port';
@@ -22,7 +21,7 @@ describe('RequestsExecutor', () => {
   let providersManager: IProvidersManager;
   let eventStates: IRequestProcessingState[];
   let requestsProvidersChainer: IRequestsProvidersChainer;
-  let executor: IMessageExecutor<IRequest, any>;
+  let executor: IMessageExecutor<TestRequest, Observable<string>>;
 
   beforeEach(() => {
     providersManager = new ProvidersManagerMock();
@@ -54,9 +53,12 @@ describe('RequestsExecutor', () => {
       );
     });
 
-    it('should return "success"', async () => {
-      jest.spyOn(requestsProvidersChainer, 'chain').mockReturnValueOnce(async () => request.property);
-      expect(await executor.execute(id, request)).toBe(request.property);
+    it('should return "success"', (done) => {
+      jest.spyOn(requestsProvidersChainer, 'chain').mockReturnValueOnce(of(request.property));
+      executor.execute(id, request).subscribe((result) => {
+        expect(result).toBe(request.property);
+        done();
+      });
     });
   });
 
@@ -69,13 +71,11 @@ describe('RequestsExecutor', () => {
         providersInstantiatorMock,
         requestsProvidersChainer
       );
-      jest
-        .spyOn(requestsProvidersChainer, 'chain')
-        .mockImplementationOnce(() => () => new Promise((resolve) => setTimeout(resolve, 5)));
+      jest.spyOn(requestsProvidersChainer, 'chain').mockReturnValueOnce(of(request.property).pipe(delay(5)));
     });
 
     it('should throw timeout exception', async () => {
-      const task = executor.execute(id, request);
+      const task = firstValueFrom(executor.execute(id, request));
       expect(task).rejects.toThrow(MessageTimeoutException);
       try {
         await task;

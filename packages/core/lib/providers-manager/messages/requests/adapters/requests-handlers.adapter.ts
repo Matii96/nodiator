@@ -1,5 +1,5 @@
 import { Type } from '../../../../utils/type.interface';
-import { IEvent, IEventHandler, IRequest, MessageTypes } from '../../../../messages';
+import { IRequest, IRequestHandler, MessageTypes } from '../../../../messages';
 import { REQUEST_HANDLER_METADATA } from '../../../../messages/constants';
 import { IProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
 import { IRequestsProvidersSchema } from '../interfaces/requests-providers-schema.interface';
@@ -11,7 +11,7 @@ export class RequestsHandlersAdapter implements IProviderTypeAdapter<IRequestsPr
 
   register(
     adaptedProviders: IRequestsProvidersSchema,
-    provider: Type<IEventHandler<IEvent>>,
+    provider: Type<IRequestHandler<IRequest, unknown>>,
     requestType: Type<IRequest>
   ) {
     if (adaptedProviders.specific.get(requestType)?.handler) {

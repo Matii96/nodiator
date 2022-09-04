@@ -10,4 +10,8 @@ export class ExecutorUtils {
     }
     return prototype.constructor;
   }
+
+  static isPromise(p: any) {
+    return p && typeof p === 'object' && typeof p.then === 'function';
+  }
 }

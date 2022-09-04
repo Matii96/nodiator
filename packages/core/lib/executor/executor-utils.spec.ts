@@ -12,4 +12,14 @@ describe('ExecutorUtils', () => {
       expect(() => ExecutorUtils.getTypeOfMessage({ property: true })).toThrow(PlainObjectMessageException);
     });
   });
+
+  describe('decide if object is promise', () => {
+    it('should recognize promise', () => {
+      expect(ExecutorUtils.isPromise(new Promise<void>((resolve) => resolve()))).toBe(true);
+    });
+
+    it('should not recognize promise', () => {
+      expect(ExecutorUtils.isPromise('test')).toBe(false);
+    });
+  });
 });

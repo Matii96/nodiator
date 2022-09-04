@@ -1,14 +1,18 @@
 import {
   catchError,
   defer,
-  firstValueFrom,
-  lastValueFrom,
+  finalize,
+  from,
+  last,
+  map,
+  mergeMap,
+  Observable,
+  of,
   retry,
   Subject,
   tap,
   throwError,
   timeout,
-  TimeoutError,
 } from 'rxjs';
 import { MediatorOptions } from '../../../mediator/mediator.options';
 import { IEvent } from '../../../messages/event/interfaces/event.interface';
@@ -17,11 +21,11 @@ import { IEventHandler, MessageTypes } from '../../../messages';
 import { IProvidersManager } from '../../../providers-manager/ports/providers-manager.port';
 import { MessageTimeoutException } from '../../exceptions/message-timeout.exception';
 import { ProvidersInstantiator } from '../../ports/providers-instantiator.port';
-import { IMessageExecutor } from '../../ports/message-executor.port';
 import { ExecutorUtils } from '../../executor-utils';
 import { IEventProcessingState } from './interfaces/event-processing-state.interface';
+import { IEventsExecutor } from './ports/events.executor.port';
 
-export class EventsExecutor implements IMessageExecutor<IEvent, void> {
+export class EventsExecutor implements IEventsExecutor {
   constructor(
     private readonly subject: Subject<IEventProcessingState>,
     private readonly mediatorOptions: MediatorOptions,
@@ -29,16 +33,17 @@ export class EventsExecutor implements IMessageExecutor<IEvent, void> {
     private readonly providersInstantiator: ProvidersInstantiator
   ) {}
 
-  async execute(id: string, event: IEvent) {
-    const handlers = await this.getHandlers(event);
-    await firstValueFrom(
-      defer(() => Promise.all(handlers.map((handler) => this.handleEvent(event, id, handler)))).pipe(
-        catchError((error) => {
-          this.subject.next({ id, messageType: MessageTypes.EVENT, message: event, error, processed: true });
-          return throwError(() => error);
-        }),
-        tap(() => this.subject.next({ id, messageType: MessageTypes.EVENT, message: event, processed: true }))
-      )
+  execute(id: string, event: IEvent) {
+    return from(this.getHandlers(event)).pipe(
+      mergeMap((handler) =>
+        ExecutorUtils.isPromise(handler)
+          ? from(handler as Promise<IEventHandler<IEvent>>)
+          : of(handler as IEventHandler<IEvent>)
+      ),
+      mergeMap((handler) => this.handleEvent(event, id, handler)),
+      last(),
+      map(() => event),
+      finalize(() => this.subject.next({ id, messageType: MessageTypes.EVENT, message: event, processed: true }))
     );
   }
 
@@ -48,27 +53,30 @@ export class EventsExecutor implements IMessageExecutor<IEvent, void> {
       ...providers.global.handlers,
       ...(providers.specific.get(ExecutorUtils.getTypeOfMessage(event))?.handlers || []),
     ];
-    return Promise.all(handlersTypes.map((handlerType) => this.providersInstantiator(handlerType)));
+    return handlersTypes.map((handlerType) => this.providersInstantiator(handlerType));
   }
 
   private handleEvent(event: IEvent, id: string, handler: IEventHandler<IEvent>) {
     this.subject.next({ id, messageType: MessageTypes.EVENT, message: event, provider: handler });
-    return lastValueFrom(
-      defer(() => handler.handle(event)).pipe(
-        this.mediatorOptions.eventsTimeout ? timeout(this.mediatorOptions.eventsTimeout) : tap(),
-        catchError((err) => {
-          const error = err instanceof TimeoutError ? new MessageTimeoutException(event) : err;
-          this.subject.next({ id, messageType: MessageTypes.EVENT, message: event, provider: handler, error });
-          return throwError(() => error);
-        }),
-        retry({
-          count: this.mediatorOptions.eventsHandlingRetriesAttempts || 0,
-          delay: this.mediatorOptions.eventsHandlingRetriesDelay || 0,
-        }),
-        tap(() =>
-          this.subject.next({ id, messageType: MessageTypes.EVENT, message: event, provider: handler, handled: true })
-        )
-      )
-    );
+    return defer(() => handler.handle(event)).pipe(
+      this.mediatorOptions.eventsTimeout
+        ? timeout({
+            each: this.mediatorOptions.eventsTimeout,
+            with: () => throwError(() => new MessageTimeoutException(event)),
+          })
+        : tap(),
+      catchError((error) => {
+        this.subject.next({ id, messageType: MessageTypes.EVENT, message: event, provider: handler, error });
+        return throwError(() => error);
+      }),
+      retry({
+        count: this.mediatorOptions.eventsHandlingRetriesAttempts || 0,
+        delay: this.mediatorOptions.eventsHandlingRetriesDelay || 0,
+      }),
+      tap(() =>
+        this.subject.next({ id, messageType: MessageTypes.EVENT, message: event, provider: handler, handled: true })
+      ),
+      last()
+    ) as Observable<void>;
   }
 }

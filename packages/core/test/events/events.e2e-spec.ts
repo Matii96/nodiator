@@ -1,3 +1,4 @@
+import { delay, lastValueFrom, of } from 'rxjs';
 import {
   MessageTimeoutException,
   MessageTypes,
@@ -16,6 +17,7 @@ import {
   TestGlobalEventHandler,
   TestLaggingEventHandler,
 } from './events.mocks';
+import { handlingSteps, retriesSteps, timeoutSteps } from './events.mocks.results';
 
 describe('@nodiator/core events (e2e)', () => {
   const providers = [TestGlobalEventHandler, TestEventHandler];
@@ -46,69 +48,47 @@ describe('@nodiator/core events (e2e)', () => {
   describe('events handling', () => {
     const testEvent = new TestEvent();
 
-    it('should handle event', async () => {
-      await mediator.publish(testEvent);
-      expect(TestGlobalEventHandler.handle).toHaveBeenCalledTimes(1);
-      expect(TestEventHandler.handle).toHaveBeenCalledTimes(1);
+    it('should handle event', (done) => {
+      mediator.publish(testEvent).subscribe({
+        complete() {
+          expect(TestGlobalEventHandler.handle).toHaveBeenCalledTimes(1);
+          expect(TestEventHandler.handle).toHaveBeenCalledTimes(1);
+          done();
+        },
+      });
     });
 
-    it('should emit event handling steps', async () => {
-      await mediator.publish(testEvent);
-      const id = eventStates[0]?.id;
-      expect(eventStates).toEqual([
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
-          provider: new TestGlobalEventHandler(),
+    it('should emit event handling steps', (done) => {
+      mediator.publish(testEvent).subscribe({
+        complete() {
+          expect(eventStates).toEqual(handlingSteps(eventStates[0]?.id, testEvent));
+          done();
         },
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
-          provider: new TestEventHandler(),
-        },
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
-          provider: new TestGlobalEventHandler(),
-          handled: true,
-        },
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
-          provider: new TestEventHandler(),
-          handled: true,
-        },
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
-          processed: true,
-        },
-      ]);
+      });
     });
 
-    it('should log event handling steps', async () => {
-      await mediator.publish(testEvent);
-      expect(logger.debug).toHaveBeenCalledTimes(5);
-      expect(logger.info).toHaveBeenCalledTimes(2);
-      expect(logger.warn).toHaveBeenCalledTimes(0);
-      expect(logger.error).toHaveBeenCalledTimes(0);
+    it('should log event handling steps', (done) => {
+      mediator.publish(testEvent).subscribe({
+        complete() {
+          expect(logger.debug).toHaveBeenCalledTimes(5);
+          expect(logger.info).toHaveBeenCalledTimes(2);
+          expect(logger.warn).toHaveBeenCalledTimes(0);
+          expect(logger.error).toHaveBeenCalledTimes(0);
+          done();
+        },
+      });
     });
   });
 
   describe('passing plain object', () => {
     it('should reject plain object event', async () => {
-      const task = mediator.publish({ property: 'property' });
+      const task = lastValueFrom(mediator.publish({ property: 'property' }));
       expect(task).rejects.toThrow(PlainObjectMessageException);
     });
 
     it('should not have emitted any event state', async () => {
       try {
-        await mediator.publish({ property: 'property' });
+        await lastValueFrom(mediator.publish({ property: 'property' }));
       } catch {}
       expect(eventStates).toHaveLength(0);
     });
@@ -123,78 +103,28 @@ describe('@nodiator/core events (e2e)', () => {
     });
 
     it('should throw timeout exception', () => {
-      expect(mediator.publish(testEvent)).rejects.toThrow(MessageTimeoutException);
+      expect(lastValueFrom(mediator.publish(testEvent))).rejects.toThrow(MessageTimeoutException);
     });
 
     it('should emit event handling steps', async () => {
       mediator.subscribe((state) => eventStates.push(state));
       try {
-        await mediator.publish(testEvent);
+        await lastValueFrom(mediator.publish(testEvent));
       } catch {}
-
-      const id = eventStates[0]?.id;
-      const error = new MessageTimeoutException(testEvent);
-      expect(eventStates).toEqual([
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
-          provider: new TestGlobalEventHandler(),
-        },
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
-          provider: new TestEventHandler(),
-        },
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
-          provider: new TestLaggingEventHandler(),
-        },
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
-          provider: new TestGlobalEventHandler(),
-          handled: true,
-        },
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
-          provider: new TestEventHandler(),
-          handled: true,
-        },
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
-          provider: new TestLaggingEventHandler(),
-          error,
-        },
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
-          error,
-          processed: true,
-        },
-      ]);
+      expect(eventStates).toEqual(timeoutSteps(eventStates[0]?.id, testEvent, new MessageTimeoutException(testEvent)));
     });
   });
 
   describe('events failed retries', () => {
     it('should fail on the first attempt', async () => {
       mediator.providers.register(TestFailingEventHandler);
-      expect(mediator.publish(new TestEvent())).rejects.toThrowError();
+      expect(lastValueFrom(mediator.publish(new TestEvent()))).rejects.toThrowError();
     });
 
     it('should fail on the second attempt', async () => {
       mediator = MediatorFactory.create({ providers, eventsHandlingRetriesAttempts: 1 });
       mediator.providers.register(TestFailingEventHandler);
-      expect(mediator.publish(new TestEvent())).rejects.toThrowError();
+      expect(lastValueFrom(mediator.publish(new TestEvent()))).rejects.toThrowError();
     });
   });
 
@@ -206,7 +136,7 @@ describe('@nodiator/core events (e2e)', () => {
       logger = new MediatorLoggerMock();
       mediator = MediatorFactory.create({
         providers,
-        eventsHandlingRetriesAttempts: 2,
+        eventsHandlingRetriesAttempts: 20,
         eventsHandlingRetriesDelay,
         logger,
         loggingLevel: 'debug',
@@ -215,77 +145,39 @@ describe('@nodiator/core events (e2e)', () => {
       mediator.subscribe((state) => eventStates.push(state));
     });
 
-    it('should succeed on the third attempt', async () => {
+    it('should succeed on the third attempt', (done) => {
       const start = Date.now();
-      await mediator.publish(testEvent);
-      expect(Date.now() - start).toBeGreaterThanOrEqual(eventsHandlingRetriesDelay * 2);
+      mediator.publish(testEvent).subscribe({
+        complete() {
+          expect(Date.now() - start).toBeGreaterThanOrEqual(eventsHandlingRetriesDelay * 2);
+          done();
+        },
+      });
     });
 
-    it('should emit event handling steps', async () => {
-      await mediator.publish(testEvent);
-      const id = eventStates[0]?.id;
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      expect(eventStates.map(({ provider, ...state }) => state)).toEqual([
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
+    it('should emit event handling steps', (done) => {
+      mediator.publish(testEvent).subscribe({
+        complete() {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const expected = retriesSteps(eventStates[0]?.id, testEvent).map(({ provider, ...state }) => state);
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const received = eventStates.map(({ provider, ...state }) => state);
+          expect(expected).toEqual(received);
+          done();
         },
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
-        },
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
-        },
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
-          handled: true,
-        },
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
-          handled: true,
-        },
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
-          error: TestFailingEventHandler.exception,
-        },
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
-          error: TestFailingEventHandler.exception,
-        },
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
-          handled: true,
-        },
-        {
-          id,
-          messageType: MessageTypes.EVENT,
-          message: testEvent,
-          processed: true,
-        },
-      ]);
+      });
     });
 
-    it('should log event handling steps', async () => {
-      await mediator.publish(testEvent);
-      expect(logger.debug).toHaveBeenCalledTimes(9);
-      expect(logger.info).toHaveBeenCalledTimes(2);
-      expect(logger.warn).toHaveBeenCalledTimes(0);
-      expect(logger.error).toHaveBeenCalledTimes(2);
+    it('should log event handling steps', (done) => {
+      mediator.publish(testEvent).subscribe({
+        complete() {
+          expect(logger.debug).toHaveBeenCalledTimes(9);
+          expect(logger.info).toHaveBeenCalledTimes(2);
+          expect(logger.warn).toHaveBeenCalledTimes(0);
+          expect(logger.error).toHaveBeenCalledTimes(2);
+          done();
+        },
+      });
     });
   });
 });
