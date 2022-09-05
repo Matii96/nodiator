@@ -113,12 +113,14 @@ class CustomLogger implements IMediatorLogger {
 
 const mediator = MediatorFactory.create({
   providers: [ExampleRequestHandler, SomeEventHandler],
-  logger: new CustomLogger()
-  loggingLevel: 'debug',
+  logger: new CustomLogger(),
+  config: () => ({ loggingLevel: MediatorLoggingLevels.DEBUG })
 });
 ```
 
-In addition to that the mediator object extends RxJS Observable and can be subscribed to. It emits all messages state changes - starting handlers execution, errors etc.
+Note that `config` property is function called each time configuration data is needed which allows to implement logic to change mediator behaviour without app reload.
+
+In addition the mediator object extends RxJS Observable and can be subscribed to. It emits all messages state changes - starting handlers execution, errors etc.
 
 ## License
 

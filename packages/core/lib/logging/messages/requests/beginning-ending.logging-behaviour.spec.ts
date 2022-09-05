@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs';
 import { IRequestProcessingState } from '../../../executor';
-import { IMediatorLogger } from '../../../mediator/mediator.options';
+import { IMediatorLogger } from '../../../config/mediator.options';
 import { IMessageProvider, MessageTypes } from '../../../messages';
 import { TestRequest, TestRequestHandler } from '../../../messages/messages.mocks';
 import { MediatorLoggerMock } from '../../logging.mocks';

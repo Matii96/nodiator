@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { MediatorLoggerMock } from '../logging/logging.mocks';
-import { IMediatorLogger } from '../mediator/mediator.options';
+import { IMediatorLogger } from '../config/mediator.options';
 import { IMessageTypeProvidersSchemaDefiner } from './ports/message-type-providers-schema-definer.port';
 import { IProviderTypeAdapter } from './ports/provider-type-adapter.port';
 import { IMessageTypeProvidersSchema } from './interfaces/message-type-providers-schema.interface';

@@ -1,5 +1,6 @@
 import { firstValueFrom, lastValueFrom } from 'rxjs';
-import { IMediator, IMediatorLogger, MediatorFactory } from '../lib';
+import { IMediator, MediatorFactory } from '../lib';
+import { IMediatorLogger, MediatorLoggingLevels } from '../lib/config';
 import { MediatorLoggerMock } from '../lib/logging/logging.mocks';
 import { TestEvent, TestEventHandler, TestGlobalEventHandler } from './events/events.mocks';
 import { TestRequest, TestRequestHandler } from './requests/requests.mocks';
@@ -12,7 +13,7 @@ describe('@nodiator/core common (e2e)', () => {
 
   beforeEach(() => {
     logger = new MediatorLoggerMock();
-    mediator = MediatorFactory.create({ logger, loggingLevel: 'info' });
+    mediator = MediatorFactory.create({ logger, config: () => ({ loggingLevel: MediatorLoggingLevels.INFO }) });
     mediator.providers.register(TestRequestHandler, TestGlobalEventHandler, TestEventHandler);
   });
 

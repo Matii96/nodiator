@@ -1,4 +1,5 @@
-import { IMediatorLogger } from '../../mediator/mediator.options';
+import { MediatorLoggingLevels } from '../../config/mediator.config';
+import { IMediatorLogger } from '../../config/mediator.options';
 import { MediatorLoggerMock } from '../logging.mocks';
 import { LoggingLevelWrapper } from './logging-level.wrapper';
 
@@ -19,7 +20,7 @@ describe('LoggingLevelWrapper', () => {
   });
 
   it('should log all levels', () => {
-    logger = new LoggingLevelWrapper(baseLogger, 'debug');
+    logger = new LoggingLevelWrapper(baseLogger, () => ({ loggingLevel: MediatorLoggingLevels.DEBUG }));
     logAll(logger);
 
     expect(baseLogger.debug).toHaveBeenCalledTimes(1);
@@ -29,7 +30,7 @@ describe('LoggingLevelWrapper', () => {
   });
 
   it('should log all levels except of debug', () => {
-    logger = new LoggingLevelWrapper(baseLogger, 'info');
+    logger = new LoggingLevelWrapper(baseLogger, () => ({ loggingLevel: MediatorLoggingLevels.INFO }));
     logAll(logger);
 
     expect(baseLogger.debug).toHaveBeenCalledTimes(0);
@@ -39,7 +40,7 @@ describe('LoggingLevelWrapper', () => {
   });
 
   it('should log all levels except of debug and info', () => {
-    logger = new LoggingLevelWrapper(baseLogger, 'warn');
+    logger = new LoggingLevelWrapper(baseLogger, () => ({ loggingLevel: MediatorLoggingLevels.WARN }));
     logAll(logger);
 
     expect(baseLogger.debug).toHaveBeenCalledTimes(0);
@@ -49,7 +50,7 @@ describe('LoggingLevelWrapper', () => {
   });
 
   it('should log only error level', () => {
-    logger = new LoggingLevelWrapper(baseLogger, 'error');
+    logger = new LoggingLevelWrapper(baseLogger, () => ({ loggingLevel: MediatorLoggingLevels.ERROR }));
     logAll(logger);
 
     expect(baseLogger.debug).toHaveBeenCalledTimes(0);

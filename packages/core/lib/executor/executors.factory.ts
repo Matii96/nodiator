@@ -1,35 +1,35 @@
 import { Subject } from 'rxjs';
 import { MessageTypes } from '../messages';
 import { IMessage } from '../messages/interfaces/message.interface';
-import { MediatorOptions } from '../mediator/mediator.options';
+import { IProvidersManager } from '../providers-manager/ports/providers-manager.port';
+import { MediatorOptions } from '../config/mediator.options';
 import { DefaultProvidersInstantiator } from './default.providers.instantiator';
 import { IMessageExecutor } from './ports/message-executor.port';
 import { RequestsExecutor } from './messages/requests/requests.executor';
 import { EventsExecutor } from './messages/events/events.executor';
 import { IMessageProcessingState } from './interfaces/message-processing-state.interface';
 import { RequestsProvidersChainer } from './messages/requests/requests-providers.chainer';
-import { IProvidersManager } from '../providers-manager/ports/providers-manager.port';
-import { Executor } from './executor';
 import { IExecutor } from './ports/executor.port';
+import { Executor } from './executor';
 
 export class ExecutorsFactory {
   private readonly executors: Record<MessageTypes, IMessageExecutor<IMessage, any>>;
 
   constructor(
-    mediatorOptions: MediatorOptions,
+    options: MediatorOptions,
     providersManager: IProvidersManager,
     subject: Subject<IMessageProcessingState>
   ) {
-    const providersInstantiator = mediatorOptions.providersInstantiator || this.createDefaultProvidersInstantiator();
+    const providersInstantiator = options.providersInstantiator || this.createDefaultProvidersInstantiator();
     this.executors = {
       [MessageTypes.REQUEST]: new RequestsExecutor(
         subject,
-        mediatorOptions,
+        options,
         providersManager,
         providersInstantiator,
         new RequestsProvidersChainer(subject)
       ),
-      [MessageTypes.EVENT]: new EventsExecutor(subject, mediatorOptions, providersManager, providersInstantiator),
+      [MessageTypes.EVENT]: new EventsExecutor(subject, options, providersManager, providersInstantiator),
     };
   }
 

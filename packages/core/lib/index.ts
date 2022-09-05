@@ -1,3 +1,4 @@
+export * from './config';
 export * from './exceptions';
 export * from './messages';
 export * from './providers-manager';

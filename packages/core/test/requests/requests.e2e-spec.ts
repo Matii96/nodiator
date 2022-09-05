@@ -6,9 +6,9 @@ import {
   MessageTypes,
   PlainObjectMessageException,
   IRequestsProvidersSchema,
-  IMediatorLogger,
   MediatorFactory,
 } from '../../lib';
+import { IMediatorLogger, MediatorLoggingLevels } from '../../lib/config';
 import { MediatorLoggerMock } from '../../lib/logging/logging.mocks';
 import {
   TestGlobalRequestPipeline,
@@ -27,7 +27,11 @@ describe('@nodiator/core requests (e2e)', () => {
 
   beforeEach(() => {
     logger = new MediatorLoggerMock();
-    mediator = MediatorFactory.create({ providers, logger, loggingLevel: 'debug' });
+    mediator = MediatorFactory.create({
+      providers,
+      logger,
+      config: () => ({ loggingLevel: MediatorLoggingLevels.DEBUG }),
+    });
     requestStates = [];
     mediator.subscribe((state) => requestStates.push(state));
   });
@@ -106,7 +110,11 @@ describe('@nodiator/core requests (e2e)', () => {
     const providers = [TestGlobalRequestPipeline, TestRequestPipeline, TestLaggingRequestPipeline, TestRequestHandler];
 
     beforeEach(() => {
-      mediator = MediatorFactory.create({ providers, logger, loggingLevel: 'info', requestsTimeout: 1 });
+      mediator = MediatorFactory.create({
+        providers,
+        logger,
+        config: () => ({ loggingLevel: MediatorLoggingLevels.INFO, requestsTimeout: 1 }),
+      });
     });
 
     it('should throw timeout exception', async () => {

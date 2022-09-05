@@ -1,5 +1,5 @@
 import { Type } from '../utils/type.interface';
-import { IMediatorLogger } from '../mediator/mediator.options';
+import { IMediatorLogger } from '../config/mediator.options';
 import { IMessageTypeProvidersSchemaDefiner } from './ports/message-type-providers-schema-definer.port';
 import { IProviderTypeAdapter } from './ports/provider-type-adapter.port';
 import { ProvidersManager } from './providers-manager';

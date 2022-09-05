@@ -40,7 +40,7 @@ describe('EventsExecutor', () => {
 
   describe('events handling', () => {
     beforeEach(() => {
-      executor = new EventsExecutor(subject, {}, providersManager, providersInstantiatorMock);
+      executor = new EventsExecutor(subject, { config: () => ({}) }, providersManager, providersInstantiatorMock);
     });
 
     it('should handle event', (done) => {
@@ -64,7 +64,12 @@ describe('EventsExecutor', () => {
 
   describe('timeouts handling', () => {
     beforeEach(() => {
-      executor = new EventsExecutor(subject, { eventsTimeout: 1 }, providersManager, providersInstantiatorMock);
+      executor = new EventsExecutor(
+        subject,
+        { config: () => ({ eventsTimeout: 1 }) },
+        providersManager,
+        providersInstantiatorMock
+      );
       jest.spyOn(handler, 'handle').mockImplementationOnce(() => new Promise((resolve) => setTimeout(resolve, 5)));
     });
 

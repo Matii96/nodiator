@@ -1,9 +1,9 @@
-import { catchError, finalize, from, mergeMap, Observable, Subject, tap, throwError, timeout } from 'rxjs';
-import { MediatorOptions } from '../../../mediator/mediator.options';
+import { catchError, finalize, from, mergeMap, Subject, tap, throwError, timeout } from 'rxjs';
 import { IRequest, IRequestPipeline } from '../../../messages';
 import { IRequestsProvidersSchema } from '../../../providers-manager/messages/requests/interfaces/requests-providers-schema.interface';
 import { MessageTypes } from '../../../messages/message-types.enum';
 import { IProvidersManager } from '../../../providers-manager/ports/providers-manager.port';
+import { MediatorOptions } from '../../../config/mediator.options';
 import { MessageTimeoutException } from '../../exceptions/message-timeout.exception';
 import { ProvidersInstantiator } from '../../ports/providers-instantiator.port';
 import { ExecutorUtils } from '../../executor-utils';
@@ -11,18 +11,19 @@ import { IRequestsProvidersChainer } from './ports/requests-providers-chainer.po
 import { NoHandlerException } from './exceptions/no-handler.exception';
 import { IRequestProcessingState } from './interfaces/request-processing-state.interface';
 import { IRequestsExecutor } from './ports/requests.executor.port';
+import { CallOptions } from './requests.executor.options';
 
 export class RequestsExecutor implements IRequestsExecutor {
   constructor(
-    private readonly subject: Subject<IRequestProcessingState>,
-    private readonly mediatorOptions: MediatorOptions,
-    private readonly providersManager: IProvidersManager,
-    private readonly providersInstantiator: ProvidersInstantiator,
-    private readonly requestsProvidersChainer: IRequestsProvidersChainer
+    private readonly _subject: Subject<IRequestProcessingState>,
+    private readonly _options: MediatorOptions,
+    private readonly _providersManager: IProvidersManager,
+    private readonly _providersInstantiator: ProvidersInstantiator,
+    private readonly _requestsProvidersChainer: IRequestsProvidersChainer
   ) {}
 
   execute<TResult>(id: string, request: IRequest) {
-    const providers = this.providersManager.get<IRequestsProvidersSchema>(MessageTypes.REQUEST);
+    const providers = this._providersManager.get<IRequestsProvidersSchema>(MessageTypes.REQUEST);
     const providersInstancesTask = Promise.all([
       this.getHandler(providers, request),
       this.getPipelines(providers, request),
@@ -30,8 +31,8 @@ export class RequestsExecutor implements IRequestsExecutor {
 
     return from(providersInstancesTask).pipe(
       mergeMap(([handler, pipelines]) => {
-        const chain = this.requestsProvidersChainer.chain<TResult>(id, request, pipelines, handler);
-        return this.call(request, id, chain);
+        const chain = this._requestsProvidersChainer.chain<TResult>(id, request, pipelines, handler);
+        return this.call({ id, request, chain });
       })
     );
   }
@@ -41,7 +42,7 @@ export class RequestsExecutor implements IRequestsExecutor {
     if (!handlerType) {
       throw new NoHandlerException(ExecutorUtils.getTypeOfMessage(request));
     }
-    return this.providersInstantiator(handlerType);
+    return this._providersInstantiator(handlerType);
   }
 
   private getPipelines(providers: IRequestsProvidersSchema, request: IRequest) {
@@ -51,29 +52,22 @@ export class RequestsExecutor implements IRequestsExecutor {
       ...(requestTypeId ? providers.specific.get(requestTypeId).pipelines : []),
     ];
     return Promise.all(
-      pipelinesTypes.map((pipelineType) => this.providersInstantiator<IRequestPipeline<IRequest, any>>(pipelineType))
+      pipelinesTypes.map((pipelineType) => this._providersInstantiator<IRequestPipeline<IRequest, any>>(pipelineType))
     );
   }
 
-  private call<TResult>(request: IRequest, id: string, chain: Observable<TResult>) {
-    return chain.pipe(
-      this.mediatorOptions.requestsTimeout
-        ? timeout({
-            each: this.mediatorOptions.requestsTimeout,
-            with: () => throwError(() => new MessageTimeoutException(request)),
-          })
+  private call<TResult>(args: CallOptions<TResult>) {
+    const requestsTimeout = this._options.config().requestsTimeout;
+    return args.chain.pipe(
+      requestsTimeout
+        ? timeout({ each: requestsTimeout, with: () => throwError(() => new MessageTimeoutException(args.request)) })
         : tap(),
       catchError((error) => {
-        this.subject.next({ id, messageType: MessageTypes.REQUEST, message: request, error });
+        this._subject.next({ id: args.id, messageType: MessageTypes.REQUEST, message: args.request, error });
         return throwError(() => error);
       }),
       finalize(() =>
-        this.subject.next({
-          id,
-          messageType: MessageTypes.REQUEST,
-          message: request,
-          processed: true,
-        })
+        this._subject.next({ id: args.id, messageType: MessageTypes.REQUEST, message: args.request, processed: true })
       )
     );
   }
