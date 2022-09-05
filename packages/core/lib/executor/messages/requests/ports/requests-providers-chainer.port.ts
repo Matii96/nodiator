@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { IRequest, IRequestHandler, IRequestPipeline } from '../../../../messages';
 
 export interface IRequestsProvidersChainer {
@@ -6,5 +7,5 @@ export interface IRequestsProvidersChainer {
     request: IRequest,
     pipelines: IRequestPipeline<IRequest, TResult>[],
     handler: IRequestHandler<IRequest, TResult>
-  ): () => Promise<TResult>;
+  ): Observable<TResult>;
 }

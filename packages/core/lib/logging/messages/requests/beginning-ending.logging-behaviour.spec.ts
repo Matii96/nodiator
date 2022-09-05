@@ -34,8 +34,7 @@ describe('RequestsBeginningEndingLoggingBehaviour', () => {
       id,
       messageType: MessageTypes.REQUEST,
       message: new TestRequest(),
-      provider,
-      result: { value: undefined },
+      processed: true,
     });
 
     await new Promise<void>((resolve) => setImmediate(resolve));

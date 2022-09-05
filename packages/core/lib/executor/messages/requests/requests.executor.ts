@@ -1,18 +1,18 @@
-import { catchError, defer, lastValueFrom, Subject, tap, throwError, timeout, TimeoutError } from 'rxjs';
+import { catchError, finalize, from, mergeMap, Observable, Subject, tap, throwError, timeout } from 'rxjs';
 import { MediatorOptions } from '../../../mediator/mediator.options';
 import { IRequest, IRequestPipeline } from '../../../messages';
 import { IRequestsProvidersSchema } from '../../../providers-manager/messages/requests/interfaces/requests-providers-schema.interface';
 import { MessageTypes } from '../../../messages/message-types.enum';
+import { IProvidersManager } from '../../../providers-manager/ports/providers-manager.port';
 import { MessageTimeoutException } from '../../exceptions/message-timeout.exception';
 import { ProvidersInstantiator } from '../../ports/providers-instantiator.port';
-import { IMessageExecutor } from '../../ports/message-executor.port';
 import { ExecutorUtils } from '../../executor-utils';
 import { IRequestsProvidersChainer } from './ports/requests-providers-chainer.port';
 import { NoHandlerException } from './exceptions/no-handler.exception';
 import { IRequestProcessingState } from './interfaces/request-processing-state.interface';
-import { IProvidersManager } from '../../../providers-manager/ports/providers-manager.port';
+import { IRequestsExecutor } from './ports/requests.executor.port';
 
-export class RequestsExecutor implements IMessageExecutor<IRequest, any> {
+export class RequestsExecutor implements IRequestsExecutor {
   constructor(
     private readonly subject: Subject<IRequestProcessingState>,
     private readonly mediatorOptions: MediatorOptions,
@@ -21,14 +21,19 @@ export class RequestsExecutor implements IMessageExecutor<IRequest, any> {
     private readonly requestsProvidersChainer: IRequestsProvidersChainer
   ) {}
 
-  async execute<TResult>(id: string, request: IRequest) {
+  execute<TResult>(id: string, request: IRequest) {
     const providers = this.providersManager.get<IRequestsProvidersSchema>(MessageTypes.REQUEST);
-    const [handler, pipelines] = await Promise.all([
+    const providersInstancesTask = Promise.all([
       this.getHandler(providers, request),
       this.getPipelines(providers, request),
     ]);
-    const chain = this.requestsProvidersChainer.chain<TResult>(id, request, pipelines, handler);
-    return this.call(request, id, chain);
+
+    return from(providersInstancesTask).pipe(
+      mergeMap(([handler, pipelines]) => {
+        const chain = this.requestsProvidersChainer.chain<TResult>(id, request, pipelines, handler);
+        return this.call(request, id, chain);
+      })
+    );
   }
 
   private getHandler(providers: IRequestsProvidersSchema, request: IRequest) {
@@ -50,14 +55,24 @@ export class RequestsExecutor implements IMessageExecutor<IRequest, any> {
     );
   }
 
-  private call<TResult>(request: IRequest, id: string, next: () => Promise<TResult>) {
-    return lastValueFrom(
-      defer(next).pipe(
-        this.mediatorOptions.requestsTimeout ? timeout(this.mediatorOptions.requestsTimeout) : tap(),
-        catchError((err) => {
-          const error = err instanceof TimeoutError ? new MessageTimeoutException(request) : err;
-          this.subject.next({ id, messageType: MessageTypes.REQUEST, message: request, error });
-          return throwError(() => error);
+  private call<TResult>(request: IRequest, id: string, chain: Observable<TResult>) {
+    return chain.pipe(
+      this.mediatorOptions.requestsTimeout
+        ? timeout({
+            each: this.mediatorOptions.requestsTimeout,
+            with: () => throwError(() => new MessageTimeoutException(request)),
+          })
+        : tap(),
+      catchError((error) => {
+        this.subject.next({ id, messageType: MessageTypes.REQUEST, message: request, error });
+        return throwError(() => error);
+      }),
+      finalize(() =>
+        this.subject.next({
+          id,
+          messageType: MessageTypes.REQUEST,
+          message: request,
+          processed: true,
         })
       )
     );

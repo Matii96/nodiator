@@ -15,9 +15,7 @@ export class EventsBeginningEndingLoggingBehaviour implements ILoggingBehaviour 
 
   private firstEntry(state: IEventProcessingState) {
     this.occuredEvents.set(state.id, new Date());
-    this.logger.debug(
-      `Emmited ${state.message.constructor.name} (id=${state.id}}) with data ${JSON.stringify(state.message)}`
-    );
+    this.logger.debug(`Emmited ${state.message.constructor.name} (id=${state.id}})`);
   }
 
   private eventProcessed(state: IEventProcessingState) {

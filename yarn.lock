@@ -1886,7 +1886,7 @@ __metadata:
   peerDependencies:
     "@nestjs/common": ^8.0.0
     "@nestjs/core": ^8.0.0
-    "@nodiator/core": ^1.0.0
+    "@nodiator/core": ^2.0.0
     reflect-metadata: ^0.1.13
   languageName: unknown
   linkType: soft

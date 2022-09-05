@@ -1,3 +1,4 @@
+import { delay, mergeMap, Observable, of } from 'rxjs';
 import {
   GlobalRequestPipeline,
   IGlobalRequestPipeline,
@@ -14,20 +15,23 @@ export class TestRequest {
 
 @GlobalRequestPipeline()
 export class TestGlobalRequestPipeline implements IGlobalRequestPipeline {
-  static handle = jest.fn((request: IRequest, next: () => Promise<unknown>) => next());
+  static handle = jest.fn((request: IRequest, next: Observable<unknown>) => next);
   handle = TestGlobalRequestPipeline.handle;
 }
 
 @RequestPipeline(TestRequest)
 export class TestRequestPipeline implements IRequestPipeline<TestRequest, string> {
-  static handle = jest.fn((request: TestRequest, next: () => Promise<string>) => next());
+  static handle = jest.fn((request: TestRequest, next: Observable<string>) => next);
   handle = TestRequestPipeline.handle;
 }
 
 @RequestPipeline(TestRequest)
 export class TestLaggingRequestPipeline implements IRequestPipeline<TestRequest, string> {
-  static handle = jest.fn((request: TestRequest, next: () => Promise<string>) =>
-    new Promise((resolve) => setTimeout(resolve, 500)).then(() => next())
+  static handle = jest.fn((request: TestRequest, next: Observable<string>) =>
+    of(1).pipe(
+      delay(500),
+      mergeMap(() => next)
+    )
   );
   handle = TestLaggingRequestPipeline.handle;
 }

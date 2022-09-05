@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { IEventHandler } from './event';
 import { IRequestHandler, IRequestPipeline } from './request';
 
@@ -7,7 +8,7 @@ export class TestRequest {
 }
 
 export class TestRequestPipeline implements IRequestPipeline<TestRequest, any> {
-  handle = jest.fn((request: TestRequest, next: () => Promise<any>) => next());
+  handle = jest.fn((request: TestRequest, next: Observable<any>) => next);
 }
 
 export class TestRequestHandler implements IRequestHandler<TestRequest, any> {

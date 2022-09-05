@@ -1,5 +1,5 @@
 import { Type } from '../../../../utils/type.interface';
-import { IEvent, IEventHandler, IRequest, MessageTypes } from '../../../../messages';
+import { IRequest, IRequestPipeline, MessageTypes } from '../../../../messages';
 import { REQUEST_PIPELINE_METADATA } from '../../../../messages/constants';
 import { IProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
 import { IRequestsProvidersSchema } from '../interfaces/requests-providers-schema.interface';
@@ -10,7 +10,7 @@ export class RequestsPipelinesAdapter implements IProviderTypeAdapter<IRequestsP
 
   register(
     adaptedProviders: IRequestsProvidersSchema,
-    provider: Type<IEventHandler<IEvent>>,
+    provider: Type<IRequestPipeline<IRequest, unknown>>,
     requestsTypes: Set<Type<IRequest>>
   ) {
     for (const requestType of requestsTypes) {
@@ -20,7 +20,7 @@ export class RequestsPipelinesAdapter implements IProviderTypeAdapter<IRequestsP
 
   private registerPipeline(
     { specific }: Pick<IRequestsProvidersSchema, 'specific'>,
-    provider: Type<IEventHandler<IEvent>>,
+    provider: Type<IRequestPipeline<IRequest, unknown>>,
     requestType: Type<IRequest>
   ) {
     if (!specific.has(requestType)) {

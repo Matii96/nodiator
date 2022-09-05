@@ -40,8 +40,14 @@ const mediator = MediatorFactory.create({
   eventsHandlingRetriesDelay: 1000, // The above will happen with 1s delay
 });
 
-await mediator.publish(new SomeEvent());
+await lastValueFrom(mediator.publish(new SomeEvent()));
 console.log('SomeEvent handled');
+
+// OR
+
+mediator.publish(new SomeEvent()).subscribe(() => {
+  console.log('SomeEvent handled');
+});
 ```
 
-Note that `await` can be omitted for full fire-and-forget way of operation.
+Note that it's not obligatory to await the event to be handled for fire-and-forget way of operation.

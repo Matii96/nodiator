@@ -10,6 +10,7 @@ import { IMessageProcessingState } from './interfaces/message-processing-state.i
 import { RequestsProvidersChainer } from './messages/requests/requests-providers.chainer';
 import { IProvidersManager } from '../providers-manager/ports/providers-manager.port';
 import { Executor } from './executor';
+import { IExecutor } from './ports/executor.port';
 
 export class ExecutorsFactory {
   private readonly executors: Record<MessageTypes, IMessageExecutor<IMessage, any>>;
@@ -37,7 +38,7 @@ export class ExecutorsFactory {
     return defaultProvidersInstantiator.instantiate.bind(defaultProvidersInstantiator);
   }
 
-  create() {
+  create(): IExecutor {
     return new Executor(this.executors);
   }
 }
