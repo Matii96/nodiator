@@ -7,7 +7,7 @@ import { Namespaces } from './namespaces.enum';
 export class AccessProvider {
   constructor(
     @InjectMediator() readonly globalMediator: IMediator,
-    @InjectMediator(Namespaces.NAMESPACE1) readonly namespace1Mediator: IMediator,
-    @InjectMediator(Namespaces.NAMESPACE2) readonly namespace2Mediator: IMediator
+    @InjectMediator(Namespaces.CATS) readonly catsMediator: IMediator,
+    @InjectMediator(Namespaces.DOGS) readonly dogsMediator: IMediator
   ) {}
 }

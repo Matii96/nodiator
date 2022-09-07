@@ -1,5 +1,5 @@
 import { DuplicatedNamespacesException } from '../exceptions/duplicated-namespaces.exception';
-import { MediatorModuleOptionsValidator } from './mediator.module.options.validator';
+import { MediatorModuleOptionsValidator } from './module.options.validator';
 
 describe('MediatorModuleOptionsValidator', () => {
   it('should pass validation - default configuration', () => {

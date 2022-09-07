@@ -1,11 +1,11 @@
-import { lastValueFrom } from 'rxjs';
+import { range, mergeMap } from 'rxjs';
 import { Test, TestingModule } from '@nestjs/testing';
 import { NoHandlerException } from '@nodiator/core';
-import { AccessProvider } from './mocks/access.provider';
+import { AccessProvider } from '../mocks/access.provider';
 import { AppModule } from './mocks/app.module';
-import { TestRequest, TestRequestHandler } from './mocks/messages.mocks';
+import { TestRequest, TestRequestHandler } from '../mocks/messages.mocks';
 
-describe('@nodiator/nest (e2e)', () => {
+describe('@nodiator/nest mediator (e2e)', () => {
   let request: TestRequest;
   let accessProvider: AccessProvider;
 
@@ -28,20 +28,24 @@ describe('@nodiator/nest (e2e)', () => {
   });
 
   it('should respond with "success" from namespaced mediator', (done) => {
-    accessProvider.namespace1Mediator.request<string>(request).subscribe((response) => {
+    accessProvider.catsMediator.request<string>(request).subscribe((response) => {
       expect(response).toEqual(request.property);
       done();
     });
   });
 
   it('should throw NoHandlerException from namespaced mediator as the handler exists only in other namespace', () => {
-    expect(() => accessProvider.namespace2Mediator.request<string>(request)).toThrow(NoHandlerException);
+    expect(() => accessProvider.dogsMediator.request<string>(request)).toThrow(NoHandlerException);
   });
 
-  it('should create 4 separate TestRequestHandler instances', async () => {
-    for (let i = 0; i < 4; i++) {
-      await lastValueFrom(accessProvider.globalMediator.request<string>(request));
-    }
-    expect(TestRequestHandler.instancesCounter).toBe(4);
+  it('should create 4 separate TestRequestHandler instances', (done) => {
+    range(1, 4)
+      .pipe(mergeMap(() => accessProvider.globalMediator.request<string>(request)))
+      .subscribe({
+        complete() {
+          expect(TestRequestHandler.instancesCounter).toBe(4);
+          done();
+        },
+      });
   });
 });

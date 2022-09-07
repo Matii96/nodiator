@@ -2,19 +2,20 @@ import { Injectable, Scope, Type } from '@nestjs/common';
 import { ModuleRef, ModulesContainer } from '@nestjs/core';
 import { IMediator, IMessageProvider, MediatorFactory, ScopeOptions, SCOPE_OPTIONS_METADATA } from '@nodiator/core';
 import { NamespaceNotInitializedException } from '../exceptions/namespace-not-initialized.exception';
-import { MediatorForFeatureOptions, MediatorModuleOptions } from '../options/mediator.module.options';
 import { MediatorLogger } from '../logger/mediator.logger';
+import { MediatorForFeatureOptions } from '../options/feature.module.options';
+import { MediatorModuleOptions } from '../options/root.module.options';
 import { getMediatorToken } from '../utils';
 
 @Injectable()
 export class MediatorModuleConfigurator {
-  constructor(private readonly modulesContainer: ModulesContainer, private readonly moduleRef: ModuleRef) {}
+  constructor(private readonly _modulesContainer: ModulesContainer, private readonly _moduleRef: ModuleRef) {}
 
   configureRoot(options: MediatorModuleOptions) {
     const mediator = MediatorFactory.create({
       logger: new MediatorLogger(options.namespace),
       ...options,
-      providersInstantiator: (providerType) => this.moduleRef.resolve(providerType, undefined, { strict: false }),
+      providersInstantiator: (providerType) => this._moduleRef.resolve(providerType, undefined, { strict: false }),
     });
     const registeredProviders = mediator.providers.register({
       providers: options.namespace ? [] : this.listProviders(),
@@ -24,10 +25,13 @@ export class MediatorModuleConfigurator {
     return mediator;
   }
 
-  configureFeature(module: Type<any>, options: MediatorForFeatureOptions) {
+  async configureFeature(module: Type<any>, options: MediatorForFeatureOptions) {
+    // Let mediator namespaces to register asynchronous
+    await new Promise((resolve) => setImmediate(resolve));
+
     let mediator: IMediator;
     try {
-      mediator = this.moduleRef.get(getMediatorToken(options.namespace), { strict: false });
+      mediator = this._moduleRef.get(getMediatorToken(options.namespace), { strict: false });
     } catch (err) {
       throw err.constructor.name === 'UnknownElementException'
         ? new NamespaceNotInitializedException(options.namespace)
@@ -49,7 +53,7 @@ export class MediatorModuleConfigurator {
   }
 
   private listProviders(module?: Type<any>) {
-    return Array.from(this.modulesContainer.values())
+    return Array.from(this._modulesContainer.values())
       .filter(({ metatype }) => !module || metatype === module)
       .flatMap((module) => Array.from(module.providers.values()))
       .map(({ instance }) => instance?.constructor)

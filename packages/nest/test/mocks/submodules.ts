@@ -5,17 +5,17 @@ import { TestRequestHandler } from './messages.mocks';
 import { AccessProvider } from './access.provider';
 
 @Module({
-  imports: [MediatorModule.forFeature(SubModuleA, { namespace: Namespaces.NAMESPACE1 })],
+  imports: [MediatorModule.forFeature(CatsSubModule, { namespace: Namespaces.CATS })],
   providers: [TestRequestHandler],
 })
-export class SubModuleA {}
+export class CatsSubModule {}
 
 @Module({
-  imports: [MediatorModule.forFeature(SubModuleB, { namespace: Namespaces.NAMESPACE2 })],
+  imports: [MediatorModule.forFeature(DogsSubModule, { namespace: Namespaces.DOGS })],
 })
-export class SubModuleB {}
+export class DogsSubModule {}
 
 @Module({
   providers: [AccessProvider],
 })
-export class SubModuleC {}
+export class AnimalsSubModule {}
