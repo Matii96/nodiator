@@ -1,8 +1,16 @@
 # Events
 
-They are semi Fire-and-forget type of messages. All it's handlers are executed simultaneously. At the same time mediator awaits for all handlers processing to be done catching potential exeptions.
+Semi Fire-and-forget type of messages. All it's handlers are executed simultaneously. At the same time mediator awaits for all handlers processing to be done catching potential exeptions.
+
+## Table of contents
+
+- [Handlers](#handlers)
+- [Global handlers](#global_handlers)
+- [Usage](#usage)
 
 ## Handlers
+
+<a name="handlers"></a>
 
 ```ts
 class SomeEvent {}
@@ -21,6 +29,8 @@ export class SharedHandler implements IEventHandler<SomeEvent | OtherEvent> {
 
 ## Global handlers
 
+<a name="global_handlers"></a>
+
 In simmilar way handlers for all events can be defined, without passing list of them in a decorator.
 
 ```ts
@@ -31,6 +41,8 @@ export class EventsGlobalHandler implements IGlobalEventHandler {
 ```
 
 ## Usage
+
+<a name="usage"></a>
 
 ```ts
 const mediator = MediatorFactory.create({

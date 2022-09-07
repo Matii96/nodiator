@@ -12,7 +12,20 @@ Flexible [mediator](https://refactoring.guru/design-patterns/mediator) pattern i
 
 </div>
 
+## Table of contents
+
+- [Idea](#idea)
+- [Usage](#usage)
+- [Installation](#installation)
+- [Quick Start](#quick_start)
+- [Messages documentation](#messages)
+- [Providers scope](#providers_scope)
+- [Logging](#logging)
+- [License](#license)
+
 ## 💡 Idea
+
+<a name="idea"></a>
 
 When application grows in size it becomes more and more complicated to control dataflow between objects / modules. Modifying one of them may lead to unwanted "shotgun surgery" resulting in breaking other features of the application.
 
@@ -22,9 +35,13 @@ Nodiator aims to address this problem by providing configurable mediator object 
 
 ## Usage
 
+<a name="usage"></a>
+
 Mediator handles objects called messages. You can think of them as simple dtos as they role is to transport data in given context. They are then passed to providers - handlers, pipelines and other pieces of code interested in given message.
 
 ## Installation
+
+<a name="installation"></a>
 
 ```bash
 npm i @nodiator/core
@@ -33,6 +50,8 @@ yarn add @nodiator/core
 ```
 
 ## Quick Start
+
+<a name="quick_start"></a>
 
 ```ts
 class ExampleRequest {}
@@ -60,12 +79,16 @@ await mediator.publish(new SomeEvent()); // output: SomeEvent handled
 
 ## 📖 Messages documentation
 
+<a name="messages"></a>
+
 Supported types are:
 
 - [Events](https://github.com/Matii96/nodiator/tree/main/packages/core/docs/events.md)
 - [Requests](https://github.com/Matii96/nodiator/tree/main/packages/core/docs/requests.md)
 
 ## Providers scope
+
+<a name="providers_scope"></a>
 
 Each provider is lazy-created upon it's first call by default.
 
@@ -90,6 +113,8 @@ const mediator = MediatorFactory.create({
 Above example implementation is identical with call-scoped instatiting.
 
 ## Logging
+
+<a name="logging"></a>
 
 Mediator supports following levels of logging: `DEBUG`, `INFO`, `WARN`, `ERROR` and `NONE`. The default one is `INFO` and allows all logs to be visible besides those marked as `DEBUG`. They are logged via `console` methods.
 
@@ -121,5 +146,7 @@ const mediator = MediatorFactory.create({
 In addition to that the mediator object extends RxJS Observable and can be subscribed to. It emits all messages state changes - starting handlers execution, errors etc.
 
 ## License
+
+<a name="license"></a>
 
 This project is licensed under the MIT License - see the [LICENSE file](https://github.com/Matii96/nodiator/tree/main/LICENSE) for details.

@@ -12,7 +12,21 @@ Flexible [mediator](https://refactoring.guru/design-patterns/mediator) pattern i
 
 </div>
 
+## Table of contents
+
+- [Idea](#idea)
+- [Packages](#packages)
+- [Examples](#examples)
+- [Local development](#local_development)
+  - [Building packages](#local_development_building_packages)
+  - [Testing](#local_development_testing)
+  - [Committing](#local_development_committing)
+- [Authors](#authors)
+- [License](#license)
+
 ## 💡 Idea
+
+<a name="idea"></a>
 
 When application grows in size it becomes more and more complicated to control dataflow between objects / modules. Modifying one of them may lead to unwanted "shotgun surgery" resulting in breaking other features of the application.
 
@@ -22,14 +36,20 @@ Nodiator aims to address this problem by providing configurable mediator object 
 
 ## Packages
 
-- [Core](https://github.com/Matii96/nodiator/tree/main/packages/core) - project implementation for vanilla node.js
+<a name="packages"></a>
+
+- [Core](https://github.com/Matii96/nodiator/tree/main/packages/core) - project implementation for vanilla typescript
 - [Nest](https://github.com/Matii96/nodiator/tree/main/packages/nest) - nestjs integration
 
 ## Examples
 
+<a name="examples"></a>
+
 - [Express + typescript](examples/01-express/README.md)
 
 ## Local development
+
+<a name="local_development"></a>
 
 Project uses [yarn workspaces](https://yarnpkg.com/features/workspaces) in combination with [lerna](https://lerna.js.org). To initialize the project run
 
@@ -39,6 +59,8 @@ yarn
 
 ### Building packages
 
+<a name="local_development_building_packages"></a>
+
 As project uses typescript for the package to be seen as other packages dependency they need to be built first.
 
 ```bash
@@ -46,6 +68,8 @@ yarn build
 ```
 
 ### Testing
+
+<a name="local_development_testing"></a>
 
 ```bash
 yarn lint:staged  # linting staged files
@@ -55,7 +79,9 @@ yarn test:e2e     # running e2e tests for packages changed since HEAD with packa
 yarn precommit    # combining lint:staged, test and test:e2e
 ```
 
-### Commits
+### Committing
+
+<a name="local_development_committing"></a>
 
 The project follows [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0) standard. To conveniently create commit message use [commitizen](https://commitizen-tools.github.io/commitizen) by typing
 
@@ -65,6 +91,8 @@ yarn cz
 
 ## Authors
 
+<a name="authors"></a>
+
 **Mateusz Fonfara**
 
 - Github: [@Matii96](https://github.com/Matii96)
@@ -73,5 +101,7 @@ yarn cz
 See also the full list of [contributors](https://github.com/Matii96/nodiator/contributors).
 
 ## License
+
+<a name="license"></a>
 
 This project is licensed under the MIT License - see the [LICENSE file](https://github.com/Matii96/nodiator/tree/main/LICENSE) for details.

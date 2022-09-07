@@ -4,7 +4,17 @@ They work in synchronous way returning response. Thus each request may only have
 
 Handling is deferred until first subscription to the response stream.
 
+## Table of contents
+
+- [Handlers](#handlers)
+- [Pipelines](#pipelines)
+- [Global pipelines](#global_pipelines)
+- [Usage](#usage)
+- [Execution flow](#execution_flow)
+
 ## Handlers
+
+<a name="handlers"></a>
 
 ```ts
 class ExampleRequest {}
@@ -18,6 +28,8 @@ export class ExampleRequestHandler implements IRequestHandler<ExampleRequest, st
 ```
 
 ## Pipelines
+
+<a name="pipelines"></a>
 
 A middleware for requests. They allow to execute some pre or post actions for given request handling.
 
@@ -43,6 +55,8 @@ export class ExampleRequestPipeline implements IRequestPipeline<IRequest, string
 
 ## Global pipelines
 
+<a name="global_pipelines"></a>
+
 Similarly to events global handlers pipelines can be used globally eg. for caching.
 
 ```ts
@@ -56,6 +70,8 @@ export class ExampleGlobalRequestPipeline implements IGlobalRequestPipeline {
 ```
 
 ## Usage
+
+<a name="usage"></a>
 
 ```ts
 const mediator = MediatorFactory.create({
@@ -73,6 +89,8 @@ console.log(await firstValueFrom(mediator.request<string>(new ExampleRequest()))
 ```
 
 ## Execution flow
+
+<a name="execution_flow"></a>
 
 <div align="center">
   <img src="assets/requests-handling.svg" alt="Execution flow"/>
