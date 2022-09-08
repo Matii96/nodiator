@@ -5,14 +5,14 @@ import { IRequestProcessingState } from '../../../executor/messages/requests/int
 import { ILoggingBehaviour } from '../../ports/logging-behaviour.port';
 
 export class RequestsHandlingStartedLoggingBehaviour implements ILoggingBehaviour {
-  constructor(private readonly logger: IMediatorLogger, source: Observable<IRequestProcessingState>) {
+  constructor(private readonly _logger: IMediatorLogger, source: Observable<IRequestProcessingState>) {
     source
       .pipe(filter((state) => state.messageType === MessageTypes.REQUEST && state.provider && !state.response))
       .subscribe((state) => this.handle(state));
   }
 
   private handle(state: IRequestProcessingState) {
-    this.logger.debug(
+    this._logger.debug(
       ` -- handling ${state.message.constructor.name} (id=${state.id}}) with ${state.provider.constructor.name}`
     );
   }

@@ -9,26 +9,29 @@ interface IOngoingRequest {
 }
 
 export class RequestsBeginningEndingLoggingBehaviour implements ILoggingBehaviour {
-  private readonly ongoingRequests = new Map<string, IOngoingRequest>();
+  private readonly _ongoingRequests = new Map<string, IOngoingRequest>();
 
-  constructor(private readonly logger: IMediatorLogger, source: Observable<IRequestProcessingState>) {
+  constructor(private readonly _logger: IMediatorLogger, source: Observable<IRequestProcessingState>) {
     const requests = source.pipe(filter((state) => state.messageType === MessageTypes.REQUEST));
-    requests.pipe(filter((state) => !this.ongoingRequests.has(state.id))).subscribe((state) => this.firstEntry(state));
+    requests.pipe(filter((state) => !this._ongoingRequests.has(state.id))).subscribe((state) => this.firstEntry(state));
     requests.pipe(filter((state) => state.processed)).subscribe((state) => this.requestProcessed(state));
   }
 
   private firstEntry(state: IRequestProcessingState) {
-    this.ongoingRequests.set(state.id, { startedAt: new Date() });
-    this.logger.debug(`Requested ${state.message.constructor.name} (id=${state.id}})`);
+    this._ongoingRequests.set(state.id, { startedAt: new Date() });
+    this._logger.debug(`Requested ${state.message.constructor.name} (id=${state.id}})`);
   }
 
   private requestProcessed(state: IRequestProcessingState) {
-    const elapsedTime = Date.now() - this.ongoingRequests.get(state.id).startedAt.getTime();
-    this.ongoingRequests.delete(state.id);
+    const elapsedTime = Date.now() - this._ongoingRequests.get(state.id).startedAt.getTime();
+    this._ongoingRequests.delete(state.id);
 
     // Let other logging behaviours to run before final message
-    setImmediate(() =>
-      this.logger.info(`${state.message.constructor.name} processed in ${(elapsedTime / 1000).toFixed(3)}s`)
-    );
+    setImmediate(() => {
+      this._logger.debug(
+        ` -- ${state.message.constructor.name} (id=${state.id}}) took ${(elapsedTime / 1000).toFixed(3)}s`
+      );
+      this._logger.info(`${state.message.constructor.name} (id=${state.id}}) handled`);
+    });
   }
 }

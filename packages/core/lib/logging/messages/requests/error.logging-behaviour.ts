@@ -5,7 +5,7 @@ import { ILoggingBehaviour } from '../../ports/logging-behaviour.port';
 import { IRequestProcessingState } from '../../../executor/messages/requests/interfaces/request-processing-state.interface';
 
 export class RequestsErrorLoggingBehaviour implements ILoggingBehaviour {
-  constructor(private readonly logger: IMediatorLogger, source: Observable<IRequestProcessingState>) {
+  constructor(private readonly _logger: IMediatorLogger, source: Observable<IRequestProcessingState>) {
     source
       .pipe(filter((state) => state.messageType === MessageTypes.REQUEST && Boolean(state.error)))
       .subscribe((state) => this.handle(state));
@@ -15,7 +15,7 @@ export class RequestsErrorLoggingBehaviour implements ILoggingBehaviour {
     const requestString = `${state.message.constructor.name} (id=${state.id}})`;
     const errorString = state.error.stack || state.error.message || state.error;
 
-    this.logger.error(
+    this._logger.error(
       state.provider
         ? ` -- ${state.provider.constructor.name} failed to handle ${requestString}. ${errorString}`
         : `${state.message.constructor.name} failed. ${errorString}`

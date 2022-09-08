@@ -85,7 +85,7 @@ describe('@nodiator/core requests (e2e)', () => {
     it('should log request handling steps', async () => {
       await lastValueFrom(mediator.request<string>(testRequest));
       await new Promise<void>((resolve) => setImmediate(resolve));
-      expect(logger.debug).toHaveBeenCalledTimes(10);
+      expect(logger.debug).toHaveBeenCalledTimes(11);
       expect(logger.info).toHaveBeenCalledTimes(2);
       expect(logger.warn).toHaveBeenCalledTimes(0);
       expect(logger.error).toHaveBeenCalledTimes(0);

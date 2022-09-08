@@ -74,7 +74,7 @@ describe('@nodiator/core events (e2e)', () => {
     it('should log event handling steps', (done) => {
       mediator.publish(testEvent).subscribe({
         complete() {
-          expect(logger.debug).toHaveBeenCalledTimes(5);
+          expect(logger.debug).toHaveBeenCalledTimes(6);
           expect(logger.info).toHaveBeenCalledTimes(2);
           expect(logger.warn).toHaveBeenCalledTimes(0);
           expect(logger.error).toHaveBeenCalledTimes(0);
@@ -182,7 +182,7 @@ describe('@nodiator/core events (e2e)', () => {
     it('should log event handling steps', (done) => {
       mediator.publish(testEvent).subscribe({
         complete() {
-          expect(logger.debug).toHaveBeenCalledTimes(11);
+          expect(logger.debug).toHaveBeenCalledTimes(12);
           expect(logger.info).toHaveBeenCalledTimes(3);
           expect(logger.warn).toHaveBeenCalledTimes(0);
           expect(logger.error).toHaveBeenCalledTimes(2);
