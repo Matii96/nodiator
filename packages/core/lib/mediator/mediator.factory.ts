@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { Subject } from 'rxjs';
 import { ProvidersManagerFactory } from '../providers-manager/providers-manager.factory';
 import { LoggerFactory } from '../logging/logger.factory';
-import { LoggingBootstraper } from '../logging/logging.bootstraper';
+import { LoggingBootstrapper } from '../logging/logging.bootstraper';
 import { ExecutorsFactory } from '../executor/executors.factory';
 import { IMessageProcessingState } from '../executor/interfaces/message-processing-state.interface';
 import { MediatorOptions } from '../config/mediator.options';
@@ -17,7 +17,7 @@ export class MediatorFactory {
     const subject = new Subject<IMessageProcessingState>();
     const executor = new ExecutorsFactory(mediatorOptions, providersManager, subject).create();
     const mediator = new Mediator(logger, subject, providersManager, executor);
-    LoggingBootstraper.bootstrap(logger, mediator);
+    LoggingBootstrapper.bootstrap(logger, mediator);
     providersManager.register(...(mediatorOptions.providers || []));
     return mediator;
   }

@@ -6,7 +6,7 @@ import { ILoggingBehaviour } from './ports/logging-behaviour.port';
 import { eventsLoggingBehaviours } from './messages/events';
 import { requestsLoggingBehaviours } from './messages/requests';
 
-export class LoggingBootstraper {
+export class LoggingBootstrapper {
   private static readonly _logsAdapter: Type<ILoggingBehaviour>[] = [
     ...eventsLoggingBehaviours,
     ...requestsLoggingBehaviours,

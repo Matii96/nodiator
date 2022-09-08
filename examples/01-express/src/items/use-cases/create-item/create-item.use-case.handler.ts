@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 import { IRequestHandler, RequestHandler } from '@nodiator/core';
+import { Item } from '../../item';
 import { ItemsRepository } from '../../items.repository';
 import { CreateItemUseCaseResult } from './create-item.use-case.result';
 import { CreateItemUseCase } from './create-item.use-case';
-import { Item } from '../../item';
 
 @RequestHandler(CreateItemUseCase)
 export class CreateItemUseCaseHandler implements IRequestHandler<CreateItemUseCase, CreateItemUseCaseResult> {
