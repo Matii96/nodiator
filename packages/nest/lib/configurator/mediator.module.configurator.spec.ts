@@ -48,13 +48,13 @@ describe('MediatorModuleConfigurator', () => {
       }).compile();
       configurator = module.get(MediatorModuleConfigurator);
 
-      const mediator = configurator.configureFeature(TestingModule, { namespace });
+      const mediator = await configurator.configureFeature(TestingModule, { namespace });
       const mediatrorProviders: IRequestsProvidersSchema = mediator.providers.get(MessageTypes.REQUEST);
       expect(mediatrorProviders.specific.get(TestRequest).handler).toBe(TestRequestHandler);
     });
 
     it("should fail to get scoped mediator as it isn't initialized", () => {
-      expect(() => configurator.configureFeature(TestingModule, { namespace: 'A' })).toThrow(
+      expect(configurator.configureFeature(TestingModule, { namespace: 'A' })).rejects.toThrow(
         NamespaceNotInitializedException
       );
     });

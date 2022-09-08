@@ -1,15 +1,11 @@
-import { IMediatorLogger } from '../mediator/mediator.options';
-import { LoggerFactoryOptions } from './logger.factory.options';
-import { BlankMediatorLogger } from './loggers/blank.mediator-logger';
+import { MediatorOptions, IMediatorLogger } from '../config/mediator.options';
 import { DefaultMediatorLogger } from './loggers/default.mediator-logger';
 import { LoggingLevelWrapper } from './loggers/logging-level.wrapper';
 
 export class LoggerFactory {
-  constructor(private readonly options: LoggerFactoryOptions) {}
+  constructor(private readonly _options: MediatorOptions) {}
 
   create(): IMediatorLogger {
-    return this.options.loggingLevel && this.options.loggingLevel !== 'none'
-      ? new LoggingLevelWrapper(this.options.logger || new DefaultMediatorLogger(), this.options.loggingLevel)
-      : new BlankMediatorLogger();
+    return new LoggingLevelWrapper(this._options.logger || new DefaultMediatorLogger(), this._options.config);
   }
 }

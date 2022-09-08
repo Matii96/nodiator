@@ -4,11 +4,11 @@ import {
   MessageTypes,
   PlainObjectMessageException,
   IEventsProvidersSchema,
-  IMediatorLogger,
   IEventProcessingState,
   IMediator,
   MediatorFactory,
 } from '../../lib';
+import { IMediatorLogger, MediatorLoggingLevels } from '../../lib/config';
 import { MediatorLoggerMock } from '../../lib/logging/logging.mocks';
 import {
   TestEvent,
@@ -27,7 +27,11 @@ describe('@nodiator/core events (e2e)', () => {
 
   beforeEach(() => {
     logger = new MediatorLoggerMock();
-    mediator = MediatorFactory.create({ providers, logger, loggingLevel: 'debug' });
+    mediator = MediatorFactory.create({
+      providers,
+      logger,
+      config: () => ({ loggingLevel: MediatorLoggingLevels.DEBUG }),
+    });
     eventStates = [];
     mediator.subscribe((state) => eventStates.push(state));
   });
@@ -99,7 +103,10 @@ describe('@nodiator/core events (e2e)', () => {
     const timeoutProviders = [...providers, TestLaggingEventHandler];
 
     beforeEach(() => {
-      mediator = MediatorFactory.create({ providers: timeoutProviders, eventsTimeout: 1 });
+      mediator = MediatorFactory.create({
+        providers: timeoutProviders,
+        config: () => ({ eventsTimeout: 1 }),
+      });
     });
 
     it('should throw timeout exception', () => {
@@ -122,7 +129,7 @@ describe('@nodiator/core events (e2e)', () => {
     });
 
     it('should fail on the second attempt', async () => {
-      mediator = MediatorFactory.create({ providers, eventsHandlingRetriesAttempts: 1 });
+      mediator = MediatorFactory.create({ providers, config: () => ({ eventsHandlingRetriesAttempts: 1 }) });
       mediator.providers.register(TestFailingEventHandler);
       expect(lastValueFrom(mediator.publish(new TestEvent()))).rejects.toThrowError();
     });
@@ -136,10 +143,12 @@ describe('@nodiator/core events (e2e)', () => {
       logger = new MediatorLoggerMock();
       mediator = MediatorFactory.create({
         providers,
-        eventsHandlingRetriesAttempts: 20,
-        eventsHandlingRetriesDelay,
         logger,
-        loggingLevel: 'debug',
+        config: () => ({
+          eventsHandlingRetriesAttempts: 20,
+          eventsHandlingRetriesDelay,
+          loggingLevel: MediatorLoggingLevels.DEBUG,
+        }),
       });
       mediator.providers.register(TestFailingEventHandler);
       mediator.subscribe((state) => eventStates.push(state));

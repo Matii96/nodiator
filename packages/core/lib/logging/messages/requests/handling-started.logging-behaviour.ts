@@ -1,6 +1,6 @@
 import { filter, Observable } from 'rxjs';
 import { MessageTypes } from '../../../messages';
-import { IMediatorLogger } from '../../../mediator/mediator.options';
+import { IMediatorLogger } from '../../../config/mediator.options';
 import { IRequestProcessingState } from '../../../executor/messages/requests/interfaces/request-processing-state.interface';
 import { ILoggingBehaviour } from '../../ports/logging-behaviour.port';
 

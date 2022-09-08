@@ -1,4 +1,4 @@
 export enum Namespaces {
-  NAMESPACE1 = 'NAMESPACE1',
-  NAMESPACE2 = 'NAMESPACE2',
+  CATS = 'CATS',
+  DOGS = 'DOGS',
 }

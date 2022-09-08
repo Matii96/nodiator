@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-import { firstValueFrom, lastValueFrom, of, Subject } from 'rxjs';
-import { ProviderMock, ProvidersManagerMock } from '../providers-manager/providers-manager.mocks';
+import { of, Subject, toArray } from 'rxjs';
+import { ProvidersManagerMock } from '../providers-manager/providers-manager.mocks';
 import { ExecutorMock } from '../executor/executor.mocks';
 import { MediatorLoggerMock } from '../logging/logging.mocks';
 import { TestEvent, TestRequest } from '../messages/messages.mocks';
@@ -15,10 +15,7 @@ describe('Mediator', () => {
 
   beforeEach(() => {
     executor = new ExecutorMock();
-    jest.spyOn(executor, 'execute').mockReturnValue(of(undefined));
-
     mediator = new Mediator(
-      { providers: [ProviderMock] },
       new MediatorLoggerMock(),
       new Subject<IMessageProcessingState>(),
       new ProvidersManagerMock(),
@@ -26,11 +23,23 @@ describe('Mediator', () => {
     );
   });
 
-  it('should execute request', async () => {
-    expect(await firstValueFrom(mediator.request(new TestRequest('ok')))).toBeUndefined();
+  it('should execute request', (done) => {
+    jest.spyOn(executor, 'execute').mockImplementation((request: TestRequest) => of(request.property));
+    mediator.request(new TestRequest('ok')).subscribe((response) => {
+      expect(response).toBe('ok');
+      done();
+    });
   });
 
-  it('should publish event', async () => {
-    expect(await lastValueFrom(mediator.publish(new TestEvent(), new TestEvent()))).toBeUndefined();
+  it('should publish events', (done) => {
+    const events = [new TestEvent(), new TestEvent()];
+    jest.spyOn(executor, 'execute').mockImplementation((event: TestEvent) => of(event));
+    mediator
+      .publish(...events)
+      .pipe(toArray())
+      .subscribe((response) => {
+        expect(response).toEqual(events);
+        done();
+      });
   });
 });

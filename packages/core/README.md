@@ -2,7 +2,7 @@
 
 <div align="center">
 
-Flexible [mediator](https://refactoring.guru/design-patterns/mediator) pattern implementation for [Node.js](https://nodejs.org).
+Flexible [mediator](https://refactoring.guru/design-patterns/mediator) pattern implementation for [TypeScript](https://www.typescriptlang.org).
 
 [![MIT Licensed](https://img.shields.io/badge/License-MIT-brightgreen)](/LICENSE)
 [![NPM version](https://img.shields.io/npm/v/@nodiator/core.svg)](https://www.npmjs.com/package/@nodiator/core)
@@ -138,12 +138,14 @@ class CustomLogger implements IMediatorLogger {
 
 const mediator = MediatorFactory.create({
   providers: [ExampleRequestHandler, SomeEventHandler],
-  logger: new CustomLogger()
-  loggingLevel: 'debug',
+  logger: new CustomLogger(),
+  config: () => ({ loggingLevel: MediatorLoggingLevels.DEBUG })
 });
 ```
 
-In addition to that the mediator object extends RxJS Observable and can be subscribed to. It emits all messages state changes - starting handlers execution, errors etc.
+Note that `config` property is function called each time configuration data is needed which allows to implement logic to change mediator behaviour without app reload.
+
+In addition the mediator object extends RxJS Observable and can be subscribed to. It emits all messages state changes - starting handlers execution, errors etc.
 
 ## License
 

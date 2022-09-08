@@ -1,4 +1,4 @@
-import { IMediatorLogger } from '../../mediator/mediator.options';
+import { IMediatorLogger } from '../../config/mediator.options';
 
 export class DefaultMediatorLogger implements IMediatorLogger {
   private standardizeMessage(msg: string) {

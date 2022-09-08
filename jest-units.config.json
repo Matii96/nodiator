@@ -7,7 +7,7 @@
   "coveragePathIgnorePatterns": ["<rootDir>/examples", "<rootDir>/.*/dist/", "<rootDir>/.*\\.mocks\\.ts"],
   "coverageThreshold": {
     "global": {
-      "lines": 90
+      "lines": 95
     }
   },
   "transform": {

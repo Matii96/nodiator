@@ -1,7 +1,7 @@
 import { Type } from '../utils/type.interface';
 import { MessageTypes } from '../messages';
 import { IMessageProvider } from '../messages/interfaces/message-provider.interface';
-import { IMediatorLogger } from '../mediator/mediator.options';
+import { IMediatorLogger } from '../config/mediator.options';
 import { IProviderTypeAdapter } from './ports/provider-type-adapter.port';
 import { IMessageTypeProvidersSchemaDefiner } from './ports/message-type-providers-schema-definer.port';
 import { IMessagesProvidersSchema } from './interfaces/messages-providers-schema.interface';

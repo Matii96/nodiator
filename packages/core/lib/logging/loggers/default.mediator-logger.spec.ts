@@ -1,4 +1,4 @@
-import { IMediatorLogger } from '../../mediator/mediator.options';
+import { IMediatorLogger } from '../../config/mediator.options';
 import { DefaultMediatorLogger } from './default.mediator-logger';
 
 describe('DefaultMediatorLogger', () => {

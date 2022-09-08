@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { Type } from '../utils/type.interface';
-import { IMediatorLogger } from '../mediator/mediator.options';
+import { IMediatorLogger } from '../config/mediator.options';
 import { IMessageProcessingState } from '../executor';
 import { ILoggingBehaviour } from './ports/logging-behaviour.port';
 import { eventsLoggingBehaviours } from './messages/events';

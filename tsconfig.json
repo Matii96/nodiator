@@ -6,7 +6,6 @@
     "baseUrl": "./lib",
     "outDir": "./dist",
     "declaration": true,
-    "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "noImplicitAny": true,

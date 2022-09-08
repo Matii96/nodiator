@@ -2,7 +2,7 @@
 
 <div align="center">
 
-Flexible [mediator](https://refactoring.guru/design-patterns/mediator) pattern implementation for [Node.js](https://nodejs.org).
+Flexible [mediator](https://refactoring.guru/design-patterns/mediator) pattern implementation for [TypeScript](https://www.typescriptlang.org).
 
 [![MIT Licensed](https://img.shields.io/badge/License-MIT-brightgreen)](/LICENSE)
 [![NPM version](https://img.shields.io/npm/v/@nodiator/core.svg)](https://www.npmjs.com/package/@nodiator/core)
