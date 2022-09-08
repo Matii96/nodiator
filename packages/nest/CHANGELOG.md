@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/Matii96/nodiator/compare/v1.1.3...v2.0.0) (2022-09-08)
+
+
+### Features
+
+* **nest:** async mediator module registration ([8e8654e](https://github.com/Matii96/nodiator/commit/8e8654ede473c611ce825de3ebd01b8c33f1d454))
+* **nest:** compatibility with core ^2.0.0 ([3f882e1](https://github.com/Matii96/nodiator/commit/3f882e1371650780cbb72ca77ae6e3690b94392f))
+
+
+
+
+
 ## [1.1.3](https://github.com/Matii96/nodiator/compare/v1.1.2...v1.1.3) (2022-08-12)
 
 **Note:** Version bump only for package @nodiator/nest
