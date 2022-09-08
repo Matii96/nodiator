@@ -34,9 +34,7 @@ export class MediatorModule {
 
   static async forRootAsync(options: MediatorModuleAsyncOptions): Promise<DynamicModule>;
   static async forRootAsync(options: MediatorModuleSingleAsyncOptions): Promise<DynamicModule>;
-  static async forRootAsync(
-    options: MediatorModuleAsyncOptions | MediatorModuleSingleAsyncOptions
-  ): Promise<DynamicModule> {
+  static async forRootAsync(options: MediatorModuleAsyncOptions | MediatorModuleSingleAsyncOptions) {
     const asyncConfigurations: MediatorModuleAsyncConfiguration[] = (options as MediatorModuleAsyncOptions)
       ?.configurations || [options as MediatorModuleSingleAsyncOptions];
     MediatorModuleOptionsValidator.validate(asyncConfigurations);
