@@ -7,7 +7,7 @@ import { Namespaces } from '../../mocks/namespaces.enum';
 @Injectable()
 class Configurator implements IMediatorOptionsFactory {
   createMediatorOptions() {
-    return { config: () => ({ loggingLevel: MediatorLoggingLevels.DEBUG }) };
+    return { config: () => ({ logs: { level: MediatorLoggingLevels.DEBUG } }) };
   }
 }
 

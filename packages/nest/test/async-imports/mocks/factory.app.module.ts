@@ -22,17 +22,19 @@ class Configurator {
       configurations: [
         {
           inject: [Configurator],
-          useFactory: async (config: Configurator) => ({ config: () => ({ loggingLevel: config.debug() }) }),
+          useFactory: (config: Configurator) => ({ config: () => ({ logs: { level: config.debug() } }) }),
         },
         {
           namespace: Namespaces.CATS,
           inject: [Configurator],
-          useFactory: async (config: Configurator) => ({ config: () => ({ loggingLevel: config.debug() }) }),
+          useFactory: (config: Configurator) => ({ config: () => ({ logs: { level: config.debug() } }) }),
         },
         {
           namespace: Namespaces.DOGS,
           inject: [Configurator],
-          useFactory: async (config: Configurator) => ({ config: () => ({ loggingLevel: config.suppressLogs() }) }),
+          useFactory: (config: Configurator) => ({
+            config: () => ({ logs: { level: config.suppressLogs() } }),
+          }),
         },
       ],
     }),

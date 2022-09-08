@@ -47,9 +47,13 @@ export class EventsGlobalHandler implements IGlobalEventHandler {
 ```ts
 const mediator = MediatorFactory.create({
   providers: [EventsGlobalHandler, SomeEventHandler],
-  eventsTimeout: 1000, // Events handling will be terminated after 1s with timeout exception
-  eventsHandlingRetriesAttempts: 1, // After failing for any reason each handler will have one more chance to process event
-  eventsHandlingRetriesDelay: 1000, // The above will happen with 1s delay
+  config: () => ({
+    events: {
+      timeout: 1000, // Events handling will be terminated after 1s with timeout exception
+      handlingRetriesAttempts: 1, // After failing for any reason each handler will have one more chance to process event
+      handlingRetriesDelay: 1000, // The above will happen with 1s delay
+    },
+  }),
 });
 
 await lastValueFrom(mediator.publish(new SomeEvent()));

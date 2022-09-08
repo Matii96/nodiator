@@ -30,7 +30,7 @@ describe('@nodiator/core requests (e2e)', () => {
     mediator = MediatorFactory.create({
       providers,
       logger,
-      config: () => ({ loggingLevel: MediatorLoggingLevels.DEBUG }),
+      config: () => ({ logs: { level: MediatorLoggingLevels.DEBUG } }),
     });
     requestStates = [];
     mediator.subscribe((state) => requestStates.push(state));
@@ -113,7 +113,7 @@ describe('@nodiator/core requests (e2e)', () => {
       mediator = MediatorFactory.create({
         providers,
         logger,
-        config: () => ({ loggingLevel: MediatorLoggingLevels.INFO, requestsTimeout: 1 }),
+        config: () => ({ requests: { timeout: 1 }, logs: { level: MediatorLoggingLevels.INFO } }),
       });
     });
 

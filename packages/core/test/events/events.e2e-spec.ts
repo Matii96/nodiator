@@ -30,7 +30,7 @@ describe('@nodiator/core events (e2e)', () => {
     mediator = MediatorFactory.create({
       providers,
       logger,
-      config: () => ({ loggingLevel: MediatorLoggingLevels.DEBUG }),
+      config: () => ({ logs: { level: MediatorLoggingLevels.DEBUG } }),
     });
     eventStates = [];
     mediator.subscribe((state) => eventStates.push(state));
@@ -105,7 +105,7 @@ describe('@nodiator/core events (e2e)', () => {
     beforeEach(() => {
       mediator = MediatorFactory.create({
         providers: timeoutProviders,
-        config: () => ({ eventsTimeout: 1 }),
+        config: () => ({ events: { timeout: 1 }, logs: { level: MediatorLoggingLevels.NONE } }),
       });
     });
 
@@ -129,7 +129,11 @@ describe('@nodiator/core events (e2e)', () => {
     });
 
     it('should fail on the second attempt', async () => {
-      mediator = MediatorFactory.create({ providers, config: () => ({ eventsHandlingRetriesAttempts: 1 }) });
+      mediator = MediatorFactory.create({
+        providers,
+        logger,
+        config: () => ({ events: { handlingRetriesAttempts: 1 }, logs: { level: MediatorLoggingLevels.NONE } }),
+      });
       mediator.providers.register(TestFailingEventHandler);
       expect(lastValueFrom(mediator.publish(new TestEvent()))).rejects.toThrowError();
     });
@@ -137,17 +141,15 @@ describe('@nodiator/core events (e2e)', () => {
 
   describe('events successful retries', () => {
     const testEvent = new TestEvent();
-    const eventsHandlingRetriesDelay = 10;
+    const handlingRetriesDelay = 10;
 
     beforeEach(() => {
-      logger = new MediatorLoggerMock();
       mediator = MediatorFactory.create({
         providers,
         logger,
         config: () => ({
-          eventsHandlingRetriesAttempts: 20,
-          eventsHandlingRetriesDelay,
-          loggingLevel: MediatorLoggingLevels.DEBUG,
+          events: { handlingRetriesAttempts: 2, handlingRetriesDelay },
+          logs: { level: MediatorLoggingLevels.DEBUG },
         }),
       });
       mediator.providers.register(TestFailingEventHandler);
@@ -158,7 +160,7 @@ describe('@nodiator/core events (e2e)', () => {
       const start = Date.now();
       mediator.publish(testEvent).subscribe({
         complete() {
-          expect(Date.now() - start).toBeGreaterThanOrEqual(eventsHandlingRetriesDelay * 2);
+          expect(Date.now() - start).toBeGreaterThanOrEqual(handlingRetriesDelay * 2);
           done();
         },
       });
@@ -180,8 +182,8 @@ describe('@nodiator/core events (e2e)', () => {
     it('should log event handling steps', (done) => {
       mediator.publish(testEvent).subscribe({
         complete() {
-          expect(logger.debug).toHaveBeenCalledTimes(9);
-          expect(logger.info).toHaveBeenCalledTimes(2);
+          expect(logger.debug).toHaveBeenCalledTimes(11);
+          expect(logger.info).toHaveBeenCalledTimes(3);
           expect(logger.warn).toHaveBeenCalledTimes(0);
           expect(logger.error).toHaveBeenCalledTimes(2);
           done();

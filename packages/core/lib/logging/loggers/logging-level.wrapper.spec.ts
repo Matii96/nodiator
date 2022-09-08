@@ -20,7 +20,7 @@ describe('LoggingLevelWrapper', () => {
   });
 
   it('should log all levels', () => {
-    logger = new LoggingLevelWrapper(baseLogger, () => ({ loggingLevel: MediatorLoggingLevels.DEBUG }));
+    logger = new LoggingLevelWrapper(baseLogger, () => ({ logs: { level: MediatorLoggingLevels.DEBUG } }));
     logAll(logger);
 
     expect(baseLogger.debug).toHaveBeenCalledTimes(1);
@@ -30,7 +30,7 @@ describe('LoggingLevelWrapper', () => {
   });
 
   it('should log all levels except of debug', () => {
-    logger = new LoggingLevelWrapper(baseLogger, () => ({ loggingLevel: MediatorLoggingLevels.INFO }));
+    logger = new LoggingLevelWrapper(baseLogger, () => ({ logs: { level: MediatorLoggingLevels.INFO } }));
     logAll(logger);
 
     expect(baseLogger.debug).toHaveBeenCalledTimes(0);
@@ -40,7 +40,7 @@ describe('LoggingLevelWrapper', () => {
   });
 
   it('should log all levels except of debug and info', () => {
-    logger = new LoggingLevelWrapper(baseLogger, () => ({ loggingLevel: MediatorLoggingLevels.WARN }));
+    logger = new LoggingLevelWrapper(baseLogger, () => ({ logs: { level: MediatorLoggingLevels.WARN } }));
     logAll(logger);
 
     expect(baseLogger.debug).toHaveBeenCalledTimes(0);
@@ -50,7 +50,7 @@ describe('LoggingLevelWrapper', () => {
   });
 
   it('should log only error level', () => {
-    logger = new LoggingLevelWrapper(baseLogger, () => ({ loggingLevel: MediatorLoggingLevels.ERROR }));
+    logger = new LoggingLevelWrapper(baseLogger, () => ({ logs: { level: MediatorLoggingLevels.ERROR } }));
     logAll(logger);
 
     expect(baseLogger.debug).toHaveBeenCalledTimes(0);
