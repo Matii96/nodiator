@@ -6,7 +6,7 @@ import { historyBootstrapper } from './history/history.bootstrapper';
 const app = express();
 const mediator = MediatorFactory.create({
   config() {
-    return { requestsTimeout: 1000, level: MediatorLoggingLevels.DEBUG };
+    return { requests: { timeout: 10 }, logs: { level: MediatorLoggingLevels.DEBUG } };
   },
 });
 
