@@ -17,7 +17,7 @@ export class MediatorFactory {
     const subject = new Subject<IMessageProcessingState>();
     const executor = new ExecutorsFactory(mediatorOptions, providersManager, subject).create();
     const mediator = new Mediator(logger, subject, providersManager, executor);
-    LoggingBootstrapper.bootstrap(logger, mediator);
+    LoggingBootstrapper.bootstrap(logger, mediator, options);
     providersManager.register(...(mediatorOptions.providers || []));
     return mediator;
   }

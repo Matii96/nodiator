@@ -1,6 +1,7 @@
 import { ProvidersInstantiator } from '../executor/ports/providers-instantiator.port';
 import { IMessageProvider } from '../messages';
 import { Type } from '../utils/type.interface';
+import { MediatorLoggingLevels } from './mediator.config';
 import { MediatorConfigurator } from './mediator.configurator';
 
 export interface MediatorOptions {
@@ -15,9 +16,14 @@ export interface MediatorOptions {
   providersInstantiator?: ProvidersInstantiator;
 
   /**
-   * Custom logger implementation
+   * Custom logger implementation.
    */
   logger?: IMediatorLogger;
+
+  /**
+   * Definition of exceptions that should be logged with custom level.
+   */
+  exceptionsLoggingLevels?: Partial<Record<MediatorLoggingLevels, Type<Error>[]>>;
 
   /**
    * Dynamic options configurator.

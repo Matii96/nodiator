@@ -21,6 +21,9 @@ Flexible [mediator](https://refactoring.guru/design-patterns/mediator) pattern i
 - [Messages documentation](#messages)
 - [Providers scope](#providers_scope)
 - [Logging](#logging)
+  - [Logging levels](#logging_levels)
+  - [Custom logger](#logging_custom_logger)
+  - [Exceptions levels override](#logging_exceptions_levels)
 - [License](#license)
 
 ## 💡 Idea
@@ -116,9 +119,29 @@ Above example implementation is identical with call-scoped instatiting.
 
 <a name="logging"></a>
 
-Mediator supports following levels of logging: `DEBUG`, `INFO`, `WARN`, `ERROR` and `NONE`. The default one is `INFO` and allows all logs to be visible besides those marked as `DEBUG`. They are logged via `console` methods.
+Mediator supports built-in logging system which can be easily customized.
 
-Both of those behaviours can be modified in the mediator configuration.
+In addition to that the mediator object extends RxJS Observable and can be subscribed to. It emits all messages state changes - starting handlers execution, errors etc.
+
+### Levels
+
+<a name="logging_levels"></a>
+
+Mediator supports following levels of logging: `DEBUG`, `INFO`, `WARN`, `ERROR` and `NONE`. The default one is `INFO` and allows all logs to be visible besides those marked as `DEBUG`.
+
+```ts
+const mediator = MediatorFactory.create({
+  config: () => ({ logs: { level: MediatorLoggingLevels.DEBUG } }),
+});
+```
+
+Note that `config` property is function called each time configuration data is needed which allows to implement logic to change mediator behaviour without app reload.
+
+### Custom logger
+
+<a name="logging_custom_logger"></a>
+
+By default messages are logged via `console` methods.
 
 ```ts
 class CustomLogger implements IMediatorLogger {
@@ -137,15 +160,25 @@ class CustomLogger implements IMediatorLogger {
 }
 
 const mediator = MediatorFactory.create({
-  providers: [ExampleRequestHandler, SomeEventHandler],
-  logger: new CustomLogger(),
-  config: () => ({ logs: { level: MediatorLoggingLevels.DEBUG } })
+  logger: new CustomLogger()
 });
 ```
 
-Note that `config` property is function called each time configuration data is needed which allows to implement logic to change mediator behaviour without app reload.
+### Exceptions levels override
 
-In addition the mediator object extends RxJS Observable and can be subscribed to. It emits all messages state changes - starting handlers execution, errors etc.
+<a name="logging_exceptions_levels"></a>
+
+Some exceptions may not necessarily fit into error level. This behavior can be customized via
+
+```ts
+const mediator = MediatorFactory.create({
+  exceptionsLoggingLevels: {
+    [MediatorLoggingLevels.WARN]: [MessageTimeoutException],
+  },
+});
+```
+
+With above configuration all mediator timeout exceptions will be logged as warnings.
 
 ## License
 

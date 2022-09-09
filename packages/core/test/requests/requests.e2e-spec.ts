@@ -87,8 +87,8 @@ describe('@nodiator/core requests (e2e)', () => {
       await new Promise<void>((resolve) => setImmediate(resolve));
       expect(logger.debug).toHaveBeenCalledTimes(11);
       expect(logger.info).toHaveBeenCalledTimes(2);
-      expect(logger.warn).toHaveBeenCalledTimes(0);
-      expect(logger.error).toHaveBeenCalledTimes(0);
+      expect(logger.warn).not.toHaveBeenCalled();
+      expect(logger.error).not.toHaveBeenCalled();
     });
   });
 
@@ -113,6 +113,7 @@ describe('@nodiator/core requests (e2e)', () => {
       mediator = MediatorFactory.create({
         providers,
         logger,
+        exceptionsLoggingLevels: { [MediatorLoggingLevels.WARN]: [MessageTimeoutException] },
         config: () => ({ requests: { timeout: 1 }, logs: { level: MediatorLoggingLevels.INFO } }),
       });
     });
@@ -150,8 +151,8 @@ describe('@nodiator/core requests (e2e)', () => {
         await lastValueFrom(mediator.request<string>(testRequest));
       } catch {}
       expect(logger.info).toHaveBeenCalledTimes(2);
-      expect(logger.warn).toHaveBeenCalledTimes(0);
-      expect(logger.error).toHaveBeenCalledTimes(1);
+      expect(logger.warn).toHaveBeenCalledTimes(1);
+      expect(logger.error).not.toHaveBeenCalled();
     });
   });
 });

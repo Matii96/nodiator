@@ -76,8 +76,8 @@ describe('@nodiator/core events (e2e)', () => {
         complete() {
           expect(logger.debug).toHaveBeenCalledTimes(6);
           expect(logger.info).toHaveBeenCalledTimes(2);
-          expect(logger.warn).toHaveBeenCalledTimes(0);
-          expect(logger.error).toHaveBeenCalledTimes(0);
+          expect(logger.warn).not.toHaveBeenCalled();
+          expect(logger.error).not.toHaveBeenCalled();
           done();
         },
       });
@@ -105,7 +105,9 @@ describe('@nodiator/core events (e2e)', () => {
     beforeEach(() => {
       mediator = MediatorFactory.create({
         providers: timeoutProviders,
-        config: () => ({ events: { timeout: 1 }, logs: { level: MediatorLoggingLevels.NONE } }),
+        logger,
+        exceptionsLoggingLevels: { [MediatorLoggingLevels.WARN]: [MessageTimeoutException] },
+        config: () => ({ events: { timeout: 1 }, logs: { level: MediatorLoggingLevels.DEBUG } }),
       });
     });
 
@@ -119,6 +121,15 @@ describe('@nodiator/core events (e2e)', () => {
         await lastValueFrom(mediator.publish(testEvent));
       } catch {}
       expect(eventStates).toEqual(timeoutSteps(eventStates[0]?.id, testEvent, new MessageTimeoutException(testEvent)));
+    });
+
+    it('should log event handling steps', async () => {
+      try {
+        await lastValueFrom(mediator.publish(testEvent));
+      } catch {}
+      expect(logger.info).toHaveBeenCalledTimes(3);
+      expect(logger.warn).toHaveBeenCalledTimes(1);
+      expect(logger.error).not.toHaveBeenCalled();
     });
   });
 
@@ -184,7 +195,7 @@ describe('@nodiator/core events (e2e)', () => {
         complete() {
           expect(logger.debug).toHaveBeenCalledTimes(12);
           expect(logger.info).toHaveBeenCalledTimes(3);
-          expect(logger.warn).toHaveBeenCalledTimes(0);
+          expect(logger.warn).not.toHaveBeenCalled();
           expect(logger.error).toHaveBeenCalledTimes(2);
           done();
         },
