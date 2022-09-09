@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/Matii96/nodiator/compare/v2.0.0...v2.1.0) (2022-09-09)
+
+
+### Bug Fixes
+
+* **core:** invalid config structure correction ([cf50f06](https://github.com/Matii96/nodiator/commit/cf50f06894b3d82c464f61d8d8a475d8d54cb16a))
+
+
+### Features
+
+* **core:** custom exceptions logging levels ([5267794](https://github.com/Matii96/nodiator/commit/5267794d2773cb9ea5a8561ee01531ee7143255c))
+* **core:** separated debug & info logs for messages finalization ([b786b6f](https://github.com/Matii96/nodiator/commit/b786b6f1c71f738f6a14aba95a3766a4af2f4ab2))
+
+
+
+
+
 # [2.0.0](https://github.com/Matii96/nodiator/compare/v1.1.3...v2.0.0) (2022-09-08)
 
 
