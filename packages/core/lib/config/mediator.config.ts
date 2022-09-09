@@ -1,31 +1,34 @@
-export interface MediatorConfig {
+interface RequestsConfig {
   /**
    * Time in milliseconds after which request will be considered as failed.
    */
-  requestsTimeout?: number;
+  timeout?: number;
+}
 
+interface EventsConfig {
   /**
    * Time in milliseconds after which event will be considered as failed.
    */
-
-  eventsTimeout?: number;
+  timeout?: number;
   /**
    * Execution attempts count for each event handler.
    * @default 0
    */
 
-  eventsHandlingRetriesAttempts?: number;
+  handlingRetriesAttempts?: number;
   /**
    * Deplay between each attept of event handling.
    * @default 0
    */
-  eventsHandlingRetriesDelay?: number;
+  handlingRetriesDelay?: number;
+}
 
+interface LoggingConfig {
   /**
    * Enables explicit logging
-   * @default 'none'
+   * @default MediatorLoggingLevels.INFO
    */
-  loggingLevel?: MediatorLoggingLevels;
+  level?: MediatorLoggingLevels;
 }
 
 export enum MediatorLoggingLevels {
@@ -34,4 +37,10 @@ export enum MediatorLoggingLevels {
   WARN = 'warn',
   ERROR = 'error',
   NONE = 'none',
+}
+
+export interface MediatorConfig {
+  requests?: RequestsConfig;
+  events?: EventsConfig;
+  logs?: LoggingConfig;
 }

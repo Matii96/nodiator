@@ -36,10 +36,16 @@ export class EventsExecutor implements IEventsExecutor {
   execute(id: string, event: IEvent) {
     const options = this._config.config();
     return from(this.getHandlers(event)).pipe(
-      mergeMap((handler) =>
-        ExecutorUtils.isPromise(handler)
-          ? from(handler as Promise<IEventHandler<IEvent>>)
-          : of(handler as IEventHandler<IEvent>)
+      mergeMap(
+        (handler) =>
+          ExecutorUtils.isPromise(handler)
+            ? from(handler as Promise<IEventHandler<IEvent>>)
+            : of(handler as IEventHandler<IEvent>)
+        // mergeMap((handler) => {
+        //   console.log({ handler });
+        //   return ExecutorUtils.isPromise(handler)
+        //     ? from(handler as Promise<IEventHandler<IEvent>>)
+        //     : of(handler as IEventHandler<IEvent>);
       ),
       mergeMap((handler) => this.handleEvent({ options, id, event, handler })),
       last(),
@@ -60,9 +66,9 @@ export class EventsExecutor implements IEventsExecutor {
   private handleEvent(args: HandleEventOptions) {
     this._subject.next({ id: args.id, messageType: MessageTypes.EVENT, message: args.event, provider: args.handler });
     return defer(() => args.handler.handle(args.event)).pipe(
-      args?.options?.eventsTimeout
+      args?.options?.events?.timeout
         ? timeout({
-            each: args.options.eventsTimeout,
+            each: args.options.events.timeout,
             with: () => throwError(() => new MessageTimeoutException(args.event)),
           })
         : tap(),
@@ -77,8 +83,8 @@ export class EventsExecutor implements IEventsExecutor {
         return throwError(() => error);
       }),
       retry({
-        count: args?.options?.eventsHandlingRetriesAttempts || 0,
-        delay: args?.options?.eventsHandlingRetriesDelay || 0,
+        count: args?.options?.events?.handlingRetriesAttempts || 0,
+        delay: args?.options?.events?.handlingRetriesDelay || 0,
       }),
       tap(() =>
         this._subject.next({

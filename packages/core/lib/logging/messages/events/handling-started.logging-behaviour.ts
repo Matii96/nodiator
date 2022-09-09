@@ -5,14 +5,14 @@ import { IEventProcessingState } from '../../../executor/messages/events/interfa
 import { ILoggingBehaviour } from '../../ports/logging-behaviour.port';
 
 export class EventsHandlingStartedLoggingBehaviour implements ILoggingBehaviour {
-  constructor(private readonly logger: IMediatorLogger, source: Observable<IEventProcessingState>) {
+  constructor(private readonly _logger: IMediatorLogger, source: Observable<IEventProcessingState>) {
     source
       .pipe(filter((state) => state.messageType === MessageTypes.EVENT && state.provider && !state.handled))
       .subscribe((state) => this.handle(state));
   }
 
   private handle(state: IEventProcessingState) {
-    this.logger.debug(
+    this._logger.debug(
       ` -- handling ${state.message.constructor.name} (id=${state.id}}) with ${state.provider.constructor.name}`
     );
   }

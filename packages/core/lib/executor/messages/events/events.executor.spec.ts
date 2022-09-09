@@ -66,7 +66,7 @@ describe('EventsExecutor', () => {
     beforeEach(() => {
       executor = new EventsExecutor(
         subject,
-        { config: () => ({ eventsTimeout: 1 }) },
+        { config: () => ({ events: { timeout: 1 } }) },
         providersManager,
         providersInstantiatorMock
       );

@@ -57,7 +57,7 @@ export class RequestsExecutor implements IRequestsExecutor {
   }
 
   private call<TResult>(args: CallOptions<TResult>) {
-    const requestsTimeout = this._options.config().requestsTimeout;
+    const requestsTimeout = this._options.config().requests?.timeout;
     return args.chain.pipe(
       requestsTimeout
         ? timeout({ each: requestsTimeout, with: () => throwError(() => new MessageTimeoutException(args.request)) })

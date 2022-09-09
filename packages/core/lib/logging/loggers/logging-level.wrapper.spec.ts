@@ -20,7 +20,7 @@ describe('LoggingLevelWrapper', () => {
   });
 
   it('should log all levels', () => {
-    logger = new LoggingLevelWrapper(baseLogger, () => ({ loggingLevel: MediatorLoggingLevels.DEBUG }));
+    logger = new LoggingLevelWrapper(baseLogger, () => ({ logs: { level: MediatorLoggingLevels.DEBUG } }));
     logAll(logger);
 
     expect(baseLogger.debug).toHaveBeenCalledTimes(1);
@@ -30,32 +30,32 @@ describe('LoggingLevelWrapper', () => {
   });
 
   it('should log all levels except of debug', () => {
-    logger = new LoggingLevelWrapper(baseLogger, () => ({ loggingLevel: MediatorLoggingLevels.INFO }));
+    logger = new LoggingLevelWrapper(baseLogger, () => ({ logs: { level: MediatorLoggingLevels.INFO } }));
     logAll(logger);
 
-    expect(baseLogger.debug).toHaveBeenCalledTimes(0);
+    expect(baseLogger.debug).not.toHaveBeenCalled();
     expect(baseLogger.info).toHaveBeenCalledTimes(1);
     expect(baseLogger.warn).toHaveBeenCalledTimes(1);
     expect(baseLogger.error).toHaveBeenCalledTimes(1);
   });
 
   it('should log all levels except of debug and info', () => {
-    logger = new LoggingLevelWrapper(baseLogger, () => ({ loggingLevel: MediatorLoggingLevels.WARN }));
+    logger = new LoggingLevelWrapper(baseLogger, () => ({ logs: { level: MediatorLoggingLevels.WARN } }));
     logAll(logger);
 
-    expect(baseLogger.debug).toHaveBeenCalledTimes(0);
-    expect(baseLogger.info).toHaveBeenCalledTimes(0);
+    expect(baseLogger.debug).not.toHaveBeenCalled();
+    expect(baseLogger.info).not.toHaveBeenCalled();
     expect(baseLogger.warn).toHaveBeenCalledTimes(1);
     expect(baseLogger.error).toHaveBeenCalledTimes(1);
   });
 
   it('should log only error level', () => {
-    logger = new LoggingLevelWrapper(baseLogger, () => ({ loggingLevel: MediatorLoggingLevels.ERROR }));
+    logger = new LoggingLevelWrapper(baseLogger, () => ({ logs: { level: MediatorLoggingLevels.ERROR } }));
     logAll(logger);
 
-    expect(baseLogger.debug).toHaveBeenCalledTimes(0);
-    expect(baseLogger.info).toHaveBeenCalledTimes(0);
-    expect(baseLogger.warn).toHaveBeenCalledTimes(0);
+    expect(baseLogger.debug).not.toHaveBeenCalled();
+    expect(baseLogger.info).not.toHaveBeenCalled();
+    expect(baseLogger.warn).not.toHaveBeenCalled();
     expect(baseLogger.error).toHaveBeenCalledTimes(1);
   });
 });

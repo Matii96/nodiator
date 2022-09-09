@@ -13,7 +13,10 @@ describe('@nodiator/core common (e2e)', () => {
 
   beforeEach(() => {
     logger = new MediatorLoggerMock();
-    mediator = MediatorFactory.create({ logger, config: () => ({ loggingLevel: MediatorLoggingLevels.INFO }) });
+    mediator = MediatorFactory.create({
+      logger,
+      config: () => ({ logs: { level: MediatorLoggingLevels.INFO } }),
+    });
     mediator.providers.register(TestRequestHandler, TestGlobalEventHandler, TestEventHandler);
   });
 

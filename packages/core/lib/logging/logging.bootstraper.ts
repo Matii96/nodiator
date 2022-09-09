@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { Type } from '../utils/type.interface';
-import { IMediatorLogger } from '../config/mediator.options';
+import { IMediatorLogger, MediatorOptions } from '../config/mediator.options';
 import { IMessageProcessingState } from '../executor';
 import { ILoggingBehaviour } from './ports/logging-behaviour.port';
 import { eventsLoggingBehaviours } from './messages/events';
@@ -12,7 +12,7 @@ export class LoggingBootstrapper {
     ...requestsLoggingBehaviours,
   ];
 
-  static bootstrap(logger: IMediatorLogger, source: Observable<IMessageProcessingState>) {
-    this._logsAdapter.forEach((adapterType) => new adapterType(logger, source));
+  static bootstrap(logger: IMediatorLogger, source: Observable<IMessageProcessingState>, options: MediatorOptions) {
+    this._logsAdapter.forEach((adapterType) => new adapterType(logger, source, options));
   }
 }

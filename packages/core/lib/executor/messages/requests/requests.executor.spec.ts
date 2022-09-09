@@ -66,7 +66,7 @@ describe('RequestsExecutor', () => {
     beforeEach(() => {
       executor = new RequestsExecutor(
         subject,
-        { config: () => ({ requestsTimeout: 1 }) },
+        { config: () => ({ requests: { timeout: 1 } }) },
         providersManager,
         providersInstantiatorMock,
         requestsProvidersChainer

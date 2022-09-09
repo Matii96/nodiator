@@ -12,6 +12,6 @@ export class TestRequestHandler implements IRequestHandler<TestRequest, void> {
 @Injectable()
 export class ModuleConfigurator implements IMediatorOptionsFactory {
   createMediatorOptions() {
-    return { config: () => ({ loggingLevel: MediatorLoggingLevels.DEBUG }) };
+    return { config: () => ({ logs: { level: MediatorLoggingLevels.DEBUG } }) };
   }
 }
