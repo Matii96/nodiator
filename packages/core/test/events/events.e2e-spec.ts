@@ -126,6 +126,7 @@ describe('@nodiator/core events (e2e)', () => {
     it('should log event handling steps', async () => {
       try {
         await lastValueFrom(mediator.publish(testEvent));
+        await new Promise((resolve) => setImmediate(resolve));
       } catch {}
       expect(logger.info).toHaveBeenCalledTimes(3);
       expect(logger.warn).toHaveBeenCalledTimes(1);
