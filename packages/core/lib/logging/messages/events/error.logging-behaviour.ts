@@ -21,7 +21,7 @@ export class EventsErrorLoggingBehaviour extends SharedErrorLoggingBehaviour imp
     const errorString = state.error.stack || state.error.message || state.error;
     this.log(
       state.error,
-      ` -- ${state.provider.constructor.name} failed to handle ${state.message.constructor.name} (id=${state.id}}). ${errorString}`
+      ` -- ${state.provider.constructor.name} failed to handle ${state.message.constructor.name} (id=${state.id}). ${errorString}`
     );
   }
 }

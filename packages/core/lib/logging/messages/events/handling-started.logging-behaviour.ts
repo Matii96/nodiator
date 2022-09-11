@@ -13,7 +13,7 @@ export class EventsHandlingStartedLoggingBehaviour implements ILoggingBehaviour 
 
   private handle(state: IEventProcessingState) {
     this._logger.debug(
-      ` -- handling ${state.message.constructor.name} (id=${state.id}}) with ${state.provider.constructor.name}`
+      ` -- handling ${state.message.constructor.name} (id=${state.id}) with ${state.provider.constructor.name}`
     );
   }
 }

@@ -13,7 +13,7 @@ export class RequestsProviderRespondedLoggingBehaviour implements ILoggingBehavi
 
   private handle(state: IRequestProcessingState) {
     this._logger.debug(
-      ` -- ${state.provider.constructor.name} responded to ${state.message.constructor.name} (id=${state.id}})`
+      ` -- ${state.provider.constructor.name} responded to ${state.message.constructor.name} (id=${state.id})`
     );
   }
 }

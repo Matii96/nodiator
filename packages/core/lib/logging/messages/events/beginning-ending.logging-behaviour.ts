@@ -15,7 +15,7 @@ export class EventsBeginningEndingLoggingBehaviour implements ILoggingBehaviour 
 
   private firstEntry(state: IEventProcessingState) {
     this._occuredEvents.set(state.id, new Date());
-    this._logger.debug(`Emmited ${state.message.constructor.name} (id=${state.id}})`);
+    this._logger.debug(`Emmited ${state.message.constructor.name} (id=${state.id})`);
   }
 
   private eventProcessed(state: IEventProcessingState) {
@@ -23,9 +23,9 @@ export class EventsBeginningEndingLoggingBehaviour implements ILoggingBehaviour 
     this._occuredEvents.delete(state.id);
     if (!state.error) {
       this._logger.debug(
-        ` -- ${state.message.constructor.name} (id=${state.id}}) took ${(elapsedTime / 1000).toFixed(3)}s`
+        ` -- ${state.message.constructor.name} (id=${state.id}) took ${(elapsedTime / 1000).toFixed(3)}s`
       );
-      this._logger.info(`${state.message.constructor.name} (id=${state.id}}) handled`);
+      this._logger.info(`${state.message.constructor.name} (id=${state.id}) handled`);
     }
   }
 }

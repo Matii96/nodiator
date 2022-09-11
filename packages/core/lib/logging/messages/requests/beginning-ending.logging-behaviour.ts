@@ -19,7 +19,7 @@ export class RequestsBeginningEndingLoggingBehaviour implements ILoggingBehaviou
 
   private firstEntry(state: IRequestProcessingState) {
     this._ongoingRequests.set(state.id, { startedAt: new Date() });
-    this._logger.debug(`Requested ${state.message.constructor.name} (id=${state.id}})`);
+    this._logger.debug(`Requested ${state.message.constructor.name} (id=${state.id})`);
   }
 
   private requestProcessed(state: IRequestProcessingState) {
@@ -29,9 +29,9 @@ export class RequestsBeginningEndingLoggingBehaviour implements ILoggingBehaviou
     // Let other logging behaviours to run before final message
     setImmediate(() => {
       this._logger.debug(
-        ` -- ${state.message.constructor.name} (id=${state.id}}) took ${(elapsedTime / 1000).toFixed(3)}s`
+        ` -- ${state.message.constructor.name} (id=${state.id}) took ${(elapsedTime / 1000).toFixed(3)}s`
       );
-      this._logger.info(`${state.message.constructor.name} (id=${state.id}}) handled`);
+      this._logger.info(`${state.message.constructor.name} (id=${state.id}) handled`);
     });
   }
 }

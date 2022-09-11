@@ -18,7 +18,7 @@ export class RequestsErrorLoggingBehaviour extends SharedErrorLoggingBehaviour i
   }
 
   private handle(state: IRequestProcessingState) {
-    const requestString = `${state.message.constructor.name} (id=${state.id}})`;
+    const requestString = `${state.message.constructor.name} (id=${state.id})`;
     const errorString = state.error.stack || state.error.message || state.error;
 
     this.log(
