@@ -2,9 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
-    "types": ["node", "jest"],
     "baseUrl": "./lib",
-    "outDir": "./dist",
     "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
