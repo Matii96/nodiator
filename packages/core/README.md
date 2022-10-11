@@ -32,7 +32,7 @@ Flexible [mediator](https://refactoring.guru/design-patterns/mediator) pattern i
 
 When application grows in size it becomes more and more complicated to control dataflow between objects / modules. Modifying one of them may lead to unwanted "shotgun surgery" resulting in breaking other features of the application.
 
-Other problem are extra indirect actions like logging or caching moved directly to eg. business parts of code effectively preventing us from easily unplugging any of the middle actions from application.
+Other problem are extra intermediate actions like logging or caching moved directly to eg. business parts of code effectively preventing us from easily unplugging any of the middle actions from application.
 
 Nodiator aims to address this problem by providing configurable mediator object serving as a communication hub.
 
