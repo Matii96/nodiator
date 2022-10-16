@@ -1,9 +1,9 @@
 import { FactoryProvider } from '@nestjs/common';
-import { NAMESPACE_MEDIATOR } from './constants';
+import { NAMESPACE_MEDIATOR } from './injection/constants';
 import { MissingAsyncConfigurationException } from './exceptions/missing-async-configuration.exception';
 import { MediatorModule } from './mediator.module';
 import { ModuleConfigurator } from './mediator.module.mocks';
-import { getMediatorToken } from './utils';
+import { getMediatorToken } from './injection//get-mediator-token.factory';
 
 describe('MediatorModule', () => {
   const namespace = 'namespace';

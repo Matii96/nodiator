@@ -1,4 +1,4 @@
-import { GLOBAL_NAMESPACE } from '../constants';
+import { GLOBAL_NAMESPACE } from '../injection/constants';
 import { MediatorNestException } from './nest-mediator.exception';
 
 export class DuplicatedNamespacesException extends MediatorNestException {

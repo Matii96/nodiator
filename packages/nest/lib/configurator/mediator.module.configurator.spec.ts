@@ -2,11 +2,11 @@ import { Scope, ScopeOptions } from '@nestjs/common';
 import { ModulesContainer } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import { SCOPE_OPTIONS_METADATA } from '@nestjs/common/constants';
-import { getMediatorToken } from '../utils/get-mediator-token.util';
 import { IRequestsProvidersSchema, MediatorFactory, MediatorLoggingLevels, MessageTypes } from '@nodiator/core';
-import { MediatorModuleConfigurator } from './mediator.module.configurator';
 import { TestRequest, TestRequestHandler } from '../mediator.module.mocks';
 import { NamespaceNotInitializedException } from '../exceptions/namespace-not-initialized.exception';
+import { getMediatorToken } from '../injection/get-mediator-token.factory';
+import { MediatorModuleConfigurator } from './mediator.module.configurator';
 
 describe('MediatorModuleConfigurator', () => {
   let configurator: MediatorModuleConfigurator;

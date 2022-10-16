@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { getMediatorToken } from '../utils/get-mediator-token.util';
+import { getMediatorToken } from './get-mediator-token.factory';
 
 /**
  * Injects Mediator instance from the given namespace if specified.

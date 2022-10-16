@@ -1,4 +1,3 @@
-export * from './decorators';
-export * from './utils';
+export * from './injection';
 export * from './options';
 export * from './mediator.module';
