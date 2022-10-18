@@ -24,7 +24,7 @@ export class MediatorModule {
       configurations = [{}];
     }
 
-    const providers = configurations.map((configuration) => ({
+    const providers = configurations.map<FactoryProvider>((configuration) => ({
       provide: getMediatorToken(configuration.namespace),
       inject: [MediatorModuleConfigurator],
       useFactory: (optionsFactory: MediatorModuleConfigurator) => optionsFactory.configureRoot(configuration),

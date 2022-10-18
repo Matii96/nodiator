@@ -17,7 +17,7 @@ Utilizes Nest's DI system to manage providers and mediator instances.
 
 ## Installation
 
-<a name="requirements"></a>
+<a name="installation"></a>
 
 ```bash
 npm i @nodiator/core @nodiator/nest
