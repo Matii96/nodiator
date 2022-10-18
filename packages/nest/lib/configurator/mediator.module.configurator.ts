@@ -2,10 +2,10 @@ import { Injectable, Scope, Type } from '@nestjs/common';
 import { ModuleRef, ModulesContainer } from '@nestjs/core';
 import { IMediator, IMessageProvider, MediatorFactory, ScopeOptions, SCOPE_OPTIONS_METADATA } from '@nodiator/core';
 import { NamespaceNotInitializedException } from '../exceptions/namespace-not-initialized.exception';
+import { getMediatorToken } from '../injection/get-mediator-token.factory';
 import { MediatorLogger } from '../logger/mediator.logger';
 import { MediatorForFeatureOptions } from '../options/feature.module.options';
 import { MediatorModuleOptions } from '../options/root.module.options';
-import { getMediatorToken } from '../utils';
 
 @Injectable()
 export class MediatorModuleConfigurator {

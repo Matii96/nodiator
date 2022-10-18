@@ -1,6 +1,5 @@
 import { DynamicModule, Module, Type, Provider, FactoryProvider } from '@nestjs/common';
 import { MissingAsyncConfigurationException } from './exceptions/missing-async-configuration.exception';
-import { getMediatorToken } from './utils/get-mediator-token.util';
 import { MediatorModuleConfigurator } from './configurator/mediator.module.configurator';
 import { MediatorModuleOptionsValidator } from './options/module.options.validator';
 import {
@@ -11,7 +10,8 @@ import {
 } from './options/root-async.module.options';
 import { MediatorForFeatureOptions } from './options/feature.module.options';
 import { MediatorModuleOptions } from './options/root.module.options';
-import { NAMESPACE_MEDIATOR } from './constants';
+import { getMediatorToken } from './injection/get-mediator-token.factory';
+import { NAMESPACE_MEDIATOR } from './injection/constants';
 
 @Module({
   providers: [MediatorModuleConfigurator],
