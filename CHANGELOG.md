@@ -3,116 +3,83 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [2.2.0](https://github.com/Matii96/nodiator/compare/v2.1.1...v2.2.0) (2022-09-11)
-
+## [2.2.1](https://github.com/Matii96/nodiator/compare/v2.2.0...v2.2.1) (2022-10-28)
 
 ### Bug Fixes
 
-* **core:** corrected  messages logging typo '}' eg. "(uuid})" ([3110303](https://github.com/Matii96/nodiator/commit/3110303560fd11def4d3b8d706694994dc614f1c))
+- **core:** outdated documentation update ([a1adb03](https://github.com/Matii96/nodiator/commit/a1adb0394c6a1a6ac4663109a31bddf668c2aa18))
+- **nest:** outdated documentation update ([21d0b7d](https://github.com/Matii96/nodiator/commit/21d0b7d0cde79e9877a09e537f8afde4c3605a97))
 
+# [2.2.0](https://github.com/Matii96/nodiator/compare/v2.1.1...v2.2.0) (2022-09-11)
+
+### Bug Fixes
+
+- **core:** corrected messages logging typo '}' eg. "(uuid})" ([3110303](https://github.com/Matii96/nodiator/commit/3110303560fd11def4d3b8d706694994dc614f1c))
 
 ### Features
 
-* **nest:** added MediatorNestOptions to lib exports ([ecde3a3](https://github.com/Matii96/nodiator/commit/ecde3a3ec7d4ec681be5ee607cc834c1b299f735))
-
-
-
-
+- **nest:** added MediatorNestOptions to lib exports ([ecde3a3](https://github.com/Matii96/nodiator/commit/ecde3a3ec7d4ec681be5ee607cc834c1b299f735))
 
 ## [2.1.1](https://github.com/Matii96/nodiator/compare/v2.1.0...v2.1.1) (2022-09-10)
 
-
 ### Bug Fixes
 
-* **core:** move rxjs to peerDependencies ([9702d2e](https://github.com/Matii96/nodiator/commit/9702d2e865d41c69a6993002ccdfeeed10f4a30b))
-
-
-
-
+- **core:** move rxjs to peerDependencies ([9702d2e](https://github.com/Matii96/nodiator/commit/9702d2e865d41c69a6993002ccdfeeed10f4a30b))
 
 # [2.1.0](https://github.com/Matii96/nodiator/compare/v2.0.0...v2.1.0) (2022-09-09)
 
-
 ### Bug Fixes
 
-* **core:** invalid config structure correction ([cf50f06](https://github.com/Matii96/nodiator/commit/cf50f06894b3d82c464f61d8d8a475d8d54cb16a))
-
+- **core:** invalid config structure correction ([cf50f06](https://github.com/Matii96/nodiator/commit/cf50f06894b3d82c464f61d8d8a475d8d54cb16a))
 
 ### Features
 
-* **core:** custom exceptions logging levels ([5267794](https://github.com/Matii96/nodiator/commit/5267794d2773cb9ea5a8561ee01531ee7143255c))
-* **core:** separated debug & info logs for messages finalization ([b786b6f](https://github.com/Matii96/nodiator/commit/b786b6f1c71f738f6a14aba95a3766a4af2f4ab2))
-
-
-
-
+- **core:** custom exceptions logging levels ([5267794](https://github.com/Matii96/nodiator/commit/5267794d2773cb9ea5a8561ee01531ee7143255c))
+- **core:** separated debug & info logs for messages finalization ([b786b6f](https://github.com/Matii96/nodiator/commit/b786b6f1c71f738f6a14aba95a3766a4af2f4ab2))
 
 # [2.0.0](https://github.com/Matii96/nodiator/compare/v1.1.3...v2.0.0) (2022-09-08)
 
-
 ### Features
 
-* **core:** added compatibility with rxjs to events handlers types ([2712f0b](https://github.com/Matii96/nodiator/commit/2712f0bbdfe8dab6369a4df05550c70192622573))
-* **core:** lazy-loaded config ([3d44e9a](https://github.com/Matii96/nodiator/commit/3d44e9a3c2d15a76d0f3036dc00236875cb046f9))
-* **core:** moved from promises mediator handling to full rxjs ([294e768](https://github.com/Matii96/nodiator/commit/294e768392592cebd1eecf61012c62a77c7104da))
-* **nest:** async mediator module registration ([8e8654e](https://github.com/Matii96/nodiator/commit/8e8654ede473c611ce825de3ebd01b8c33f1d454))
-* **nest:** compatibility with core ^2.0.0 ([3f882e1](https://github.com/Matii96/nodiator/commit/3f882e1371650780cbb72ca77ae6e3690b94392f))
-
+- **core:** added compatibility with rxjs to events handlers types ([2712f0b](https://github.com/Matii96/nodiator/commit/2712f0bbdfe8dab6369a4df05550c70192622573))
+- **core:** lazy-loaded config ([3d44e9a](https://github.com/Matii96/nodiator/commit/3d44e9a3c2d15a76d0f3036dc00236875cb046f9))
+- **core:** moved from promises mediator handling to full rxjs ([294e768](https://github.com/Matii96/nodiator/commit/294e768392592cebd1eecf61012c62a77c7104da))
+- **nest:** async mediator module registration ([8e8654e](https://github.com/Matii96/nodiator/commit/8e8654ede473c611ce825de3ebd01b8c33f1d454))
+- **nest:** compatibility with core ^2.0.0 ([3f882e1](https://github.com/Matii96/nodiator/commit/3f882e1371650780cbb72ca77ae6e3690b94392f))
 
 ### Reverts
 
-* Revert "ci(pr-push): saving coverage output" ([75af00a](https://github.com/Matii96/nodiator/commit/75af00abe7d9a114c015dd39488e04c4d1fedfc6))
-
+- Revert "ci(pr-push): saving coverage output" ([75af00a](https://github.com/Matii96/nodiator/commit/75af00abe7d9a114c015dd39488e04c4d1fedfc6))
 
 ### BREAKING CHANGES
 
-* **core:** new mediator options structure
-* **core:** Requests pipelines are now required to return rxjs observable. Handlers can return
-it but promises are still valid.
-
-
-
-
+- **core:** new mediator options structure
+- **core:** Requests pipelines are now required to return rxjs observable. Handlers can return
+  it but promises are still valid.
 
 ## [1.1.3](https://github.com/Matii96/nodiator/compare/v1.1.2...v1.1.3) (2022-08-12)
 
 **Note:** Version bump only for package nodiator
 
-
-
-
-
 ## [1.1.2](https://github.com/Matii96/nodiator/compare/v1.1.1...v1.1.2) (2022-08-12)
-
 
 ### Bug Fixes
 
-* **nest:** changed peer dependency of nodiator core to ^1.0.0 ([4af3a3c](https://github.com/Matii96/nodiator/commit/4af3a3ca1105acea6a3cbda57cd27ce5229bf9b9))
-
-
-
-
+- **nest:** changed peer dependency of nodiator core to ^1.0.0 ([4af3a3c](https://github.com/Matii96/nodiator/commit/4af3a3ca1105acea6a3cbda57cd27ce5229bf9b9))
 
 ## [1.1.1](https://github.com/Matii96/nodiator/compare/v1.1.0...v1.1.1) (2022-08-12)
 
-
 ### Bug Fixes
 
-* **precommit:** fixed running tests during precommit ([#3](https://github.com/Matii96/nodiator/issues/3)) ([38f42ca](https://github.com/Matii96/nodiator/commit/38f42cac6b910393f57d42ec1a436027b1a02801))
-
-
-
-
+- **precommit:** fixed running tests during precommit ([#3](https://github.com/Matii96/nodiator/issues/3)) ([38f42ca](https://github.com/Matii96/nodiator/commit/38f42cac6b910393f57d42ec1a436027b1a02801))
 
 # 1.1.0 (2022-08-09)
 
-
 ### Bug Fixes
 
-* fixed hyperlinks to sub docs ([684a30e](https://github.com/Matii96/nodiator/commit/684a30e4c6c35d0cf6d0e171ae9147896f06c8d6))
-* root README typo fix ([808f7be](https://github.com/Matii96/nodiator/commit/808f7be2160b0ddd9bff45a6019d4a27e6d87e47))
-
+- fixed hyperlinks to sub docs ([684a30e](https://github.com/Matii96/nodiator/commit/684a30e4c6c35d0cf6d0e171ae9147896f06c8d6))
+- root README typo fix ([808f7be](https://github.com/Matii96/nodiator/commit/808f7be2160b0ddd9bff45a6019d4a27e6d87e47))
 
 ### Features
 
-* project setup ([c3d2d56](https://github.com/Matii96/nodiator/commit/c3d2d56fd23fc795f4bda1d2818f53a94c73b860))
+- project setup ([c3d2d56](https://github.com/Matii96/nodiator/commit/c3d2d56fd23fc795f4bda1d2818f53a94c73b860))

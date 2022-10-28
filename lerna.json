@@ -1,8 +1,5 @@
 {
-  "packages": [
-    "packages/*",
-    "examples/*"
-  ],
+  "packages": ["packages/*", "examples/*"],
   "npmClient": "yarn",
   "useWorkspaces": true,
   "command": {
@@ -12,8 +9,6 @@
       "message": "chore(release): %s"
     }
   },
-  "ignoreChanges": [
-    "**/*.md"
-  ],
-  "version": "2.2.0"
+  "ignoreChanges": ["**/*.md"],
+  "version": "2.2.1"
 }
