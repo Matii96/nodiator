@@ -57,13 +57,16 @@ yarn add @nodiator/core
 <a name="quick_start"></a>
 
 ```ts
-class ExampleRequest {}
+// Declaration
+class ExampleRequest {
+  constructor(readonly msg: string) {}
+}
 class SomeEvent {}
 
 @RequestHandler(ExampleRequest)
 export class ExampleRequestHandler implements IRequestHandler<ExampleRequest, string> {
   async handle(request: ExampleRequest) {
-    return 'ok';
+    return request.msg;
   }
 }
 
@@ -76,8 +79,16 @@ export class SomeEventHandler implements IEventHandler<SomeEvent> {
 
 const mediator = MediatorFactory.create({ providers: [ExampleRequestHandler, SomeEventHandler] });
 
-console.log(await mediator.request<string>(new ExampleRequest())); // output: ok
-await mediator.publish(new SomeEvent()); // output: SomeEvent handled
+// Execution
+mediator.request<string>(new ExampleRequest('ok')).subscribe((result) => {
+  console.log(result); // output: ok
+});
+
+console.log(await firstValueFrom(mediator.request<string>(new ExampleRequest('async ok')))); // output: async ok
+
+mediator.publish(new SomeEvent()).subscribe((result) => {
+  console.log(result); // output: SomeEvent handled
+});
 ```
 
 ## 📖 Messages documentation
