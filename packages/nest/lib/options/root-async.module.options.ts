@@ -5,9 +5,11 @@ export interface IMediatorOptionsFactory {
   createMediatorOptions(): MediatorNestOptions | Promise<MediatorNestOptions>;
 }
 
+export type ConfigurationFactory = (...providers: any[]) => MediatorNestOptions | Promise<MediatorNestOptions>;
+
 export interface MediatorModuleAsyncConfiguration extends NamespaceOptions {
   inject?: any[];
-  useFactory?: (...providers: any[]) => MediatorNestOptions | Promise<MediatorNestOptions>;
+  useFactory?: ConfigurationFactory;
   useClass?: Type<IMediatorOptionsFactory>;
   useExisting?: Type<IMediatorOptionsFactory>;
 }

@@ -18,11 +18,12 @@ export class RequestsErrorLoggingBehaviour extends SharedErrorLoggingBehaviour i
   }
 
   private handle(state: IRequestProcessingState) {
+    const error = state.error as Error;
     const requestString = `${state.message.constructor.name} (id=${state.id})`;
-    const errorString = state.error.stack || state.error.message || state.error;
+    const errorString = error.stack || error.message || error;
 
     this.log(
-      state.error,
+      error,
       state.provider
         ? ` -- ${state.provider.constructor.name} failed to handle ${requestString}. ${errorString}`
         : `${state.message.constructor.name} failed. ${errorString}`

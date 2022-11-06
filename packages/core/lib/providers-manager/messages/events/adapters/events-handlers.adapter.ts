@@ -2,7 +2,10 @@ import { Type } from '../../../../utils/type.interface';
 import { IEvent, IEventHandler, MessageTypes } from '../../../../messages';
 import { EVENT_HANDLER_METADATA } from '../../../../messages/constants';
 import { IProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
-import { IEventsProvidersSchema } from '../interfaces/events-providers-schema.interface';
+import {
+  IEventsProvidersSchema,
+  IEventsSpecificProvidersSchema,
+} from '../interfaces/events-providers-schema.interface';
 
 export class EventsHandlersAdapter implements IProviderTypeAdapter<IEventsProvidersSchema> {
   readonly messageType = MessageTypes.EVENT;
@@ -26,6 +29,6 @@ export class EventsHandlersAdapter implements IProviderTypeAdapter<IEventsProvid
     if (!specific.has(eventType)) {
       specific.set(eventType, { handlers: [] });
     }
-    specific.get(eventType).handlers.push(provider);
+    (specific.get(eventType) as IEventsSpecificProvidersSchema).handlers.push(provider);
   }
 }

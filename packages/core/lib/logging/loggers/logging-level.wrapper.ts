@@ -10,7 +10,7 @@ export class LoggingLevelWrapper implements IMediatorLogger {
     MediatorLoggingLevels.ERROR,
   ];
 
-  constructor(private readonly _base: IMediatorLogger, private readonly _config: MediatorConfigurator) {}
+  constructor(private readonly _base: IMediatorLogger, private readonly _config?: MediatorConfigurator) {}
 
   debug(msg: string) {
     if (this.getLevel() === MediatorLoggingLevels.DEBUG) this._base.debug(msg);
@@ -29,6 +29,6 @@ export class LoggingLevelWrapper implements IMediatorLogger {
   }
 
   private getLevel() {
-    return this._config().logs?.level || MediatorLoggingLevels.INFO;
+    return (this._config && this._config().logs?.level) || MediatorLoggingLevels.INFO;
   }
 }

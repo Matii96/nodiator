@@ -10,7 +10,7 @@ export class TestGlobalEventHandler implements IGlobalEventHandler {
 
 @EventHandler(TestEvent)
 export class TestEventHandler implements IEventHandler<TestEvent> {
-  static handle = jest.fn(async () => null);
+  static handle = jest.fn(async (): Promise<any> => undefined);
   handle = TestEventHandler.handle;
 }
 

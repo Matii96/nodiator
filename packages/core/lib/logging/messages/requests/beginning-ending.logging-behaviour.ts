@@ -14,7 +14,7 @@ export class RequestsBeginningEndingLoggingBehaviour implements ILoggingBehaviou
   constructor(private readonly _logger: IMediatorLogger, source: Observable<IRequestProcessingState>) {
     const requests = source.pipe(filter((state) => state.messageType === MessageTypes.REQUEST));
     requests.pipe(filter((state) => !this._ongoingRequests.has(state.id))).subscribe((state) => this.firstEntry(state));
-    requests.pipe(filter((state) => state.processed)).subscribe((state) => this.requestProcessed(state));
+    requests.pipe(filter((state) => Boolean(state.processed))).subscribe((state) => this.requestProcessed(state));
   }
 
   private firstEntry(state: IRequestProcessingState) {
@@ -23,7 +23,7 @@ export class RequestsBeginningEndingLoggingBehaviour implements ILoggingBehaviou
   }
 
   private requestProcessed(state: IRequestProcessingState) {
-    const elapsedTime = Date.now() - this._ongoingRequests.get(state.id).startedAt.getTime();
+    const elapsedTime = Date.now() - (this._ongoingRequests.get(state.id) as IOngoingRequest).startedAt.getTime();
     this._ongoingRequests.delete(state.id);
 
     // Let other logging behaviours to run before final message

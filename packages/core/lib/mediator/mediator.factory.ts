@@ -11,14 +11,13 @@ import { Mediator } from './mediator';
 
 export class MediatorFactory {
   static create(options: MediatorOptions = {}): IMediator {
-    const mediatorOptions: MediatorOptions = { config: () => ({}), ...options };
-    const logger = new LoggerFactory(mediatorOptions).create();
+    const logger = new LoggerFactory(options).create();
     const providersManager = new ProvidersManagerFactory(logger).create();
     const subject = new Subject<IMessageProcessingState>();
-    const executor = new ExecutorsFactory(mediatorOptions, providersManager, subject).create();
+    const executor = new ExecutorsFactory(options, providersManager, subject).create();
     const mediator = new Mediator(logger, subject, providersManager, executor);
     LoggingBootstrapper.bootstrap(logger, mediator, options);
-    providersManager.register(...(mediatorOptions.providers || []));
+    providersManager.register(...(options.providers || []));
     return mediator;
   }
 }

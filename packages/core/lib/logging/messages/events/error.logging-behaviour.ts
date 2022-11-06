@@ -1,5 +1,5 @@
 import { filter, Observable } from 'rxjs';
-import { MessageTypes } from '../../../messages';
+import { IMessageProvider, MessageTypes } from '../../../messages';
 import { IMediatorLogger, MediatorOptions } from '../../../config/mediator.options';
 import { IEventProcessingState } from '../../../executor/messages/events/interfaces/event-processing-state.interface';
 import { ILoggingBehaviour } from '../../ports/logging-behaviour.port';
@@ -13,15 +13,18 @@ export class EventsErrorLoggingBehaviour extends SharedErrorLoggingBehaviour imp
   ) {
     super(_logger, options);
     source
-      .pipe(filter((state) => state.messageType === MessageTypes.EVENT && state.error && !state.processed))
+      .pipe(filter((state) => state.messageType === MessageTypes.EVENT && Boolean(state.error) && !state.processed))
       .subscribe((state) => this.handle(state));
   }
 
   private handle(state: IEventProcessingState) {
-    const errorString = state.error.stack || state.error.message || state.error;
+    const error = state.error as Error;
+    const errorString = error.stack || error.message || error;
     this.log(
-      state.error,
-      ` -- ${state.provider.constructor.name} failed to handle ${state.message.constructor.name} (id=${state.id}). ${errorString}`
+      error,
+      ` -- ${(state.provider as IMessageProvider).constructor.name} failed to handle ${
+        state.message.constructor.name
+      } (id=${state.id}). ${errorString}`
     );
   }
 }

@@ -1,4 +1,4 @@
-import { FactoryProvider } from '@nestjs/common';
+import { FactoryProvider, Provider } from '@nestjs/common';
 import { NAMESPACE_MEDIATOR } from './injection/constants';
 import { MissingAsyncConfigurationException } from './exceptions/missing-async-configuration.exception';
 import { MediatorModule } from './mediator.module';
@@ -12,13 +12,13 @@ describe('MediatorModule', () => {
     it('should configure root for default global namespace', () => {
       const module = MediatorModule.forRoot();
       expect(module.providers).toHaveLength(1);
-      expect((module.providers[0] as FactoryProvider).provide).toBe(getMediatorToken());
+      expect(((module.providers as Provider<any>[])[0] as FactoryProvider).provide).toBe(getMediatorToken());
     });
 
     it('should configure root for single custom namespace', () => {
       const module = MediatorModule.forRoot({ namespace });
       expect(module.providers).toHaveLength(1);
-      expect((module.providers[0] as FactoryProvider).provide).toBe(getMediatorToken(namespace));
+      expect(((module.providers as Provider<any>[])[0] as FactoryProvider).provide).toBe(getMediatorToken(namespace));
     });
   });
 
@@ -26,7 +26,7 @@ describe('MediatorModule', () => {
     it('should configure root for default global namespace', async () => {
       const module = await MediatorModule.forRootAsync({ useClass: ModuleConfigurator });
       expect(module.providers).toHaveLength(2); // Mediator + ModuleConfigurator instance
-      expect((module.providers[0] as FactoryProvider).provide).toBe(getMediatorToken());
+      expect(((module.providers as Provider<any>[])[0] as FactoryProvider).provide).toBe(getMediatorToken());
     });
 
     it('should configure root for multiple custom namespaces', async () => {
@@ -36,9 +36,10 @@ describe('MediatorModule', () => {
           { namespace, useFactory: () => ({ config: () => ({}) }) },
         ],
       });
-      expect(module.providers).toHaveLength(2);
-      expect((module.providers[0] as FactoryProvider).provide).toBe(getMediatorToken());
-      expect((module.providers[1] as FactoryProvider).provide).toBe(getMediatorToken(namespace));
+      const providers = module.providers as Provider<any>[];
+      expect(providers).toHaveLength(2);
+      expect((providers[0] as FactoryProvider).provide).toBe(getMediatorToken());
+      expect((providers[1] as FactoryProvider).provide).toBe(getMediatorToken(namespace));
     });
 
     it('should fail configure root - no factory defined', () => {
@@ -50,7 +51,7 @@ describe('MediatorModule', () => {
     it('should configure feature', () => {
       const module = MediatorModule.forFeature(class {}, { namespace });
       expect(module.providers).toHaveLength(1);
-      expect((module.providers[0] as FactoryProvider).provide).toBe(NAMESPACE_MEDIATOR);
+      expect(((module.providers as Provider<any>[])[0] as FactoryProvider).provide).toBe(NAMESPACE_MEDIATOR);
     });
   });
 });

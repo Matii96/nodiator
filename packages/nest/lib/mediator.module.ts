@@ -3,6 +3,7 @@ import { MissingAsyncConfigurationException } from './exceptions/missing-async-c
 import { MediatorModuleConfigurator } from './configurator/mediator.module.configurator';
 import { MediatorModuleOptionsValidator } from './options/module.options.validator';
 import {
+  ConfigurationFactory,
   IMediatorOptionsFactory,
   MediatorModuleAsyncConfiguration,
   MediatorModuleAsyncOptions,
@@ -72,7 +73,7 @@ export class MediatorModule {
           provide,
           inject: [MediatorModuleConfigurator, ...(configuration.inject || [])],
           async useFactory(configurator: MediatorModuleConfigurator, ...providers: any[]) {
-            const loadedOptions = await configuration.useFactory(...providers);
+            const loadedOptions = await (configuration.useFactory as ConfigurationFactory)(...providers);
             return configurator.configureRoot({ namespace: configuration.namespace, ...loadedOptions });
           },
         },
@@ -92,7 +93,9 @@ export class MediatorModule {
           return configurator.configureRoot({ namespace: configuration.namespace, ...loadedOptions });
         },
       };
-      return configuration.useExisting ? [mediatorProvider] : [mediatorProvider, configuration.useClass];
+      return configuration.useExisting
+        ? [mediatorProvider]
+        : [mediatorProvider, configuration.useClass as Type<IMediatorOptionsFactory>];
     }
 
     throw new MissingAsyncConfigurationException();

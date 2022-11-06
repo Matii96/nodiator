@@ -30,7 +30,9 @@ export class RequestsProvidersChainer implements IRequestsProvidersChainer {
     return defer(() => {
       this.subject.next({ id, messageType: MessageTypes.REQUEST, message: request, provider });
 
-      const call = provider.handle(request, next);
+      const call = next
+        ? (provider as IRequestPipeline<IRequest, TResult>).handle(request, next)
+        : (provider as IRequestHandler<IRequest, TResult>).handle(request);
       const handler = call instanceof Observable ? call : from(call);
 
       return handler.pipe(

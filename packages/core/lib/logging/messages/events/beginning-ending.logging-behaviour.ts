@@ -19,7 +19,7 @@ export class EventsBeginningEndingLoggingBehaviour implements ILoggingBehaviour 
   }
 
   private eventProcessed(state: IEventProcessingState) {
-    const elapsedTime = Date.now() - this._occuredEvents.get(state.id).getTime();
+    const elapsedTime = Date.now() - (this._occuredEvents.get(state.id) as Date).getTime();
     this._occuredEvents.delete(state.id);
     if (!state.error) {
       this._logger.debug(

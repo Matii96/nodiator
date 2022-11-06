@@ -6,9 +6,9 @@ interface IRequestsGlobalProvidersSchema {
   pipelines: Type<IRequestPipeline<IRequest, any>>[];
 }
 
-interface IRequestsSpecificProvidersSchema {
+export interface IRequestsSpecificProvidersSchema {
   pipelines: Type<IRequestPipeline<IRequest, any>>[];
-  handler: Type<IRequestHandler<IRequest, any>>;
+  handler: Type<IRequestHandler<IRequest, any>> | null;
 }
 
 export interface IRequestsProvidersSchema extends IMessageTypeProvidersSchema {

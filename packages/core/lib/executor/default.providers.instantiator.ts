@@ -11,11 +11,11 @@ export class DefaultProvidersInstantiator {
     return (scopeOptions.scoped ? this.scoped(type) : this.singleton(type)) as TProvider;
   }
 
-  private scoped<TProvider>(type: Type<TProvider>) {
+  private scoped<TProvider extends IMessageProvider>(type: Type<TProvider>) {
     return new type();
   }
 
-  private singleton<TProvider>(type: Type<TProvider>) {
+  private singleton<TProvider extends IMessageProvider>(type: Type<TProvider>) {
     let instance = this.registeredSingletons.get(type);
     if (!instance) {
       instance = this.scoped(type);

@@ -2,7 +2,10 @@ import { Type } from '../../../../utils/type.interface';
 import { IRequest, IRequestPipeline, MessageTypes } from '../../../../messages';
 import { REQUEST_PIPELINE_METADATA } from '../../../../messages/constants';
 import { IProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
-import { IRequestsProvidersSchema } from '../interfaces/requests-providers-schema.interface';
+import {
+  IRequestsProvidersSchema,
+  IRequestsSpecificProvidersSchema,
+} from '../interfaces/requests-providers-schema.interface';
 
 export class RequestsPipelinesAdapter implements IProviderTypeAdapter<IRequestsProvidersSchema> {
   readonly messageType = MessageTypes.REQUEST;
@@ -26,6 +29,6 @@ export class RequestsPipelinesAdapter implements IProviderTypeAdapter<IRequestsP
     if (!specific.has(requestType)) {
       specific.set(requestType, { pipelines: [], handler: null });
     }
-    specific.get(requestType).pipelines.push(provider);
+    (specific.get(requestType) as IRequestsSpecificProvidersSchema).pipelines.push(provider);
   }
 }

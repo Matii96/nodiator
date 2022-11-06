@@ -1,3 +1,4 @@
+import { Type } from '../../../utils/type.interface';
 import { MediatorLoggingLevels } from '../../../config';
 import { IMediatorLogger, MediatorOptions } from '../../../config/mediator.options';
 
@@ -20,7 +21,7 @@ export abstract class SharedErrorLoggingBehaviour {
     }
 
     for (const level in this._options.exceptionsLoggingLevels) {
-      const levelExceptions = this._options.exceptionsLoggingLevels[level as MediatorLoggingLevels];
+      const levelExceptions = this._options.exceptionsLoggingLevels[level as MediatorLoggingLevels] as Type<Error>[];
       if (!levelExceptions.some((exception) => error instanceof exception)) {
         continue;
       }

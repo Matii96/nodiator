@@ -2,7 +2,13 @@ import { Scope, ScopeOptions } from '@nestjs/common';
 import { ModulesContainer } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import { SCOPE_OPTIONS_METADATA } from '@nestjs/common/constants';
-import { IRequestsProvidersSchema, MediatorFactory, MediatorLoggingLevels, MessageTypes } from '@nodiator/core';
+import {
+  IRequestsProvidersSchema,
+  IRequestsSpecificProvidersSchema,
+  MediatorFactory,
+  MediatorLoggingLevels,
+  MessageTypes,
+} from '@nodiator/core';
 import { TestRequest, TestRequestHandler } from '../mediator.module.mocks';
 import { NamespaceNotInitializedException } from '../exceptions/namespace-not-initialized.exception';
 import { getMediatorToken } from '../injection/get-mediator-token.factory';
@@ -23,7 +29,9 @@ describe('MediatorModuleConfigurator', () => {
     it('should create mediator instance with nest providers', () => {
       const mediator = configurator.configureRoot({});
       const providers: IRequestsProvidersSchema = mediator.providers.get(MessageTypes.REQUEST);
-      expect(providers.specific.get(TestRequest).handler).toBe(TestRequestHandler);
+      expect((providers.specific.get(TestRequest) as IRequestsSpecificProvidersSchema).handler).toBe(
+        TestRequestHandler
+      );
     });
 
     it('should adapt providers to nest DI', () => {
@@ -53,7 +61,8 @@ describe('MediatorModuleConfigurator', () => {
 
       const mediator = await configurator.configureFeature(TestingModule, { namespace });
       const mediatrorProviders: IRequestsProvidersSchema = mediator.providers.get(MessageTypes.REQUEST);
-      expect(mediatrorProviders.specific.get(TestRequest).handler).toBe(TestRequestHandler);
+      const providersSchema = mediatrorProviders.specific.get(TestRequest) as IRequestsSpecificProvidersSchema;
+      expect(providersSchema.handler).toBe(TestRequestHandler);
     });
 
     it("should fail to get scoped mediator as it isn't initialized", () => {

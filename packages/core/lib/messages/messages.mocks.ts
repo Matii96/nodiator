@@ -12,12 +12,12 @@ export class TestRequestPipeline implements IRequestPipeline<TestRequest, any> {
 }
 
 export class TestRequestHandler implements IRequestHandler<TestRequest, any> {
-  handle = jest.fn(async () => undefined);
+  handle = jest.fn(async (): Promise<any> => undefined);
 }
 
 // Events
 export class TestEvent {}
 
 export class TestEventHandler implements IEventHandler<TestRequest> {
-  handle = jest.fn(async () => undefined);
+  handle = jest.fn(async (): Promise<any> => undefined);
 }

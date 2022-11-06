@@ -46,10 +46,10 @@ export class RequestsExecutor implements IRequestsExecutor {
   }
 
   private getPipelines(providers: IRequestsProvidersSchema, request: IRequest) {
-    const requestTypeId = ExecutorUtils.getTypeOfMessage(request);
+    const requestType = ExecutorUtils.getTypeOfMessage(request);
     const pipelinesTypes = [
       ...providers.global.pipelines,
-      ...(requestTypeId ? providers.specific.get(requestTypeId).pipelines : []),
+      ...(requestType ? providers.specific.get(requestType)?.pipelines || [] : []),
     ];
     return Promise.all(
       pipelinesTypes.map((pipelineType) => this._providersInstantiator<IRequestPipeline<IRequest, any>>(pipelineType))
@@ -57,7 +57,8 @@ export class RequestsExecutor implements IRequestsExecutor {
   }
 
   private call<TResult>(args: CallOptions<TResult>) {
-    const requestsTimeout = this._options.config().requests?.timeout;
+    const config = this._options.config ? this._options.config() : {};
+    const requestsTimeout = config.requests?.timeout;
     return args.chain.pipe(
       requestsTimeout
         ? timeout({ each: requestsTimeout, with: () => throwError(() => new MessageTimeoutException(args.request)) })

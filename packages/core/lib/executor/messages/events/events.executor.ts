@@ -28,26 +28,20 @@ import { HandleEventOptions } from './events.executor.options';
 export class EventsExecutor implements IEventsExecutor {
   constructor(
     private readonly _subject: Subject<IEventProcessingState>,
-    private readonly _config: MediatorOptions,
+    private readonly _options: MediatorOptions,
     private readonly _providersManager: IProvidersManager,
     private readonly _providersInstantiator: ProvidersInstantiator
   ) {}
 
   execute(id: string, event: IEvent) {
-    const options = this._config.config();
+    const config = this._options.config ? this._options.config() : {};
     return from(this.getHandlers(event)).pipe(
-      mergeMap(
-        (handler) =>
-          ExecutorUtils.isPromise(handler)
-            ? from(handler as Promise<IEventHandler<IEvent>>)
-            : of(handler as IEventHandler<IEvent>)
-        // mergeMap((handler) => {
-        //   console.log({ handler });
-        //   return ExecutorUtils.isPromise(handler)
-        //     ? from(handler as Promise<IEventHandler<IEvent>>)
-        //     : of(handler as IEventHandler<IEvent>);
+      mergeMap((handler) =>
+        ExecutorUtils.isPromise(handler)
+          ? from(handler as Promise<IEventHandler<IEvent>>)
+          : of(handler as IEventHandler<IEvent>)
       ),
-      mergeMap((handler) => this.handleEvent({ options, id, event, handler })),
+      mergeMap((handler) => this.handleEvent({ config, id, event, handler })),
       last(),
       map(() => event),
       finalize(() => this._subject.next({ id, messageType: MessageTypes.EVENT, message: event, processed: true }))
@@ -66,9 +60,9 @@ export class EventsExecutor implements IEventsExecutor {
   private handleEvent(args: HandleEventOptions) {
     this._subject.next({ id: args.id, messageType: MessageTypes.EVENT, message: args.event, provider: args.handler });
     return defer(() => args.handler.handle(args.event)).pipe(
-      args?.options?.events?.timeout
+      args?.config?.events?.timeout
         ? timeout({
-            each: args.options.events.timeout,
+            each: args.config.events.timeout,
             with: () => throwError(() => new MessageTimeoutException(args.event)),
           })
         : tap(),
@@ -83,8 +77,8 @@ export class EventsExecutor implements IEventsExecutor {
         return throwError(() => error);
       }),
       retry({
-        count: args?.options?.events?.handlingRetriesAttempts || 0,
-        delay: args?.options?.events?.handlingRetriesDelay || 0,
+        count: args?.config?.events?.handlingRetriesAttempts || 0,
+        delay: args?.config?.events?.handlingRetriesDelay || 0,
       }),
       tap(() =>
         this._subject.next({

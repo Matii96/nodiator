@@ -2,7 +2,10 @@ import { Type } from '../../../../utils/type.interface';
 import { IRequest, IRequestHandler, MessageTypes } from '../../../../messages';
 import { REQUEST_HANDLER_METADATA } from '../../../../messages/constants';
 import { IProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
-import { IRequestsProvidersSchema } from '../interfaces/requests-providers-schema.interface';
+import {
+  IRequestsProvidersSchema,
+  IRequestsSpecificProvidersSchema,
+} from '../interfaces/requests-providers-schema.interface';
 import { DuplicatedRequestHandlerException } from '../exceptions/duplicated-request-handler.exception';
 
 export class RequestsHandlersAdapter implements IProviderTypeAdapter<IRequestsProvidersSchema> {
@@ -18,8 +21,8 @@ export class RequestsHandlersAdapter implements IProviderTypeAdapter<IRequestsPr
       throw new DuplicatedRequestHandlerException(requestType);
     }
     if (!adaptedProviders.specific.has(requestType)) {
-      adaptedProviders.specific.set(requestType, { pipelines: [], handler: null });
+      adaptedProviders.specific.set(requestType, { pipelines: [], handler: provider });
     }
-    adaptedProviders.specific.get(requestType).handler = provider;
+    (adaptedProviders.specific.get(requestType) as IRequestsSpecificProvidersSchema).handler = provider;
   }
 }
