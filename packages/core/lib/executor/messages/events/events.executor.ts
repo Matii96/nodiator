@@ -20,7 +20,7 @@ import { IProvidersManager } from '../../../providers-manager/ports/providers-ma
 import { MediatorOptions } from '../../../config/mediator.options';
 import { MessageTimeoutException } from '../../exceptions/message-timeout.exception';
 import { ProvidersInstantiator } from '../../ports/providers-instantiator.port';
-import { ExecutorUtils } from '../../executor-utils';
+import { ExecutorUtils } from '../../utils/executor-utils';
 import { IEventProcessingState } from './interfaces/event-processing-state.interface';
 import { IEventsExecutor } from './ports/events.executor.port';
 import { HandleEventOptions } from './events.executor.options';

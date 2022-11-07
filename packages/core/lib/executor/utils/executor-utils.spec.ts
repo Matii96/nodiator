@@ -1,5 +1,5 @@
-import { TestRequest } from '../messages/messages.mocks';
-import { PlainObjectMessageException } from './exceptions';
+import { TestRequest } from '../../messages/messages.mocks';
+import { PlainObjectMessageException } from '../exceptions';
 import { ExecutorUtils } from './executor-utils';
 
 describe('ExecutorUtils', () => {

@@ -6,7 +6,7 @@ import { IProvidersManager } from '../../../providers-manager/ports/providers-ma
 import { MediatorOptions } from '../../../config/mediator.options';
 import { MessageTimeoutException } from '../../exceptions/message-timeout.exception';
 import { ProvidersInstantiator } from '../../ports/providers-instantiator.port';
-import { ExecutorUtils } from '../../executor-utils';
+import { ExecutorUtils } from '../../utils/executor-utils';
 import { IRequestsProvidersChainer } from './ports/requests-providers-chainer.port';
 import { NoHandlerException } from './exceptions/no-handler.exception';
 import { IRequestProcessingState } from './interfaces/request-processing-state.interface';

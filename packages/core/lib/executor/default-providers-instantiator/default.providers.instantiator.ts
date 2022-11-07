@@ -1,7 +1,7 @@
-import { Type } from '../utils/type.interface';
-import { SCOPE_OPTIONS_METADATA } from '../messages/constants';
-import { ScopeOptions } from '../messages/interfaces/scope.options';
-import { IMessageProvider } from '../messages/interfaces/message-provider.interface';
+import { Type } from '../../utils/type.interface';
+import { SCOPE_OPTIONS_METADATA } from '../../messages/constants';
+import { ScopeOptions } from '../../messages/interfaces/scope.options';
+import { IMessageProvider } from '../../messages/interfaces/message-provider.interface';
 
 export class DefaultProvidersInstantiator {
   private readonly registeredSingletons = new Map<Type<IMessageProvider>, IMessageProvider>();
