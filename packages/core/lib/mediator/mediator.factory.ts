@@ -17,7 +17,7 @@ export class MediatorFactory {
     const executor = new ExecutorsFactory(options, providersManager, subject).create();
     const mediator = new Mediator(logger, subject, providersManager, executor);
     LoggingBootstrapper.bootstrap(logger, mediator, options);
-    providersManager.register(...(options.providers || []));
+    providersManager.register(...(options.providers ?? []));
     return mediator;
   }
 }
