@@ -1,4 +1,4 @@
-import { Type } from '../../../utils/type.interface';
+import { ClassConstructor } from '../../../utils/class-constructor.interface';
 import { MESSAGE_METADATA, EVENT_HANDLER_METADATA, SCOPE_OPTIONS_METADATA } from '../../constants';
 import { MessageTypeInterferenceException } from '../../exceptions/message-type-interference.exception';
 import { IMessageMetadata } from '../../interfaces/message-metadata.interface';
@@ -6,7 +6,7 @@ import { ScopeOptions } from '../../interfaces/scope.options';
 import { MessageTypes } from '../../message-types.enum';
 import { IEvent } from '../interfaces/event.interface';
 
-type EventType = Type<IEvent>;
+type EventType = ClassConstructor<IEvent>;
 
 interface EventHandlerSingleOptions extends ScopeOptions {
   /**

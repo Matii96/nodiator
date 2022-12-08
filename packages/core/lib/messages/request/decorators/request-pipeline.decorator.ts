@@ -1,9 +1,9 @@
-import { Type } from '../../../utils/type.interface';
+import { ClassConstructor } from '../../../utils/class-constructor.interface';
 import { REQUEST_PIPELINE_METADATA, SCOPE_OPTIONS_METADATA } from '../../constants';
 import { ScopeOptions } from '../../interfaces/scope.options';
 import { IRequest } from '../interfaces/request.interface';
 
-type RequestType = Type<IRequest>;
+type RequestType = ClassConstructor<IRequest>;
 
 interface RequestPipelineSingleOptions extends ScopeOptions {
   /**

@@ -1,22 +1,15 @@
 import { firstValueFrom, lastValueFrom } from 'rxjs';
 import { IMediator, MediatorFactory } from '../lib';
-import { IMediatorLogger, MediatorLoggingLevels } from '../lib/config';
-import { MediatorLoggerMock } from '../lib/logging/logging.mocks';
 import { TestEvent, TestEventHandler, TestGlobalEventHandler } from './events/events.mocks';
 import { TestRequest, TestRequestHandler } from './requests/requests.mocks';
 
 describe('@nodiator/core common (e2e)', () => {
   const testEvent = new TestEvent();
   const testRequest = new TestRequest('success');
-  let logger: IMediatorLogger;
   let mediator: IMediator;
 
   beforeEach(() => {
-    logger = new MediatorLoggerMock();
-    mediator = MediatorFactory.create({
-      logger,
-      config: () => ({ logs: { level: MediatorLoggingLevels.INFO } }),
-    });
+    mediator = MediatorFactory.create();
     mediator.providers.register(TestRequestHandler, TestGlobalEventHandler, TestEventHandler);
   });
 
@@ -28,12 +21,5 @@ describe('@nodiator/core common (e2e)', () => {
     const handle = expect(TestGlobalEventHandler.handle);
     handle.toHaveBeenCalledTimes(1);
     handle.toHaveBeenCalledWith(testEvent);
-  });
-
-  it('should log messages handling steps', async () => {
-    await firstValueFrom(mediator.request<string>(testRequest));
-    await lastValueFrom(mediator.publish(testEvent));
-
-    expect(logger.info).toHaveBeenCalledTimes(2);
   });
 });

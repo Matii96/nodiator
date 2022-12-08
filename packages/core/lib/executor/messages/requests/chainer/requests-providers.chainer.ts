@@ -1,34 +1,36 @@
 import { catchError, defer, from, Observable, share, Subject, tap, throwError } from 'rxjs';
-import { IRequest, IRequestHandler, IRequestPipeline } from '../../../messages';
-import { MessageTypes } from '../../../messages/message-types.enum';
-import { IRequestProcessingState } from './interfaces/request-processing-state.interface';
-import { IRequestsProvidersChainer } from './ports/requests-providers-chainer.port';
+import { IRequest, IRequestHandler, IRequestPipeline } from '../../../../messages';
+import { IRequestsProvidersChainer } from '../ports/requests-providers-chainer.port';
+import {
+  HandlingCompletedRequestProcessingState,
+  HandlingErrorRequestProcessingState,
+  HandlingStartedRequestProcessingState,
+  RequestsProcessingStates,
+} from '../processing-states';
 
 export class RequestsProvidersChainer implements IRequestsProvidersChainer {
-  constructor(private readonly subject: Subject<IRequestProcessingState>) {}
-
   chain<TResult>(
-    id: string,
+    messageProcessing: Subject<RequestsProcessingStates>,
     request: IRequest,
     pipelines: IRequestPipeline<IRequest, TResult>[],
     handler: IRequestHandler<IRequest, TResult>
   ) {
-    let next = this.wrapNext(id, request, handler);
+    let next = this.wrapNext(messageProcessing, request, handler);
     for (let idx = pipelines.length - 1; idx >= 0; idx--) {
       const currentNext = next;
-      next = this.wrapNext(id, request, pipelines[idx], currentNext);
+      next = this.wrapNext(messageProcessing, request, pipelines[idx], currentNext);
     }
     return next;
   }
 
   private wrapNext<TResult>(
-    id: string,
+    messageProcessing: Subject<RequestsProcessingStates>,
     request: IRequest,
     provider: IRequestHandler<IRequest, TResult> | IRequestPipeline<IRequest, TResult>,
     next?: Observable<TResult>
   ) {
     return defer(() => {
-      this.subject.next({ id, messageType: MessageTypes.REQUEST, message: request, provider });
+      messageProcessing.next(new HandlingStartedRequestProcessingState(request));
 
       const call = next
         ? (provider as IRequestPipeline<IRequest, TResult>).handle(request, next)
@@ -37,18 +39,10 @@ export class RequestsProvidersChainer implements IRequestsProvidersChainer {
 
       return handler.pipe(
         catchError((error) => {
-          this.subject.next({ id, messageType: MessageTypes.REQUEST, message: request, provider, error });
+          messageProcessing.next(new HandlingErrorRequestProcessingState(request, error));
           return throwError(() => error);
         }),
-        tap((value) =>
-          this.subject.next({
-            id,
-            messageType: MessageTypes.REQUEST,
-            message: request,
-            provider,
-            response: { value },
-          })
-        )
+        tap((value) => messageProcessing.next(new HandlingCompletedRequestProcessingState(request, value)))
       );
     }).pipe(share());
   }

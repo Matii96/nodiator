@@ -1,6 +1,6 @@
 import { IMessageProvider } from '../../messages/interfaces/message-provider.interface';
-import { Type } from '../../utils/type.interface';
+import { ClassConstructor } from '../../utils/class-constructor.interface';
 
 export type ProvidersInstantiator = <TProvider extends IMessageProvider>(
-  type: Type<TProvider>
+  type: ClassConstructor<TProvider>
 ) => TProvider | Promise<TProvider>;

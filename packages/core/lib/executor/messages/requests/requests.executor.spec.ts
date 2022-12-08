@@ -8,18 +8,14 @@ import { MessageTimeoutException } from '../../exceptions/message-timeout.except
 import { RequestsProvidersChainerMock } from '../../executor.mocks';
 import { IMessageExecutor } from '../../ports/message-executor.port';
 import { ProvidersInstantiator } from '../../ports/providers-instantiator.port';
-import { IRequestProcessingState } from './interfaces/request-processing-state.interface';
 import { IRequestsProvidersChainer } from './ports/requests-providers-chainer.port';
 import { RequestsExecutor } from './requests.executor';
 
 describe('RequestsExecutor', () => {
-  const id = 'id';
   const request = new TestRequest('success');
   const handler = new TestRequestHandler();
   const providersInstantiatorMock: ProvidersInstantiator = () => handler as any;
-  let subject: Subject<IRequestProcessingState>;
   let providersManager: IProvidersManager;
-  let eventStates: IRequestProcessingState[];
   let requestsProvidersChainer: IRequestsProvidersChainer;
   let executor: IMessageExecutor<TestRequest, Observable<string>>;
 
@@ -31,10 +27,6 @@ describe('RequestsExecutor', () => {
       .spyOn(providersManager, 'get')
       .mockReturnValue({ global: { pipelines: [] }, specific } as IRequestsProvidersSchema);
 
-    subject = new Subject();
-    eventStates = [];
-    subject.subscribe((state) => eventStates.push(state));
-
     requestsProvidersChainer = new RequestsProvidersChainerMock();
   });
 
@@ -45,8 +37,7 @@ describe('RequestsExecutor', () => {
   describe('requests handling', () => {
     beforeEach(() => {
       executor = new RequestsExecutor(
-        subject,
-        { config: () => ({}) },
+        { dynamicOptions: () => ({}) },
         providersManager,
         providersInstantiatorMock,
         requestsProvidersChainer
@@ -55,7 +46,7 @@ describe('RequestsExecutor', () => {
 
     it('should return "success"', (done) => {
       jest.spyOn(requestsProvidersChainer, 'chain').mockReturnValueOnce(of(request.property));
-      executor.execute(id, request).subscribe((result) => {
+      executor.execute(new Subject(), request).subscribe((result) => {
         expect(result).toBe(request.property);
         done();
       });
@@ -65,8 +56,7 @@ describe('RequestsExecutor', () => {
   describe('timeouts handling', () => {
     beforeEach(() => {
       executor = new RequestsExecutor(
-        subject,
-        { config: () => ({ requests: { timeout: 1 } }) },
+        { dynamicOptions: () => ({ requests: { timeout: 1 } }) },
         providersManager,
         providersInstantiatorMock,
         requestsProvidersChainer
@@ -75,7 +65,7 @@ describe('RequestsExecutor', () => {
     });
 
     it('should throw timeout exception', async () => {
-      const task = firstValueFrom(executor.execute(id, request));
+      const task = firstValueFrom(executor.execute(new Subject(), request));
       expect(task).rejects.toThrow(MessageTimeoutException);
       try {
         await task;

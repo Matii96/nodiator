@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs';
 import { IMessage, MessageTypes } from '../messages';
 import { TestRequest } from '../messages/messages.mocks';
 import { IExecutor } from './ports/executor.port';
@@ -11,13 +12,20 @@ describe('Executor', () => {
 
   beforeEach(() => {
     messageExecutor = new MessageExecutorMock();
-    executor = new Executor({
-      [MessageTypes.REQUEST]: messageExecutor,
-    } as unknown as Record<MessageTypes, IMessageExecutor<IMessage, any>>);
+    executor = new Executor(
+      {
+        [MessageTypes.REQUEST]: messageExecutor,
+      } as unknown as Record<MessageTypes, IMessageExecutor<IMessage, any>>,
+      new Subject()
+    );
   });
 
-  it('should run message executor', async () => {
-    await executor.execute(new TestRequest(), MessageTypes.REQUEST);
-    expect(messageExecutor.execute).toHaveBeenCalledTimes(1);
+  it('should run message executor', (done) => {
+    executor.execute(MessageTypes.REQUEST, new TestRequest()).subscribe({
+      complete() {
+        expect(messageExecutor.execute).toHaveBeenCalledTimes(1);
+        done();
+      },
+    });
   });
 });

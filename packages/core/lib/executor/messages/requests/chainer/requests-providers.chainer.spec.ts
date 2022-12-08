@@ -1,21 +1,17 @@
 import 'reflect-metadata';
 import { delay, firstValueFrom, of, Subject } from 'rxjs';
-import { TestRequest, TestRequestHandler, TestRequestPipeline } from '../../../messages/messages.mocks';
-import { IRequestProcessingState } from './interfaces/request-processing-state.interface';
-import { IRequestsProvidersChainer } from './ports/requests-providers-chainer.port';
+import { TestRequest, TestRequestHandler, TestRequestPipeline } from '../../../../messages/messages.mocks';
+import { IRequestsProvidersChainer } from '../ports/requests-providers-chainer.port';
 import { RequestsProvidersChainer } from './requests-providers.chainer';
 
 describe('RequestsProvidersChainer', () => {
-  const id = 'id';
   const request = new TestRequest('success');
   const pipeline = new TestRequestPipeline();
   const handler = new TestRequestHandler();
-  let subject: Subject<IRequestProcessingState>;
   let chainer: IRequestsProvidersChainer;
 
   beforeEach(() => {
-    subject = new Subject();
-    chainer = new RequestsProvidersChainer(subject);
+    chainer = new RequestsProvidersChainer();
   });
 
   afterEach(() => {
@@ -28,7 +24,7 @@ describe('RequestsProvidersChainer', () => {
     });
 
     it('should run pipeline and handler for request', (done) => {
-      chainer.chain(id, request, [pipeline], handler).subscribe((result) => {
+      chainer.chain(new Subject(), request, [pipeline], handler).subscribe((result) => {
         expect(result).toEqual(request.property);
         expect(pipeline.handle).toHaveBeenCalledTimes(1);
         expect(handler.handle).toHaveBeenCalledTimes(1);
@@ -37,7 +33,7 @@ describe('RequestsProvidersChainer', () => {
     });
 
     it('should not start execution until subscribed', (done) => {
-      const chain = chainer.chain(id, request, [pipeline], handler);
+      const chain = chainer.chain(new Subject(), request, [pipeline], handler);
       of(1)
         .pipe(delay(5))
         .subscribe(() => {
@@ -56,7 +52,7 @@ describe('RequestsProvidersChainer', () => {
     });
 
     it('should throw exception', async () => {
-      const task = firstValueFrom(chainer.chain(id, request, [pipeline], handler));
+      const task = firstValueFrom(chainer.chain(new Subject(), request, [pipeline], handler));
       expect(task).rejects.toThrowError(someException);
       try {
         await task;

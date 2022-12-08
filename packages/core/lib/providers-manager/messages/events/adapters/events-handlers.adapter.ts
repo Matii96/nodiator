@@ -1,4 +1,4 @@
-import { Type } from '../../../../utils/type.interface';
+import { ClassConstructor } from '../../../../utils/class-constructor.interface';
 import { IEvent, IEventHandler, MessageTypes } from '../../../../messages';
 import { EVENT_HANDLER_METADATA } from '../../../../messages/constants';
 import { IProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
@@ -13,8 +13,8 @@ export class EventsHandlersAdapter implements IProviderTypeAdapter<IEventsProvid
 
   register(
     adaptedProviders: IEventsProvidersSchema,
-    provider: Type<IEventHandler<IEvent>>,
-    eventTypes: Set<Type<IEvent>>
+    provider: ClassConstructor<IEventHandler<IEvent>>,
+    eventTypes: Set<ClassConstructor<IEvent>>
   ) {
     for (const eventType of eventTypes) {
       this.registerHandler(adaptedProviders, provider, eventType);
@@ -23,8 +23,8 @@ export class EventsHandlersAdapter implements IProviderTypeAdapter<IEventsProvid
 
   private registerHandler(
     { specific }: Pick<IEventsProvidersSchema, 'specific'>,
-    provider: Type<IEventHandler<IEvent>>,
-    eventType: Type<IEvent>
+    provider: ClassConstructor<IEventHandler<IEvent>>,
+    eventType: ClassConstructor<IEvent>
   ) {
     if (!specific.has(eventType)) {
       specific.set(eventType, { handlers: [] });

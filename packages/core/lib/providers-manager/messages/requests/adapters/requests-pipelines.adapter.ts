@@ -1,4 +1,4 @@
-import { Type } from '../../../../utils/type.interface';
+import { ClassConstructor } from '../../../../utils/class-constructor.interface';
 import { IRequest, IRequestPipeline, MessageTypes } from '../../../../messages';
 import { REQUEST_PIPELINE_METADATA } from '../../../../messages/constants';
 import { IProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
@@ -13,8 +13,8 @@ export class RequestsPipelinesAdapter implements IProviderTypeAdapter<IRequestsP
 
   register(
     adaptedProviders: IRequestsProvidersSchema,
-    provider: Type<IRequestPipeline<IRequest, unknown>>,
-    requestsTypes: Set<Type<IRequest>>
+    provider: ClassConstructor<IRequestPipeline<IRequest, unknown>>,
+    requestsTypes: Set<ClassConstructor<IRequest>>
   ) {
     for (const requestType of requestsTypes) {
       this.registerPipeline(adaptedProviders, provider, requestType);
@@ -23,8 +23,8 @@ export class RequestsPipelinesAdapter implements IProviderTypeAdapter<IRequestsP
 
   private registerPipeline(
     { specific }: Pick<IRequestsProvidersSchema, 'specific'>,
-    provider: Type<IRequestPipeline<IRequest, unknown>>,
-    requestType: Type<IRequest>
+    provider: ClassConstructor<IRequestPipeline<IRequest, unknown>>,
+    requestType: ClassConstructor<IRequest>
   ) {
     if (!specific.has(requestType)) {
       specific.set(requestType, { pipelines: [], handler: null });

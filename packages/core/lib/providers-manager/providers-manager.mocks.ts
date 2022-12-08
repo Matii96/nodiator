@@ -5,6 +5,7 @@ import { IProviderTypeAdapter } from './ports/provider-type-adapter.port';
 import { IProvidersManager } from './ports/providers-manager.port';
 
 export class ProvidersManagerMock implements IProvidersManager {
+  list = jest.fn();
   get = jest.fn();
   register = jest.fn(() => []);
 }

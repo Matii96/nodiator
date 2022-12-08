@@ -4,12 +4,9 @@ import {
   MessageTypes,
   PlainObjectMessageException,
   IEventsProvidersSchema,
-  IEventProcessingState,
   IMediator,
   MediatorFactory,
 } from '../../lib';
-import { IMediatorLogger, MediatorLoggingLevels } from '../../lib/config';
-import { MediatorLoggerMock } from '../../lib/logging/logging.mocks';
 import {
   TestEvent,
   TestEventHandler,
@@ -17,23 +14,15 @@ import {
   TestGlobalEventHandler,
   TestLaggingEventHandler,
 } from './events.mocks';
-import { handlingSteps, retriesSteps, timeoutSteps } from './events.mocks.results';
 
 describe('@nodiator/core events (e2e)', () => {
   const providers = [TestGlobalEventHandler, TestEventHandler];
-  let logger: IMediatorLogger;
   let mediator: IMediator;
-  let eventStates: IEventProcessingState[];
 
   beforeEach(() => {
-    logger = new MediatorLoggerMock();
     mediator = MediatorFactory.create({
       providers,
-      logger,
-      config: () => ({ logs: { level: MediatorLoggingLevels.DEBUG } }),
     });
-    eventStates = [];
-    mediator.subscribe((state) => eventStates.push(state));
   });
 
   afterEach(() => {
@@ -61,40 +50,12 @@ describe('@nodiator/core events (e2e)', () => {
         },
       });
     });
-
-    it('should emit event handling steps', (done) => {
-      mediator.publish(testEvent).subscribe({
-        complete() {
-          expect(eventStates).toEqual(handlingSteps(eventStates[0]?.id, testEvent));
-          done();
-        },
-      });
-    });
-
-    it('should log event handling steps', (done) => {
-      mediator.publish(testEvent).subscribe({
-        complete() {
-          expect(logger.debug).toHaveBeenCalledTimes(6);
-          expect(logger.info).toHaveBeenCalledTimes(2);
-          expect(logger.warn).not.toHaveBeenCalled();
-          expect(logger.error).not.toHaveBeenCalled();
-          done();
-        },
-      });
-    });
   });
 
   describe('passing plain object', () => {
     it('should reject plain object event', async () => {
       const task = lastValueFrom(mediator.publish({ property: 'property' }));
       expect(task).rejects.toThrow(PlainObjectMessageException);
-    });
-
-    it('should not have emitted any event state', async () => {
-      try {
-        await lastValueFrom(mediator.publish({ property: 'property' }));
-      } catch {}
-      expect(eventStates).toHaveLength(0);
     });
   });
 
@@ -105,32 +66,12 @@ describe('@nodiator/core events (e2e)', () => {
     beforeEach(() => {
       mediator = MediatorFactory.create({
         providers: timeoutProviders,
-        logger,
-        exceptionsLoggingLevels: { [MediatorLoggingLevels.WARN]: [MessageTimeoutException] },
-        config: () => ({ events: { timeout: 1 }, logs: { level: MediatorLoggingLevels.DEBUG } }),
+        dynamicOptions: () => ({ events: { timeout: 1 } }),
       });
     });
 
     it('should throw timeout exception', () => {
       expect(lastValueFrom(mediator.publish(testEvent))).rejects.toThrow(MessageTimeoutException);
-    });
-
-    it('should emit event handling steps', async () => {
-      mediator.subscribe((state) => eventStates.push(state));
-      try {
-        await lastValueFrom(mediator.publish(testEvent));
-      } catch {}
-      expect(eventStates).toEqual(timeoutSteps(eventStates[0]?.id, testEvent, new MessageTimeoutException(testEvent)));
-    });
-
-    it('should log event handling steps', async () => {
-      try {
-        await lastValueFrom(mediator.publish(testEvent));
-        await new Promise((resolve) => setImmediate(resolve));
-      } catch {}
-      expect(logger.info).toHaveBeenCalledTimes(3);
-      expect(logger.warn).toHaveBeenCalledTimes(1);
-      expect(logger.error).not.toHaveBeenCalled();
     });
   });
 
@@ -143,8 +84,7 @@ describe('@nodiator/core events (e2e)', () => {
     it('should fail on the second attempt', async () => {
       mediator = MediatorFactory.create({
         providers,
-        logger,
-        config: () => ({ events: { handlingRetriesAttempts: 1 }, logs: { level: MediatorLoggingLevels.NONE } }),
+        dynamicOptions: () => ({ events: { handlingRetriesAttempts: 1 } }),
       });
       mediator.providers.register(TestFailingEventHandler);
       expect(lastValueFrom(mediator.publish(new TestEvent()))).rejects.toThrowError();
@@ -158,14 +98,9 @@ describe('@nodiator/core events (e2e)', () => {
     beforeEach(() => {
       mediator = MediatorFactory.create({
         providers,
-        logger,
-        config: () => ({
-          events: { handlingRetriesAttempts: 2, handlingRetriesDelay },
-          logs: { level: MediatorLoggingLevels.DEBUG },
-        }),
+        dynamicOptions: () => ({ events: { handlingRetriesAttempts: 2, handlingRetriesDelay } }),
       });
       mediator.providers.register(TestFailingEventHandler);
-      mediator.subscribe((state) => eventStates.push(state));
     });
 
     it('should succeed on the third attempt', (done) => {
@@ -173,31 +108,6 @@ describe('@nodiator/core events (e2e)', () => {
       mediator.publish(testEvent).subscribe({
         complete() {
           expect(Date.now() - start).toBeGreaterThanOrEqual(handlingRetriesDelay * 2);
-          done();
-        },
-      });
-    });
-
-    it('should emit event handling steps', (done) => {
-      mediator.publish(testEvent).subscribe({
-        complete() {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const expected = retriesSteps(eventStates[0]?.id, testEvent).map(({ provider, ...state }) => state);
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const received = eventStates.map(({ provider, ...state }) => state);
-          expect(expected).toEqual(received);
-          done();
-        },
-      });
-    });
-
-    it('should log event handling steps', (done) => {
-      mediator.publish(testEvent).subscribe({
-        complete() {
-          expect(logger.debug).toHaveBeenCalledTimes(12);
-          expect(logger.info).toHaveBeenCalledTimes(3);
-          expect(logger.warn).not.toHaveBeenCalled();
-          expect(logger.error).toHaveBeenCalledTimes(2);
           done();
         },
       });

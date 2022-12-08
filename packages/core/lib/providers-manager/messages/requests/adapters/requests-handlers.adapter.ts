@@ -1,4 +1,4 @@
-import { Type } from '../../../../utils/type.interface';
+import { ClassConstructor } from '../../../../utils/class-constructor.interface';
 import { IRequest, IRequestHandler, MessageTypes } from '../../../../messages';
 import { REQUEST_HANDLER_METADATA } from '../../../../messages/constants';
 import { IProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
@@ -14,8 +14,8 @@ export class RequestsHandlersAdapter implements IProviderTypeAdapter<IRequestsPr
 
   register(
     adaptedProviders: IRequestsProvidersSchema,
-    provider: Type<IRequestHandler<IRequest, unknown>>,
-    requestType: Type<IRequest>
+    provider: ClassConstructor<IRequestHandler<IRequest, unknown>>,
+    requestType: ClassConstructor<IRequest>
   ) {
     if (adaptedProviders.specific.get(requestType)?.handler) {
       throw new DuplicatedRequestHandlerException(requestType);

@@ -1,4 +1,4 @@
-import { Type } from '../../../../utils/type.interface';
+import { ClassConstructor } from '../../../../utils/class-constructor.interface';
 import { IEvent, IEventHandler, MessageTypes } from '../../../../messages';
 import { GLOBAL_EVENT_HANDLER_METADATA } from '../../../../messages/constants';
 import { IProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
@@ -8,7 +8,7 @@ export class GlobalEventsHandlersAdapter implements IProviderTypeAdapter<IEvents
   readonly messageType = MessageTypes.EVENT;
   readonly metadataKey = GLOBAL_EVENT_HANDLER_METADATA;
 
-  register(adaptedProviders: IEventsProvidersSchema, provider: Type<IEventHandler<IEvent>>) {
+  register(adaptedProviders: IEventsProvidersSchema, provider: ClassConstructor<IEventHandler<IEvent>>) {
     adaptedProviders.global.handlers.push(provider);
   }
 }

@@ -1,6 +1,4 @@
 import 'reflect-metadata';
-import { MediatorLoggerMock } from '../logging/logging.mocks';
-import { IMediatorLogger } from '../config/mediator.options';
 import { IMessageTypeProvidersSchemaDefiner } from './ports/message-type-providers-schema-definer.port';
 import { IProviderTypeAdapter } from './ports/provider-type-adapter.port';
 import { IMessageTypeProvidersSchema } from './interfaces/message-type-providers-schema.interface';
@@ -13,21 +11,19 @@ import { IProvidersManager } from './ports/providers-manager.port';
 import { ProvidersManager } from './providers-manager';
 
 describe('ProvidersManager', () => {
-  let logger: IMediatorLogger;
   let manager: IProvidersManager;
   let adapters: IProviderTypeAdapter<object>[];
   let schemaDefiners: IMessageTypeProvidersSchemaDefiner[];
 
   beforeEach(() => {
-    logger = new MediatorLoggerMock();
     schemaDefiners = [new MessageTypeProvidersSchemaDefinerMock()];
     adapters = [new ProviderTypeAdapterMock()];
-    manager = new ProvidersManager(logger, schemaDefiners, adapters);
+    manager = new ProvidersManager(schemaDefiners, adapters);
   });
 
   describe('getting message type providers', () => {
     it('should get message types providers', () => {
-      expect(manager.get()).toEqual({ [schemaDefiners[0].messageType]: {} });
+      expect(manager.list()).toEqual({ [schemaDefiners[0].messageType]: {} });
     });
 
     it('should get single message type providers', () => {
@@ -48,17 +44,9 @@ describe('ProvidersManager', () => {
     it('should skip provider registration - duplicate', () => {
       expect(manager.register(ProviderMock, ProviderMock)).toEqual([ProviderMock]);
     });
+  });
 
-    it('should skip provider registration - no matching metadata key', () => {
-      expect(manager.register(class {})).toHaveLength(0);
-    });
-
-    it('should supress logging', () => {
-      manager.register({ providers: [ProviderMock], silent: true });
-      expect(logger.debug).not.toHaveBeenCalled();
-      expect(logger.info).not.toHaveBeenCalled();
-      expect(logger.warn).not.toHaveBeenCalled();
-      expect(logger.error).not.toHaveBeenCalled();
-    });
+  it('should skip provider registration - no matching metadata key', () => {
+    expect(manager.register(class {})).toHaveLength(0);
   });
 });
