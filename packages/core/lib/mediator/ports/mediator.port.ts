@@ -1,11 +1,12 @@
 import { Observable } from 'rxjs';
 import { IEvent, IRequest } from '../../messages';
 import { IMessageProcessing } from '../../executor';
+import { IMediatorExtension } from '../../extensions';
 import { IProvidersManager } from '../../providers-manager/ports/providers-manager.port';
 
 export interface IMediator {
   /**
-   * Allows access to mediator's providers set.
+   * Access to mediator's providers set.
    */
   readonly providers: IProvidersManager;
 
@@ -13,6 +14,13 @@ export interface IMediator {
    * Sequence of messages execution emitter.
    */
   readonly bus: Observable<IMessageProcessing>;
+
+  /**
+   * Registers mediator extensions.
+   * @param {IMediatorExtension[]} extensions
+   * @returns {IMediator}
+   */
+  use(...extensions: IMediatorExtension[]): IMediator;
 
   /**
    * Dispatches request instance and emits back a response to it. Handling is deferred until first subscription to the response stream.

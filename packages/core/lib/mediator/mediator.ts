@@ -1,15 +1,18 @@
 import { from, mergeMap, Subject } from 'rxjs';
 import { IMessageProcessing } from '../executor';
-import { IExecutor } from '../executor/ports/executor.port';
 import { IEvent, IRequest, MessageTypes } from '../messages';
+import { IExecutor } from '../executor/ports/executor.port';
+import { IExtensionsManager } from '../extensions/ports/extensions-manager.port';
 import { IProvidersManager } from '../providers-manager/ports/providers-manager.port';
+import { IMediatorExtension } from '../extensions';
 import { IMediator } from './ports/mediator.port';
 
 export class Mediator implements IMediator {
   constructor(
-    private readonly _subject: Subject<IMessageProcessing>,
-    private readonly _providersManager: IProvidersManager,
-    private readonly _executor: IExecutor
+    protected readonly _subject: Subject<IMessageProcessing>,
+    protected readonly _providersManager: IProvidersManager,
+    protected readonly _extensionsManager: IExtensionsManager,
+    protected readonly _executor: IExecutor
   ) {}
 
   get providers() {
@@ -18,6 +21,11 @@ export class Mediator implements IMediator {
 
   get bus() {
     return this._subject.asObservable();
+  }
+
+  use(...extensions: IMediatorExtension[]) {
+    extensions.forEach((extension) => this._extensionsManager.load(extension, this));
+    return this;
   }
 
   request<TResult>(request: IRequest) {

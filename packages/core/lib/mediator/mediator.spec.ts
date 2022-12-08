@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { of, Subject, toArray } from 'rxjs';
 import { MessageTypes } from '../messages';
 import { ProvidersManagerMock } from '../providers-manager/providers-manager.mocks';
+import { ExtensionsManagerMock } from '../extensions/extensions-manager.mocks';
 import { ExecutorMock } from '../executor/executor.mocks';
 import { TestEvent, TestRequest } from '../messages/messages.mocks';
 import { IExecutor } from '../executor/ports/executor.port';
@@ -14,7 +15,7 @@ describe('Mediator', () => {
 
   beforeEach(() => {
     executor = new ExecutorMock();
-    mediator = new Mediator(new Subject(), new ProvidersManagerMock(), executor);
+    mediator = new Mediator(new Subject(), new ProvidersManagerMock(), new ExtensionsManagerMock(), executor);
   });
 
   it('should execute request', (done) => {
