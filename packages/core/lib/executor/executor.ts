@@ -14,7 +14,13 @@ export class Executor implements IExecutor {
 
   execute(messageType: MessageTypes, message: IMessage) {
     const messageProcessingState = new Subject<IMessageProcessing>();
-    this._bus.next({ id: uuidv4(), messageType, message, process: messageProcessingState.asObservable() });
+    this._bus.next({
+      id: uuidv4(),
+      startedAt: new Date(),
+      messageType,
+      message,
+      process: messageProcessingState.asObservable(),
+    });
     return this.executors[messageType]
       .execute(messageProcessingState, message)
       .pipe(finalize(() => messageProcessingState.complete()));
