@@ -30,7 +30,7 @@ export class RequestsProvidersChainer implements IRequestsProvidersChainer {
     next?: Observable<TResult>
   ) {
     return defer(() => {
-      messageProcessing.next(new HandlingStartedRequestProcessingState(request));
+      messageProcessing.next(new HandlingStartedRequestProcessingState(provider));
 
       const call = next
         ? (provider as IRequestPipeline<IRequest, TResult>).handle(request, next)
@@ -39,10 +39,10 @@ export class RequestsProvidersChainer implements IRequestsProvidersChainer {
 
       return handler.pipe(
         catchError((error) => {
-          messageProcessing.next(new HandlingErrorRequestProcessingState(request, error));
+          messageProcessing.next(new HandlingErrorRequestProcessingState(provider, error));
           return throwError(() => error);
         }),
-        tap((value) => messageProcessing.next(new HandlingCompletedRequestProcessingState(request, value)))
+        tap((value) => messageProcessing.next(new HandlingCompletedRequestProcessingState(provider, value)))
       );
     }).pipe(share());
   }
