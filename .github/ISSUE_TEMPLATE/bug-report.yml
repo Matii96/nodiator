@@ -1,12 +1,12 @@
 name: "\U0001F41B Bug Report"
-description: "Found an unexpected behavior?"
-title: "[Bug]: "
-labels: ["bug", "triage"]
+description: 'Found an unexpected behavior?'
+title: '[Bug]: '
+labels: ['bug', 'triage']
 body:
   - type: checkboxes
     attributes:
-      label: "Is there an existing issue for this?"
-      description: "Before submitting new issue please search [here](../issues?q=is%3Aissue) to see if simmilar issue already exists"
+      label: 'Is there an existing issue for this?'
+      description: 'Before submitting new issue please search [here](../issues?q=is%3Aissue) to see if simmilar issue already exists'
       options:
         - label: "I've not found one"
           required: true
@@ -15,23 +15,23 @@ body:
     validations:
       required: true
     attributes:
-      label: "Current behavior"
-      description: "Describe unwanted behaviour"
+      label: 'Current behavior'
+      description: 'Describe unwanted behaviour'
 
   - type: textarea
     validations:
       required: true
     attributes:
-      label: "Expected behavior"
-      description: "Describe expected outcome"
+      label: 'Expected behavior'
+      description: 'Describe expected outcome'
 
   - type: input
     validations:
       required: true
     attributes:
-      label: "Minimum reproduction code"
-      description: "An URL to some Git repository/[StackBlitz](https://stackblitz.com/fork/github/nestjs/typescript-starter)/[CodeSandbox](https://codesandbox.io/s/github/nestjs/typescript-starter/tree/master) project that reproduces your issue. [Wtf is a minimum reproduction?](https://jmcdo29.github.io/wtf-is-a-minimum-reproduction)"
-      placeholder: "https://github.com/..."
+      label: 'Minimum reproduction code'
+      description: 'An URL to some Git repository/[StackBlitz](https://stackblitz.com/fork/github/nestjs/typescript-starter)/[CodeSandbox](https://codesandbox.io/s/github/nestjs/typescript-starter/tree/master) project that reproduces your issue. [Wtf is a minimum reproduction?](https://jmcdo29.github.io/wtf-is-a-minimum-reproduction)'
+      placeholder: 'https://github.com/...'
 
   - type: markdown
     attributes:
@@ -42,32 +42,33 @@ body:
     validations:
       required: true
     attributes:
-      label: "Package"
+      label: 'Package'
       description: |
         Which package (or packages) do you think your issue is related to?
       options:
-        - label: "<code>@nodiator/core</code>"
-        - label: "<code>@nodiator/nest</code>"
-        - label: "Not sure"
+        - label: '<code>@nodiator/core</code>'
+        - label: '<code>@nodiator/logger</code>'
+        - label: '<code>@nodiator/nest</code>'
+        - label: 'Not sure'
 
   - type: input
     attributes:
-      label: "Nodiator version"
+      label: 'Nodiator version'
       description: |
         Which version of `@nodiator/core` are you using?
-      placeholder: "2.1.3"
+      placeholder: '2.1.3'
 
   - type: input
     attributes:
-      label: "Node.js version"
-      description: "Which version of Node.js are you using?"
-      placeholder: "16.17.0"
+      label: 'Node.js version'
+      description: 'Which version of Node.js are you using?'
+      placeholder: '16.17.0'
 
   - type: checkboxes
     validations:
       required: true
     attributes:
-      label: "Used operating systems"
+      label: 'Used operating systems'
       options:
         - label: macOS
         - label: Windows
@@ -80,6 +81,6 @@ body:
 
   - type: textarea
     attributes:
-      label: "Other"
+      label: 'Other'
       description: |
         Logs, OS version, IDE, package manager, etc.

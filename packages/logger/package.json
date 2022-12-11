@@ -1,0 +1,40 @@
+{
+  "name": "@nodiator/logger",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [
+    "mediator",
+    "logger",
+    "logging"
+  ],
+  "author": "Matii96",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Matii96/nodiator.git"
+  },
+  "scripts": {
+    "build": "tsc --build tsconfig.build.json",
+    "test": "jest --config ../../jest-units.config.json packages/logger",
+    "test:e2e": "jest --config ../../jest-e2e.config.json packages/logger"
+  },
+  "bugs": {
+    "url": "https://github.com/Matii96/nodiator/issues"
+  },
+  "homepage": "https://github.com/Matii96/nodiator",
+  "devDependencies": {
+    "@nodiator/core": "workspace:^",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.6.0"
+  },
+  "peerDependencies": {
+    "@nodiator/core": "^2.0.0",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.6.0"
+  }
+}
