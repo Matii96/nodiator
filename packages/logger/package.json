@@ -1,7 +1,7 @@
 {
   "name": "@nodiator/logger",
   "version": "0.0.1",
-  "description": "",
+  "description": "Logger extension for Nodiator",
   "keywords": [
     "mediator",
     "logger",
