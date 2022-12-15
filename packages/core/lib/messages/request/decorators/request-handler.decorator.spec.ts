@@ -4,8 +4,8 @@ import { MessageTypeInterferenceException } from '../../exceptions/message-type-
 import { ScopeOptions } from '../../interfaces';
 import { IMessageMetadata } from '../../interfaces/message-metadata.interface';
 import { MessageTypes } from '../../message-types.enum';
-import { TestRequestHandler, TestRequest } from '../../messages.mocks';
 import { REQUEST_HANDLER_METADATA } from '../constants';
+import { TestRequest, TestRequestHandler } from '../messages.mocks';
 import { RequestHandler } from './request-handler.decorator';
 
 describe('RequestHandler', () => {

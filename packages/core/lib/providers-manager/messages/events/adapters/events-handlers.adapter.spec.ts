@@ -1,4 +1,4 @@
-import { TestEvent, TestEventHandler } from '../../../../messages/messages.mocks';
+import { TestEvent, TestEventHandler } from '../../../../messages/event/events.mocks';
 import { IEventsProvidersSchema } from '../interfaces';
 import { EventsHandlersAdapter } from './events-handlers.adapter';
 

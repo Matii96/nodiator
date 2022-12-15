@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { ScopeOptions, SCOPE_OPTIONS_METADATA } from '../../messages';
-import { TestRequestHandler } from '../../messages/messages.mocks';
+import { TestRequestHandler } from '../../messages/request/messages.mocks';
 import { DefaultProvidersInstantiator } from './default.providers.instantiator';
 
 describe('DefaultProvidersInstantiator', () => {

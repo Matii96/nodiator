@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { delay, firstValueFrom, Observable, of, Subject } from 'rxjs';
-import { TestRequest, TestRequestHandler } from '../../../messages/messages.mocks';
+import { TestRequest, TestRequestHandler } from '../../../messages/request/messages.mocks';
 import { IRequestsProvidersSchema } from '../../../providers-manager';
 import { IProvidersManager } from '../../../providers-manager/ports/providers-manager.port';
 import { ProvidersManagerMock } from '../../../providers-manager/providers-manager.mocks';

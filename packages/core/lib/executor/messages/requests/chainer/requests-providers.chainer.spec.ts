@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { delay, firstValueFrom, of, Subject } from 'rxjs';
-import { TestRequest, TestRequestHandler, TestRequestPipeline } from '../../../../messages/messages.mocks';
+import { TestRequest, TestRequestHandler, TestRequestPipeline } from '../../../../messages/request/messages.mocks';
 import { IRequestsProvidersChainer } from '../ports/requests-providers-chainer.port';
 import { RequestsProvidersChainer } from './requests-providers.chainer';
 

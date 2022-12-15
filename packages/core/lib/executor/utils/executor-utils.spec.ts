@@ -1,4 +1,4 @@
-import { TestRequest } from '../../messages/messages.mocks';
+import { TestRequest } from '../../messages/request/messages.mocks';
 import { PlainObjectMessageException } from '../exceptions';
 import { ExecutorUtils } from './executor-utils';
 

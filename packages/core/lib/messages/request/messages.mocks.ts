@@ -1,8 +1,6 @@
 import { Observable } from 'rxjs';
-import { IEventHandler } from './event';
-import { IRequestHandler, IRequestPipeline } from './request';
+import { IRequestHandler, IRequestPipeline } from './interfaces';
 
-// Requests
 export class TestRequest {
   constructor(readonly property = '') {}
 }
@@ -12,12 +10,5 @@ export class TestRequestPipeline implements IRequestPipeline<TestRequest, any> {
 }
 
 export class TestRequestHandler implements IRequestHandler<TestRequest, any> {
-  handle = jest.fn(async (): Promise<any> => undefined);
-}
-
-// Events
-export class TestEvent {}
-
-export class TestEventHandler implements IEventHandler<TestRequest> {
   handle = jest.fn(async (): Promise<any> => undefined);
 }

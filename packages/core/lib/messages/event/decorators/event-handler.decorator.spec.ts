@@ -1,11 +1,12 @@
 import 'reflect-metadata';
-import { MESSAGE_METADATA, SCOPE_OPTIONS_METADATA } from '../../constants';
+import { SCOPE_OPTIONS_METADATA } from '../..';
+import { MESSAGE_METADATA } from '../../constants';
 import { MessageTypeInterferenceException } from '../../exceptions/message-type-interference.exception';
 import { ScopeOptions } from '../../interfaces';
 import { IMessageMetadata } from '../../interfaces/message-metadata.interface';
 import { MessageTypes } from '../../message-types.enum';
-import { TestEvent, TestEventHandler } from '../../messages.mocks';
 import { EVENT_HANDLER_METADATA } from '../constants';
+import { TestEvent, TestEventHandler } from '../events.mocks';
 import { EventHandler } from './event-handler.decorator';
 
 class AnotherEvent {}

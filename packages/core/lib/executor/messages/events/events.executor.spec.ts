@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { lastValueFrom, Subject } from 'rxjs';
-import { TestEvent, TestEventHandler } from '../../../messages/messages.mocks';
+import { TestEvent, TestEventHandler } from '../../../messages/event/events.mocks';
 import { IProvidersManager } from '../../../providers-manager/ports/providers-manager.port';
 import { ProvidersManagerMock } from '../../../providers-manager/providers-manager.mocks';
 import { IEventsProvidersSchema } from '../../../providers-manager/messages/events/interfaces/events-providers-schema.interface';

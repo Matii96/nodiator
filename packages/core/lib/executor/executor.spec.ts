@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs';
 import { IMessage, MessageTypes } from '../messages';
-import { TestRequest } from '../messages/messages.mocks';
+import { TestRequest } from '../messages/request/messages.mocks';
 import { IExecutor } from './ports/executor.port';
 import { IMessageExecutor } from './ports/message-executor.port';
 import { MessageExecutorMock } from './executor.mocks';

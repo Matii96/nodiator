@@ -1,4 +1,4 @@
-import { TestRequest } from '../../../../messages/messages.mocks';
+import { TestRequest } from '../../../../messages/request/messages.mocks';
 import { NoHandlerException } from './no-handler.exception';
 
 describe('NoHandlerException', () => {
