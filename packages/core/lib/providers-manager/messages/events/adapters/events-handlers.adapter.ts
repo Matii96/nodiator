@@ -1,6 +1,6 @@
 import { ClassConstructor } from '../../../../utils/class-constructor.interface';
 import { IEvent, IEventHandler, MessageTypes } from '../../../../messages';
-import { EVENT_HANDLER_METADATA } from '../../../../messages/constants';
+import { EVENT_HANDLER_METADATA } from '../../../../messages/event/constants';
 import { IProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
 import {
   IEventsProvidersSchema,

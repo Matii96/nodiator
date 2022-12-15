@@ -15,7 +15,7 @@ export class MessageTypeProvidersSchemaDefinerMock implements IMessageTypeProvid
   define = jest.fn(() => ({}));
 }
 
-const metadataKeyMock = 'metadataKeyMock';
+const metadataKeyMock = Symbol('metadataKeyMock');
 export class ProviderTypeAdapterMock implements IProviderTypeAdapter<IMessageTypeProvidersSchema> {
   readonly messageType = MessageTypes.REQUEST;
   readonly metadataKey = metadataKeyMock;

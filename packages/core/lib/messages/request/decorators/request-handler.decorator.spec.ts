@@ -1,10 +1,11 @@
 import 'reflect-metadata';
-import { MESSAGE_METADATA, REQUEST_HANDLER_METADATA, SCOPE_OPTIONS_METADATA } from '../../constants';
+import { MESSAGE_METADATA, SCOPE_OPTIONS_METADATA } from '../../constants';
 import { MessageTypeInterferenceException } from '../../exceptions/message-type-interference.exception';
 import { ScopeOptions } from '../../interfaces';
 import { IMessageMetadata } from '../../interfaces/message-metadata.interface';
 import { MessageTypes } from '../../message-types.enum';
 import { TestRequestHandler, TestRequest } from '../../messages.mocks';
+import { REQUEST_HANDLER_METADATA } from '../constants';
 import { RequestHandler } from './request-handler.decorator';
 
 describe('RequestHandler', () => {

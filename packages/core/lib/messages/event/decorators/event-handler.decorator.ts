@@ -1,10 +1,11 @@
 import { ClassConstructor } from '../../../utils/class-constructor.interface';
-import { MESSAGE_METADATA, EVENT_HANDLER_METADATA, SCOPE_OPTIONS_METADATA } from '../../constants';
+import { MESSAGE_METADATA, SCOPE_OPTIONS_METADATA } from '../../constants';
 import { MessageTypeInterferenceException } from '../../exceptions/message-type-interference.exception';
 import { IMessageMetadata } from '../../interfaces/message-metadata.interface';
 import { ScopeOptions } from '../../interfaces/scope.options';
-import { MessageTypes } from '../../message-types.enum';
 import { IEvent } from '../interfaces/event.interface';
+import { MessageTypes } from '../../message-types.enum';
+import { EVENT_HANDLER_METADATA } from '../constants';
 
 type EventType = ClassConstructor<IEvent>;
 

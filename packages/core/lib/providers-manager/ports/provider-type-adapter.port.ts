@@ -4,7 +4,7 @@ import { IMessageProvider } from '../../messages/interfaces/message-provider.int
 import { IMessageTypeProvidersSchema } from '../interfaces/message-type-providers-schema.interface';
 
 export interface IProviderTypeAdapter<TProvidersSchema extends IMessageTypeProvidersSchema> {
-  messageType: MessageTypes;
-  metadataKey: string;
+  readonly messageType: MessageTypes;
+  readonly metadataKey: symbol;
   register(adaptedProviders: TProvidersSchema, provider: ClassConstructor<IMessageProvider>, metadata: any): void;
 }

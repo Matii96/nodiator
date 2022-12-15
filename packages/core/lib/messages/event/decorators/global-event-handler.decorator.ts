@@ -1,5 +1,6 @@
-import { GLOBAL_EVENT_HANDLER_METADATA, SCOPE_OPTIONS_METADATA } from '../../constants';
+import { SCOPE_OPTIONS_METADATA } from '../../constants';
 import { ScopeOptions } from '../../interfaces/scope.options';
+import { GLOBAL_EVENT_HANDLER_METADATA } from '../constants';
 
 export function GlobalEventHandler(options?: ScopeOptions): ClassDecorator {
   return (target) => {

@@ -1,6 +1,6 @@
 import { ClassConstructor } from '../../../../utils/class-constructor.interface';
 import { IRequest, IRequestPipeline, MessageTypes } from '../../../../messages';
-import { REQUEST_PIPELINE_METADATA } from '../../../../messages/constants';
+import { REQUEST_PIPELINE_METADATA } from '../../../../messages/request/constants';
 import { IProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
 import {
   IRequestsProvidersSchema,

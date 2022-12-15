@@ -1,7 +1,8 @@
 import 'reflect-metadata';
-import { GLOBAL_REQUEST_PIPELINE_METADATA, SCOPE_OPTIONS_METADATA } from '../../constants';
+import { SCOPE_OPTIONS_METADATA } from '../../constants';
 import { ScopeOptions } from '../../interfaces';
 import { TestEventHandler } from '../../messages.mocks';
+import { GLOBAL_REQUEST_PIPELINE_METADATA } from '../constants';
 import { GlobalRequestPipeline } from './global-request-pipeline.decorator';
 
 describe('GlobalRequestPipeline', () => {

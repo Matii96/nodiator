@@ -1,7 +1,8 @@
 import 'reflect-metadata';
-import { REQUEST_PIPELINE_METADATA, SCOPE_OPTIONS_METADATA } from '../../constants';
+import { SCOPE_OPTIONS_METADATA } from '../../constants';
 import { ScopeOptions } from '../../interfaces';
 import { TestRequest, TestRequestPipeline } from '../../messages.mocks';
+import { REQUEST_PIPELINE_METADATA } from '../constants';
 import { RequestPipeline } from './request-pipeline.decorator';
 
 class SomeRequest {}
