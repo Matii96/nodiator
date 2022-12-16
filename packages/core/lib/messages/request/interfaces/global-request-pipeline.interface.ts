@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
-import { IMessageProvider } from '../../interfaces/message-provider.interface';
-import { IRequest } from './request.interface';
+import { MessageProvider } from '../../interfaces/message-provider.interface';
+import { Request } from './request.interface';
 
-export interface IGlobalRequestPipeline extends IMessageProvider {
-  handle(request: IRequest, next: Observable<unknown>): Observable<unknown>;
+export interface IGlobalRequestPipeline extends MessageProvider {
+  handle(request: Request, next: Observable<unknown>): Observable<unknown>;
 }

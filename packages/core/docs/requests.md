@@ -20,7 +20,7 @@ Handling is deferred until first subscription to the response stream.
 class ExampleRequest {}
 
 @RequestHandler(ExampleRequest)
-export class ExampleRequestHandler implements IRequestHandler<ExampleRequest, string> {
+export class ExampleRequestHandler implements RequestHandler<ExampleRequest, string> {
   async handle(request: ExampleRequest) {
     return 'ok';
   }
@@ -37,7 +37,7 @@ In addition to request object itself a `handle` method receives `next` grip whic
 
 ```ts
 @RequestPipeline(ExampleRequest)
-export class ExampleRequestPipeline implements IRequestPipeline<ExampleRequest, string> {
+export class ExampleRequestPipeline implements RequestPipeline<ExampleRequest, string> {
   handle(request: ExampleRequest, next: Observable<string>) {
     console.log(`Starting to handle ${request.constructor.name}`);
     return next.pipe(
@@ -48,7 +48,7 @@ export class ExampleRequestPipeline implements IRequestPipeline<ExampleRequest, 
 
 // Pipelines unlike handlers can be attached to many requests types
 @RequestPipeline(ExampleRequest, OtherExampleRequest)
-export class ExampleRequestPipeline implements IRequestPipeline<IRequest, string> {
+export class ExampleRequestPipeline implements RequestPipeline<Request, string> {
   ...
 }
 ```

@@ -1,11 +1,11 @@
 import { Observable } from 'rxjs';
-import { IMessageProcessing } from '../executor';
+import { MessageProcessing } from '../executor';
 import { ProvidersManagerMock } from '../providers-manager/providers-manager.mocks';
-import { IMediator } from './ports';
+import { Mediator } from './ports';
 
-export class MediatorMock implements IMediator {
+export class MediatorMock implements Mediator {
   providers = new ProvidersManagerMock();
-  bus = new Observable<IMessageProcessing>();
+  bus = new Observable<MessageProcessing>();
 
   use = jest.fn();
   request = jest.fn();

@@ -1,15 +1,15 @@
-import { HandlingErrorEventProcessingState, IMessageProcessing } from '@nodiator/core';
-import { IExceptionsLogger } from '../../exceptions-logger/exceptions.logger.port';
-import { IMediatorLogger } from '../../mediator-logger/mediator-logger.port';
-import { IProcessingObserver } from '../shared/processing-observer.interface';
+import { HandlingErrorEventProcessingState, MessageProcessing } from '@nodiator/core';
+import { ExceptionsLogger } from '../../exceptions-logger/exceptions.logger.port';
+import { MediatorLogger } from '../../mediator-logger/mediator-logger.port';
+import { ProcessingObserver } from '../shared/processing-observer.interface';
 
-export class EventProcessingObserver implements IProcessingObserver {
-  private _processing: IMessageProcessing;
+export class EventProcessingObserver implements ProcessingObserver {
+  private _processing: MessageProcessing;
   private _failed = false;
 
-  constructor(private readonly _logger: IMediatorLogger, private readonly _exceptionsLogger: IExceptionsLogger) {}
+  constructor(private readonly _logger: MediatorLogger, private readonly _exceptionsLogger: ExceptionsLogger) {}
 
-  init(processing: IMessageProcessing) {
+  init(processing: MessageProcessing) {
     this._processing = processing;
     this.logStarted();
 

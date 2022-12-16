@@ -1,21 +1,21 @@
 import { ClassConstructor } from '../../../../utils/class-constructor.interface';
-import { IRequest, IRequestHandler, MessageTypes } from '../../../../messages';
+import { Request, MessageTypes, IRequestHandler } from '../../../../messages';
 import { REQUEST_HANDLER_METADATA } from '../../../../messages/request/constants';
-import { IProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
+import { ProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
 import {
-  IRequestsProvidersSchema,
-  IRequestsSpecificProvidersSchema,
+  RequestsProvidersSchema,
+  RequestsSpecificProvidersSchema,
 } from '../interfaces/requests-providers-schema.interface';
 import { DuplicatedRequestHandlerException } from '../exceptions/duplicated-request-handler.exception';
 
-export class RequestsHandlersAdapter implements IProviderTypeAdapter<IRequestsProvidersSchema> {
+export class RequestsHandlersAdapter implements ProviderTypeAdapter<RequestsProvidersSchema> {
   readonly messageType = MessageTypes.REQUEST;
   readonly metadataKey = REQUEST_HANDLER_METADATA;
 
   register(
-    adaptedProviders: IRequestsProvidersSchema,
-    provider: ClassConstructor<IRequestHandler<IRequest, unknown>>,
-    requestType: ClassConstructor<IRequest>
+    adaptedProviders: RequestsProvidersSchema,
+    provider: ClassConstructor<IRequestHandler<Request, unknown>>,
+    requestType: ClassConstructor<Request>
   ) {
     if (adaptedProviders.specific.get(requestType)?.handler) {
       throw new DuplicatedRequestHandlerException(requestType);
@@ -23,6 +23,6 @@ export class RequestsHandlersAdapter implements IProviderTypeAdapter<IRequestsPr
     if (!adaptedProviders.specific.has(requestType)) {
       adaptedProviders.specific.set(requestType, { pipelines: [], handler: provider });
     }
-    (adaptedProviders.specific.get(requestType) as IRequestsSpecificProvidersSchema).handler = provider;
+    (adaptedProviders.specific.get(requestType) as RequestsSpecificProvidersSchema).handler = provider;
   }
 }

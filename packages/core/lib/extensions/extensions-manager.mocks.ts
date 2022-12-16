@@ -1,6 +1,6 @@
-import { IExtensionsManager } from './ports/extensions-manager.port';
+import { ExtensionsManager } from './ports/extensions-manager.port';
 
-export class ExtensionsManagerMock implements IExtensionsManager {
+export class ExtensionsManagerMock implements ExtensionsManager {
   list = jest.fn();
   load = jest.fn();
 }

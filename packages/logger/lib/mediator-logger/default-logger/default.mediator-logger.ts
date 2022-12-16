@@ -1,6 +1,6 @@
-import { IMediatorLogger } from '../mediator-logger.port';
+import { MediatorLogger } from '../mediator-logger.port';
 
-export class DefaultMediatorLogger implements IMediatorLogger {
+export class DefaultMediatorLogger implements MediatorLogger {
   private standardizeMessage(msg: string) {
     return `[Mediator] ${msg}`;
   }

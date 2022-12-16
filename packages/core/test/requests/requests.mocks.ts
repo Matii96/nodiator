@@ -2,9 +2,9 @@ import { delay, mergeMap, Observable, of } from 'rxjs';
 import {
   GlobalRequestPipeline,
   IGlobalRequestPipeline,
-  IRequest,
   IRequestHandler,
   IRequestPipeline,
+  Request,
   RequestHandler,
   RequestPipeline,
 } from '../../lib';
@@ -15,7 +15,7 @@ export class TestRequest {
 
 @GlobalRequestPipeline()
 export class TestGlobalRequestPipeline implements IGlobalRequestPipeline {
-  static handle = jest.fn((request: IRequest, next: Observable<unknown>) => next);
+  static handle = jest.fn((request: Request, next: Observable<unknown>) => next);
   handle = TestGlobalRequestPipeline.handle;
 }
 

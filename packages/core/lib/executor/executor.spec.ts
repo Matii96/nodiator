@@ -1,21 +1,21 @@
 import { Subject } from 'rxjs';
-import { IMessage, MessageTypes } from '../messages';
+import { Message, MessageTypes } from '../messages';
 import { TestRequest } from '../messages/request/messages.mocks';
-import { IExecutor } from './ports/executor.port';
-import { IMessageExecutor } from './ports/message-executor.port';
+import { Executor } from './ports/executor.port';
+import { MessageExecutor } from './ports/message-executor.port';
 import { MessageExecutorMock } from './executor.mocks';
-import { Executor } from './executor';
+import { MediatorExecutor } from './executor';
 
 describe('Executor', () => {
-  let messageExecutor: IMessageExecutor<IMessage, any>;
-  let executor: IExecutor;
+  let messageExecutor: MessageExecutor<Message, any>;
+  let executor: Executor;
 
   beforeEach(() => {
     messageExecutor = new MessageExecutorMock();
-    executor = new Executor(
+    executor = new MediatorExecutor(
       {
         [MessageTypes.REQUEST]: messageExecutor,
-      } as unknown as Record<MessageTypes, IMessageExecutor<IMessage, any>>,
+      } as unknown as Record<MessageTypes, MessageExecutor<Message, any>>,
       new Subject()
     );
   });

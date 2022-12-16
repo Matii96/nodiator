@@ -1,9 +1,9 @@
 import { DefaultMediatorLogger } from './default.mediator-logger';
-import { IMediatorLogger } from '../mediator-logger.port';
+import { MediatorLogger } from '../mediator-logger.port';
 
 describe('DefaultMediatorLogger', () => {
   const msg = 'some message';
-  let logger: IMediatorLogger;
+  let logger: MediatorLogger;
 
   beforeEach(() => {
     logger = new DefaultMediatorLogger();

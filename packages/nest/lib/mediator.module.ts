@@ -4,7 +4,7 @@ import { MediatorModuleConfigurator } from './configurator/mediator.module.confi
 import { MediatorModuleOptionsValidator } from './options/module.options.validator';
 import {
   ConfigurationFactory,
-  IMediatorOptionsFactory,
+  MediatorOptionsFactory,
   MediatorModuleAsyncConfiguration,
   MediatorModuleAsyncOptions,
   MediatorModuleSingleAsyncOptions,
@@ -88,14 +88,14 @@ export class MediatorModule {
           configuration.useClass ?? configuration.useExisting,
           ...(configuration.inject || []),
         ],
-        async useFactory(configurator: MediatorModuleConfigurator, optionsFactory: IMediatorOptionsFactory) {
+        async useFactory(configurator: MediatorModuleConfigurator, optionsFactory: MediatorOptionsFactory) {
           const loadedOptions = await optionsFactory.createMediatorOptions();
           return configurator.configureRoot({ namespace: configuration.namespace, ...loadedOptions });
         },
       };
       return configuration.useExisting
         ? [mediatorProvider]
-        : [mediatorProvider, configuration.useClass as Type<IMediatorOptionsFactory>];
+        : [mediatorProvider, configuration.useClass as Type<MediatorOptionsFactory>];
     }
 
     throw new MissingAsyncConfigurationException();

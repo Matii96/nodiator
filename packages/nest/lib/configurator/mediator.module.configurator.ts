@@ -1,6 +1,6 @@
 import { Injectable, Scope, Type } from '@nestjs/common';
 import { ModuleRef, ModulesContainer } from '@nestjs/core';
-import { IMediator, IMessageProvider, MediatorFactory, ScopeOptions, SCOPE_OPTIONS_METADATA } from '@nodiator/core';
+import { Mediator, MessageProvider, MediatorFactory, ScopeOptions, SCOPE_OPTIONS_METADATA } from '@nodiator/core';
 import { NamespaceNotInitializedException } from '../exceptions/namespace-not-initialized.exception';
 import { getMediatorToken } from '../injection/get-mediator-token.factory';
 import { MediatorLogger } from '../logger/mediator.logger';
@@ -29,7 +29,7 @@ export class MediatorModuleConfigurator {
     // Let mediator namespaces to register asynchronous
     await new Promise((resolve) => setImmediate(resolve));
 
-    let mediator: IMediator;
+    let mediator: Mediator;
     try {
       mediator = this._moduleRef.get(getMediatorToken(options.namespace), { strict: false });
     } catch (err) {
@@ -45,7 +45,7 @@ export class MediatorModuleConfigurator {
     return mediator;
   }
 
-  private scopeProviders(providers: Type<IMessageProvider>[]) {
+  private scopeProviders(providers: Type<MessageProvider>[]) {
     for (const providerType of providers) {
       const scopeOptions: ScopeOptions = Reflect.getMetadata(SCOPE_OPTIONS_METADATA, providerType);
       Injectable({ scope: scopeOptions?.scoped ? Scope.REQUEST : Scope.DEFAULT })(providerType);
@@ -57,6 +57,6 @@ export class MediatorModuleConfigurator {
       .filter(({ metatype }) => !module || metatype === module)
       .flatMap((module) => Array.from(module.providers.values()))
       .map(({ instance }) => instance?.constructor)
-      .filter((instance) => instance) as Type<IMessageProvider>[];
+      .filter((instance) => instance) as Type<MessageProvider>[];
   }
 }

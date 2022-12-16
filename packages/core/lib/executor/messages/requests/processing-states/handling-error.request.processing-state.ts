@@ -1,6 +1,6 @@
-import { IMessageProvider } from '../../../../messages';
-import { IMessageProcessingState } from '../../../message-processing/message-processing-state.interface';
+import { MessageProvider } from '../../../../messages';
+import { MessageProcessingState } from '../../../message-processing/message-processing-state.interface';
 
-export class HandlingErrorRequestProcessingState implements IMessageProcessingState {
-  constructor(readonly provider: IMessageProvider, readonly error: Error) {}
+export class HandlingErrorRequestProcessingState implements MessageProcessingState {
+  constructor(readonly provider: MessageProvider, readonly error: Error) {}
 }

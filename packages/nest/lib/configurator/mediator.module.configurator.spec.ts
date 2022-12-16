@@ -3,8 +3,8 @@ import { ModulesContainer } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import { SCOPE_OPTIONS_METADATA } from '@nestjs/common/constants';
 import {
-  IRequestsProvidersSchema,
-  IRequestsSpecificProvidersSchema,
+  RequestsProvidersSchema,
+  RequestsSpecificProvidersSchema,
   MediatorFactory,
   MediatorLoggingLevels,
   MessageTypes,
@@ -28,10 +28,8 @@ describe('MediatorModuleConfigurator', () => {
   describe('configure root', () => {
     it('should create mediator instance with nest providers', () => {
       const mediator = configurator.configureRoot({});
-      const providers: IRequestsProvidersSchema = mediator.providers.get(MessageTypes.REQUEST);
-      expect((providers.specific.get(TestRequest) as IRequestsSpecificProvidersSchema).handler).toBe(
-        TestRequestHandler
-      );
+      const providers: RequestsProvidersSchema = mediator.providers.get(MessageTypes.REQUEST);
+      expect((providers.specific.get(TestRequest) as RequestsSpecificProvidersSchema).handler).toBe(TestRequestHandler);
     });
 
     it('should adapt providers to nest DI', () => {
@@ -60,8 +58,8 @@ describe('MediatorModuleConfigurator', () => {
       configurator = module.get(MediatorModuleConfigurator);
 
       const mediator = await configurator.configureFeature(TestingModule, { namespace });
-      const mediatrorProviders: IRequestsProvidersSchema = mediator.providers.get(MessageTypes.REQUEST);
-      const providersSchema = mediatrorProviders.specific.get(TestRequest) as IRequestsSpecificProvidersSchema;
+      const mediatrorProviders: RequestsProvidersSchema = mediator.providers.get(MessageTypes.REQUEST);
+      const providersSchema = mediatrorProviders.specific.get(TestRequest) as RequestsSpecificProvidersSchema;
       expect(providersSchema.handler).toBe(TestRequestHandler);
     });
 

@@ -1,23 +1,23 @@
 import {
-  IMessageProcessing,
-  IMessageProcessingState,
+  MessageProcessing,
+  MessageProcessingState,
   MessageTypes,
   PipelineErrorRequestProcessingState,
 } from '@nodiator/core';
 import { Subject } from 'rxjs';
 import { ExceptionsLoggerMock } from '../../exceptions-logger/exceptions.logger.mocks';
-import { IExceptionsLogger } from '../../exceptions-logger/exceptions.logger.port';
+import { ExceptionsLogger } from '../../exceptions-logger/exceptions.logger.port';
 import { MediatorLoggerMock } from '../../mediator-logger/mediator-logger.mocks';
-import { IMediatorLogger } from '../../mediator-logger/mediator-logger.port';
-import { IProcessingObserver } from '../shared/processing-observer.interface';
+import { MediatorLogger } from '../../mediator-logger/mediator-logger.port';
+import { ProcessingObserver } from '../shared/processing-observer.interface';
 import { RequestProcessingObserver } from './request.processing-observer';
 
 describe('RequestProcessingObserver', () => {
-  let processSubject = new Subject<IMessageProcessingState>();
-  let processing: IMessageProcessing;
-  let mediatorLogger: IMediatorLogger;
-  let exceptionsLogger: IExceptionsLogger;
-  let observer: IProcessingObserver;
+  let processSubject = new Subject<MessageProcessingState>();
+  let processing: MessageProcessing;
+  let mediatorLogger: MediatorLogger;
+  let exceptionsLogger: ExceptionsLogger;
+  let observer: ProcessingObserver;
 
   beforeEach(() => {
     processSubject = new Subject();

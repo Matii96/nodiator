@@ -1,1 +1,1 @@
-export interface IMessageProcessingState {}
+export interface MessageProcessingState {}

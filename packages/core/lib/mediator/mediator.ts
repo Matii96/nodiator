@@ -1,18 +1,18 @@
 import { from, mergeMap, Subject } from 'rxjs';
-import { IMessageProcessing } from '../executor';
-import { IEvent, IRequest, MessageTypes } from '../messages';
-import { IExecutor } from '../executor/ports/executor.port';
-import { IExtensionsManager } from '../extensions/ports/extensions-manager.port';
-import { IProvidersManager } from '../providers-manager/ports/providers-manager.port';
-import { IMediatorExtension } from '../extensions';
-import { IMediator } from './ports/mediator.port';
+import { MessageProcessing } from '../executor';
+import { Event, Request, MessageTypes } from '../messages';
+import { Executor } from '../executor/ports/executor.port';
+import { ExtensionsManager } from '../extensions/ports/extensions-manager.port';
+import { ProvidersManager } from '../providers-manager/ports/providers-manager.port';
+import { MediatorExtension } from '../extensions';
+import { Mediator } from './ports/mediator.port';
 
-export class Mediator implements IMediator {
+export class MediatorImplementation implements Mediator {
   constructor(
-    protected readonly _subject: Subject<IMessageProcessing>,
-    protected readonly _providersManager: IProvidersManager,
-    protected readonly _extensionsManager: IExtensionsManager,
-    protected readonly _executor: IExecutor
+    protected readonly _subject: Subject<MessageProcessing>,
+    protected readonly _providersManager: ProvidersManager,
+    protected readonly _extensionsManager: ExtensionsManager,
+    protected readonly _executor: Executor
   ) {}
 
   get providers() {
@@ -23,16 +23,16 @@ export class Mediator implements IMediator {
     return this._subject.asObservable();
   }
 
-  use(...extensions: IMediatorExtension[]) {
+  use(...extensions: MediatorExtension[]) {
     extensions.forEach((extension) => this._extensionsManager.load(extension, this));
     return this;
   }
 
-  request<TResult>(request: IRequest) {
+  request<TResult>(request: Request) {
     return this._executor.execute<TResult>(MessageTypes.REQUEST, request);
   }
 
-  publish(...events: IEvent[]) {
-    return from(events).pipe(mergeMap((event) => this._executor.execute<IEvent>(MessageTypes.EVENT, event)));
+  publish(...events: Event[]) {
+    return from(events).pipe(mergeMap((event) => this._executor.execute<Event>(MessageTypes.EVENT, event)));
   }
 }

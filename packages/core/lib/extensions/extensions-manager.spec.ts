@@ -1,14 +1,14 @@
 import 'reflect-metadata';
 import { MediatorMock } from '../mediator/mediator.mocks';
-import { IMediatorExtension } from './extension.interface';
-import { ExtensionsManager } from './extensions-manager';
-import { IExtensionsManager } from './ports/extensions-manager.port';
+import { MediatorExtension } from './extension.interface';
+import { ExtensionsManager } from './ports/extensions-manager.port';
+import { MediatorExtensionsManager } from './extensions-manager';
 
 describe('ExtensionsManager', () => {
-  let manager: IExtensionsManager;
+  let manager: ExtensionsManager;
 
   beforeEach(() => {
-    manager = new ExtensionsManager();
+    manager = new MediatorExtensionsManager();
   });
 
   it('should list extensions', () => {
@@ -16,7 +16,7 @@ describe('ExtensionsManager', () => {
   });
 
   it('should load extension', () => {
-    const extension: IMediatorExtension = { init: jest.fn() };
+    const extension: MediatorExtension = { init: jest.fn() };
     manager.load(extension, new MediatorMock());
     expect(extension.init).toHaveBeenCalledTimes(1);
   });

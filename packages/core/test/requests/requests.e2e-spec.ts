@@ -1,10 +1,10 @@
 import { delay, lastValueFrom, of } from 'rxjs';
 import {
-  IMediator,
+  Mediator,
   MessageTimeoutException,
   MessageTypes,
   PlainObjectMessageException,
-  IRequestsProvidersSchema,
+  RequestsProvidersSchema,
   MediatorFactory,
 } from '../../lib';
 import {
@@ -17,7 +17,7 @@ import {
 
 describe('@nodiator/core requests (e2e)', () => {
   const providers = [TestGlobalRequestPipeline, TestRequestPipeline, TestRequestHandler];
-  let mediator: IMediator;
+  let mediator: Mediator;
 
   beforeEach(() => {
     mediator = MediatorFactory.create({ providers });
@@ -29,7 +29,7 @@ describe('@nodiator/core requests (e2e)', () => {
 
   describe('nodiator setup', () => {
     it('should retrieve requests providers schema', () => {
-      const schema = mediator.providers.get<IRequestsProvidersSchema>(MessageTypes.REQUEST);
+      const schema = mediator.providers.get<RequestsProvidersSchema>(MessageTypes.REQUEST);
 
       const specific = new Map();
       specific.set(TestRequest, { pipelines: [TestRequestPipeline], handler: TestRequestHandler });

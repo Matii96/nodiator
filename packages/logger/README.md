@@ -72,7 +72,7 @@ Note that `dynamicOptions` property is function called each time configuration d
 By default messages are logged via `console` methods. This behavior can be overwritten by
 
 ```ts
-class CustomLogger implements IMediatorLogger {
+class CustomLogger implements MediatorLogger {
   debug(msg: string) {
     ...
   }

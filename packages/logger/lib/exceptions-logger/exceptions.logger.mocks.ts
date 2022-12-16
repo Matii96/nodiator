@@ -1,5 +1,5 @@
-import { IExceptionsLogger } from './exceptions.logger.port';
+import { ExceptionsLogger } from './exceptions.logger.port';
 
-export class ExceptionsLoggerMock implements IExceptionsLogger {
+export class ExceptionsLoggerMock implements ExceptionsLogger {
   log = jest.fn();
 }

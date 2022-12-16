@@ -1,5 +1,5 @@
-import { from, mergeMap, Observable, throwError } from 'rxjs';
 import { IRequestHandler, IRequestPipeline, RequestHandler, RequestPipeline } from '@nodiator/core';
+import { from, mergeMap, Observable, throwError } from 'rxjs';
 
 export class TestRequest {
   constructor(readonly property: string) {}

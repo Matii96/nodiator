@@ -1,14 +1,14 @@
 import { MediatorLoggingLevels } from '../logging-level/logging-levels.enum';
-import { IMediatorLogger } from '../mediator-logger/mediator-logger.port';
+import { MediatorLogger } from '../mediator-logger/mediator-logger.port';
 import { ClassConstructor } from '../utils/class-constructor.interface';
 import { ExceptionsLoggingLevels } from './exceptions.logger.options';
-import { IExceptionsLogger } from './exceptions.logger.port';
+import { ExceptionsLogger } from './exceptions.logger.port';
 
-export class ExceptionsLogger implements IExceptionsLogger {
+export class MediatorExceptionsLogger implements ExceptionsLogger {
   private readonly _levelsDict: Record<MediatorLoggingLevels, (msg: string) => void>;
   private readonly _loggingLevelsMap = new Map<ClassConstructor<Error>, MediatorLoggingLevels>();
 
-  constructor(private readonly _logger: IMediatorLogger, exceptionsLoggingLevels: ExceptionsLoggingLevels = {}) {
+  constructor(private readonly _logger: MediatorLogger, exceptionsLoggingLevels: ExceptionsLoggingLevels = {}) {
     this._levelsDict = {
       [MediatorLoggingLevels.DEBUG]: this._logger.debug.bind(this._logger),
       [MediatorLoggingLevels.INFO]: this._logger.info.bind(this._logger),

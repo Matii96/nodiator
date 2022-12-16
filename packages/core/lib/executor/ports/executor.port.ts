@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { MessageTypes } from '../../messages';
-import { IMessage } from '../../messages/interfaces/message.interface';
+import { Message } from '../../messages/interfaces/message.interface';
 
-export interface IExecutor {
-  execute<TResult>(messageType: MessageTypes, message: IMessage): Observable<TResult>;
+export interface Executor {
+  execute<TResult>(messageType: MessageTypes, message: Message): Observable<TResult>;
 }

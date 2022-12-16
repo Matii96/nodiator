@@ -1,11 +1,11 @@
 import { Subject } from 'rxjs';
-import { IEvent, IEventHandler } from '../../../messages';
+import { Event, IEventHandler } from '../../../messages';
 import { MediatorDynamicOptions } from '../../../options';
-import { IMessageProcessingState } from '../../message-processing';
+import { MessageProcessingState } from '../../message-processing';
 
 export interface HandleEventOptions {
   config: MediatorDynamicOptions;
-  messageProcessing: Subject<IMessageProcessingState>;
-  event: IEvent;
-  handler: IEventHandler<IEvent>;
+  messageProcessing: Subject<MessageProcessingState>;
+  event: Event;
+  handler: IEventHandler<Event>;
 }

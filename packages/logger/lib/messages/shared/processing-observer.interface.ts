@@ -1,5 +1,5 @@
-import { IMessageProcessing } from '@nodiator/core';
+import { MessageProcessing } from '@nodiator/core';
 
-export interface IProcessingObserver {
-  init(processing: IMessageProcessing): void;
+export interface ProcessingObserver {
+  init(processing: MessageProcessing): void;
 }

@@ -1,5 +1,5 @@
 import { ProvidersInstantiator } from '../executor/ports/providers-instantiator.port';
-import { IMessageProvider } from '../messages';
+import { MessageProvider } from '../messages';
 import { ClassConstructor } from '../utils/class-constructor.interface';
 import { MediatorDynamicConfigurator } from './mediator.dynamic-configurator';
 
@@ -7,7 +7,7 @@ export interface MediatorOptions {
   /**
    * Array of providers - handlers, pipelines etc.
    */
-  providers?: ClassConstructor<IMessageProvider>[];
+  providers?: ClassConstructor<MessageProvider>[];
 
   /**
    * Custom factory for messages handlers.

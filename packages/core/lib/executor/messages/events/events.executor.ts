@@ -1,14 +1,14 @@
 import { catchError, defer, from, last, map, mergeMap, of, retry, Subject, tap, throwError, timeout } from 'rxjs';
-import { IEvent } from '../../../messages/event/interfaces/event.interface';
-import { IEventsProvidersSchema } from '../../../providers-manager/messages/events/interfaces/events-providers-schema.interface';
+import { Event } from '../../../messages/event/interfaces/event.interface';
+import { EventsProvidersSchema } from '../../../providers-manager/messages/events/interfaces/events-providers-schema.interface';
 import { IEventHandler, MessageTypes } from '../../../messages';
-import { IProvidersManager } from '../../../providers-manager/ports/providers-manager.port';
+import { ProvidersManager } from '../../../providers-manager/ports/providers-manager.port';
 import { MediatorOptions } from '../../../options/mediator.options';
 import { MessageTimeoutException } from '../../exceptions/message-timeout.exception';
 import { ProvidersInstantiator } from '../../ports/providers-instantiator.port';
-import { IMessageProcessingState } from '../../message-processing';
+import { MessageProcessingState } from '../../message-processing';
 import { ExecutorUtils } from '../../utils/executor-utils';
-import { IEventsExecutor } from './ports/events.executor.port';
+import { EventsExecutor } from './ports/events.executor.port';
 import { HandleEventOptions } from './events.executor.options';
 import {
   HandlingStartedEventProcessingState,
@@ -16,20 +16,20 @@ import {
   HandlingCompletedEventProcessingState,
 } from './processing-states';
 
-export class EventsExecutor implements IEventsExecutor {
+export class MediatorEventsExecutor implements EventsExecutor {
   constructor(
     private readonly _options: MediatorOptions,
-    private readonly _providersManager: IProvidersManager,
+    private readonly _providersManager: ProvidersManager,
     private readonly _providersInstantiator: ProvidersInstantiator
   ) {}
 
-  execute(messageProcessing: Subject<IMessageProcessingState>, event: IEvent) {
+  execute(messageProcessing: Subject<MessageProcessingState>, event: Event) {
     const config = this._options.dynamicOptions ? this._options.dynamicOptions() : {};
     return from(this.getHandlers(event)).pipe(
       mergeMap((handler) =>
         ExecutorUtils.isPromise(handler)
-          ? from(handler as Promise<IEventHandler<IEvent>>)
-          : of(handler as IEventHandler<IEvent>)
+          ? from(handler as Promise<IEventHandler<Event>>)
+          : of(handler as IEventHandler<Event>)
       ),
       mergeMap((handler) => this.handleEvent({ config, messageProcessing, event, handler })),
       last(),
@@ -37,8 +37,8 @@ export class EventsExecutor implements IEventsExecutor {
     );
   }
 
-  private getHandlers(event: IEvent) {
-    const providers = this._providersManager.get<IEventsProvidersSchema>(MessageTypes.EVENT);
+  private getHandlers(event: Event) {
+    const providers = this._providersManager.get<EventsProvidersSchema>(MessageTypes.EVENT);
     const handlersTypes = [
       ...providers.global.handlers,
       ...(providers.specific.get(ExecutorUtils.getTypeOfMessage(event))?.handlers ?? []),

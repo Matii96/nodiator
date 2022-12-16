@@ -1,1 +1,1 @@
-export interface IMessage {}
+export interface Message {}

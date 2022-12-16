@@ -1,3 +1,3 @@
-import { IMessage } from '../../interfaces/message.interface';
+import { Message } from '../../interfaces/message.interface';
 
-export interface IEvent extends IMessage {}
+export interface Event extends Message {}

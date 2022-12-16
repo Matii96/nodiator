@@ -1,17 +1,17 @@
 import 'reflect-metadata';
 import { delay, firstValueFrom, of, Subject } from 'rxjs';
 import { TestRequest, TestRequestHandler, TestRequestPipeline } from '../../../../messages/request/messages.mocks';
-import { IRequestsProvidersChainer } from '../ports/requests-providers-chainer.port';
-import { RequestsProvidersChainer } from './requests-providers.chainer';
+import { RequestsProvidersChainer } from '../ports/requests-providers-chainer.port';
+import { MediatorRequestsProvidersChainer } from './requests-providers.chainer';
 
 describe('RequestsProvidersChainer', () => {
   const request = new TestRequest('success');
   const pipeline = new TestRequestPipeline();
   const handler = new TestRequestHandler();
-  let chainer: IRequestsProvidersChainer;
+  let chainer: RequestsProvidersChainer;
 
   beforeEach(() => {
-    chainer = new RequestsProvidersChainer();
+    chainer = new MediatorRequestsProvidersChainer();
   });
 
   afterEach(() => {

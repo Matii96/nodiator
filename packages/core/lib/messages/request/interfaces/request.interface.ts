@@ -1,3 +1,3 @@
-import { IMessage } from '../../interfaces/message.interface';
+import { Message } from '../../interfaces/message.interface';
 
-export interface IRequest extends IMessage {}
+export interface Request extends Message {}

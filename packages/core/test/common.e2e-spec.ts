@@ -1,12 +1,12 @@
 import { firstValueFrom, lastValueFrom } from 'rxjs';
-import { IMediator, MediatorFactory } from '../lib';
+import { Mediator, MediatorFactory } from '../lib';
 import { TestEvent, TestEventHandler, TestGlobalEventHandler } from './events/events.mocks';
 import { TestRequest, TestRequestHandler } from './requests/requests.mocks';
 
 describe('@nodiator/core common (e2e)', () => {
   const testEvent = new TestEvent();
   const testRequest = new TestRequest('success');
-  let mediator: IMediator;
+  let mediator: Mediator;
 
   beforeEach(() => {
     mediator = MediatorFactory.create();

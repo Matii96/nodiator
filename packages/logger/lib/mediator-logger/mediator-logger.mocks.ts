@@ -1,6 +1,6 @@
-import { IMediatorLogger } from './mediator-logger.port';
+import { MediatorLogger } from './mediator-logger.port';
 
-export class MediatorLoggerMock implements IMediatorLogger {
+export class MediatorLoggerMock implements MediatorLogger {
   readonly timeline: string[] = [];
 
   debug = jest.fn((msg) => this.timeline.push(msg));

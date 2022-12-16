@@ -1,17 +1,14 @@
 import { ClassConstructor } from '../../../../utils/class-constructor.interface';
-import { IRequest, IRequestPipeline, MessageTypes } from '../../../../messages';
+import { Request, MessageTypes, IRequestPipeline } from '../../../../messages';
 import { GLOBAL_REQUEST_PIPELINE_METADATA } from '../../../../messages/request/constants';
-import { IProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
-import { IRequestsProvidersSchema } from '../interfaces/requests-providers-schema.interface';
+import { ProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
+import { RequestsProvidersSchema } from '../interfaces/requests-providers-schema.interface';
 
-export class GlobalRequestsPipelinesAdapter implements IProviderTypeAdapter<IRequestsProvidersSchema> {
+export class GlobalRequestsPipelinesAdapter implements ProviderTypeAdapter<RequestsProvidersSchema> {
   readonly messageType = MessageTypes.REQUEST;
   readonly metadataKey = GLOBAL_REQUEST_PIPELINE_METADATA;
 
-  register(
-    adaptedProviders: IRequestsProvidersSchema,
-    provider: ClassConstructor<IRequestPipeline<IRequest, unknown>>
-  ) {
+  register(adaptedProviders: RequestsProvidersSchema, provider: ClassConstructor<IRequestPipeline<Request, unknown>>) {
     adaptedProviders.global.pipelines.push(provider);
   }
 }

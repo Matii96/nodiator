@@ -4,9 +4,9 @@ import { RequestProcessingObserver } from './requests/request.processing-observe
 import { RequestProvidersProcessingObserver } from './requests/request-providers.processing-observer';
 import { EventProcessingObserver } from './events/event.processing-observer';
 import { EventProvidersProcessingObserver } from './events/event-handler.processing-observer';
-import { IProcessingObserver } from './shared/processing-observer.interface';
+import { ProcessingObserver } from './shared/processing-observer.interface';
 
-export const PROCESSING_OBSERVERS: Record<MessageTypes, ReadonlyArray<ClassConstructor<IProcessingObserver>>> = {
+export const PROCESSING_OBSERVERS: Record<MessageTypes, ReadonlyArray<ClassConstructor<ProcessingObserver>>> = {
   [MessageTypes.REQUEST]: [RequestProcessingObserver, RequestProvidersProcessingObserver],
   [MessageTypes.EVENT]: [EventProcessingObserver, EventProvidersProcessingObserver],
 } as const;

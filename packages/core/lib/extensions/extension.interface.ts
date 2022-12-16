@@ -1,5 +1,5 @@
-import { IMediator } from '../mediator/ports/mediator.port';
+import { Mediator } from '../mediator/ports/mediator.port';
 
-export interface IMediatorExtension {
-  init(mediator: IMediator): void;
+export interface MediatorExtension {
+  init(mediator: Mediator): void;
 }

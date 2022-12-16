@@ -1,5 +1,5 @@
 import { Express } from 'express';
-import { IMediator } from '@nodiator/core';
+import { Mediator } from '@nodiator/core';
 
 import { GetItemUseCase } from './use-cases/get-item/get-item.use-case';
 import { GetItemUseCaseHandler } from './use-cases/get-item/get-item.use-case.handler';
@@ -19,7 +19,7 @@ import { UpdateItemUseCaseHandler } from './use-cases/update-item/update-item.us
 import { DeleteItemUseCase } from './use-cases/delete-item/delete-item.use-case';
 import { DeleteItemUseCaseHandler } from './use-cases/delete-item/delete-item.use-case.handler';
 
-export const itemsBootstrapper = (app: Express, mediator: IMediator) => {
+export const itemsBootstrapper = (app: Express, mediator: Mediator) => {
   mediator.providers.register(
     CreateItemUseCaseHandler,
     DeleteItemUseCaseHandler,

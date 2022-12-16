@@ -1,18 +1,18 @@
 import {
-  IMessageProcessing,
+  MessageProcessing,
   HandlingStartedEventProcessingState,
   HandlingCompletedEventProcessingState,
 } from '@nodiator/core';
 import { filter } from 'rxjs';
-import { IMediatorLogger } from '../../mediator-logger/mediator-logger.port';
-import { IProcessingObserver } from '../shared/processing-observer.interface';
+import { MediatorLogger } from '../../mediator-logger/mediator-logger.port';
+import { ProcessingObserver } from '../shared/processing-observer.interface';
 
-export class EventProvidersProcessingObserver implements IProcessingObserver {
-  private _processing: IMessageProcessing;
+export class EventProvidersProcessingObserver implements ProcessingObserver {
+  private _processing: MessageProcessing;
 
-  constructor(private readonly _logger: IMediatorLogger) {}
+  constructor(private readonly _logger: MediatorLogger) {}
 
-  init(processing: IMessageProcessing) {
+  init(processing: MessageProcessing) {
     this._processing = processing;
     processing.process
       .pipe(filter((state) => state instanceof HandlingStartedEventProcessingState))

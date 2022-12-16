@@ -1,11 +1,11 @@
-import { IRequestHandler, RequestHandler } from '@nodiator/core';
+import { RequestHandler, RequestHandler } from '@nodiator/core';
 
 export class TestRequest {
   constructor(readonly property: string) {}
 }
 
 @RequestHandler({ request: TestRequest, scoped: true })
-export class TestRequestHandler implements IRequestHandler<TestRequest, string> {
+export class TestRequestHandler implements RequestHandler<TestRequest, string> {
   static instancesCounter = 0;
 
   constructor() {

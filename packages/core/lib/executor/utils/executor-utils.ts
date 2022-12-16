@@ -1,9 +1,9 @@
-import { IMessage } from '../../messages/interfaces/message.interface';
+import { Message } from '../../messages/interfaces/message.interface';
 import { ClassConstructor } from '../../utils/class-constructor.interface';
 import { PlainObjectMessageException } from '../exceptions/plain-object-message.exception';
 
 export class ExecutorUtils {
-  static getTypeOfMessage(message: IMessage): ClassConstructor<IMessage> {
+  static getTypeOfMessage(message: Message): ClassConstructor<Message> {
     const prototype = Object.getPrototypeOf(message);
     if (prototype === Object.prototype) {
       throw new PlainObjectMessageException(message as Record<string, unknown>);

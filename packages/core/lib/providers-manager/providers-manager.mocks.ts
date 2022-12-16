@@ -1,22 +1,22 @@
 import { MessageTypes } from '../messages';
-import { IMessageTypeProvidersSchema } from './interfaces/message-type-providers-schema.interface';
-import { IMessageTypeProvidersSchemaDefiner } from './ports/message-type-providers-schema-definer.port';
-import { IProviderTypeAdapter } from './ports/provider-type-adapter.port';
-import { IProvidersManager } from './ports/providers-manager.port';
+import { MessageTypeProvidersSchema } from './interfaces/message-type-providers-schema.interface';
+import { MessageTypeProvidersSchemaDefiner } from './ports/message-type-providers-schema-definer.port';
+import { ProviderTypeAdapter } from './ports/provider-type-adapter.port';
+import { ProvidersManager } from './ports/providers-manager.port';
 
-export class ProvidersManagerMock implements IProvidersManager {
+export class ProvidersManagerMock implements ProvidersManager {
   list = jest.fn();
   get = jest.fn();
   register = jest.fn(() => []);
 }
 
-export class MessageTypeProvidersSchemaDefinerMock implements IMessageTypeProvidersSchemaDefiner {
+export class MessageTypeProvidersSchemaDefinerMock implements MessageTypeProvidersSchemaDefiner {
   readonly messageType = MessageTypes.REQUEST;
   define = jest.fn(() => ({}));
 }
 
 const metadataKeyMock = Symbol('metadataKeyMock');
-export class ProviderTypeAdapterMock implements IProviderTypeAdapter<IMessageTypeProvidersSchema> {
+export class ProviderTypeAdapterMock implements ProviderTypeAdapter<MessageTypeProvidersSchema> {
   readonly messageType = MessageTypes.REQUEST;
   readonly metadataKey = metadataKeyMock;
   register = jest.fn();

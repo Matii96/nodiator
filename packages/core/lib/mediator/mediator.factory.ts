@@ -1,20 +1,20 @@
 import 'reflect-metadata';
 import { Subject } from 'rxjs';
 import { ProvidersManagerFactory } from '../providers-manager/providers-manager.factory';
-import { IMessageProcessing } from '../executor';
+import { MessageProcessing } from '../executor';
 import { ExecutorsFactory } from '../executor/executors.factory';
+import { MediatorExtensionsManager } from '../extensions/extensions-manager';
 import { MediatorOptions } from '../options/mediator.options';
-import { IMediator } from './ports/mediator.port';
-import { Mediator } from './mediator';
-import { ExtensionsManager } from '../extensions/extensions-manager';
+import { Mediator } from './ports/mediator.port';
+import { MediatorImplementation } from './mediator';
 
 export class MediatorFactory {
-  static create(options: MediatorOptions = {}): IMediator {
+  static create(options: MediatorOptions = {}): Mediator {
     const providersManager = new ProvidersManagerFactory().create();
-    const extensionsManager = new ExtensionsManager();
-    const bus = new Subject<IMessageProcessing>();
+    const extensionsManager = new MediatorExtensionsManager();
+    const bus = new Subject<MessageProcessing>();
     const executor = new ExecutorsFactory(options, providersManager, bus).create();
-    const mediator = new Mediator(bus, providersManager, extensionsManager, executor);
+    const mediator = new MediatorImplementation(bus, providersManager, extensionsManager, executor);
     providersManager.register(...(options.providers ?? []));
     return mediator;
   }

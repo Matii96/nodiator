@@ -3,8 +3,8 @@ import {
   MessageTimeoutException,
   MessageTypes,
   PlainObjectMessageException,
-  IEventsProvidersSchema,
-  IMediator,
+  EventsProvidersSchema,
+  Mediator,
   MediatorFactory,
 } from '../../lib';
 import {
@@ -17,7 +17,7 @@ import {
 
 describe('@nodiator/core events (e2e)', () => {
   const providers = [TestGlobalEventHandler, TestEventHandler];
-  let mediator: IMediator;
+  let mediator: Mediator;
 
   beforeEach(() => {
     mediator = MediatorFactory.create({
@@ -31,7 +31,7 @@ describe('@nodiator/core events (e2e)', () => {
 
   describe('nodiator setup', () => {
     it('should retrieve events providers schema', () => {
-      const schema = mediator.providers.get<IEventsProvidersSchema>(MessageTypes.EVENT);
+      const schema = mediator.providers.get<EventsProvidersSchema>(MessageTypes.EVENT);
       const specific = new Map();
       specific.set(TestEvent, { handlers: [TestEventHandler] });
       expect(schema).toEqual({ global: { handlers: [TestGlobalEventHandler] }, specific });

@@ -1,7 +1,7 @@
 import { ModuleMetadata, Type } from '@nestjs/common';
 import { MediatorNestOptions, NamespaceOptions } from './shared.module.options';
 
-export interface IMediatorOptionsFactory {
+export interface MediatorOptionsFactory {
   createMediatorOptions(): MediatorNestOptions | Promise<MediatorNestOptions>;
 }
 
@@ -10,8 +10,8 @@ export type ConfigurationFactory = (...providers: any[]) => MediatorNestOptions 
 export interface MediatorModuleAsyncConfiguration extends NamespaceOptions {
   inject?: any[];
   useFactory?: ConfigurationFactory;
-  useClass?: Type<IMediatorOptionsFactory>;
-  useExisting?: Type<IMediatorOptionsFactory>;
+  useClass?: Type<MediatorOptionsFactory>;
+  useExisting?: Type<MediatorOptionsFactory>;
 }
 
 export interface MediatorModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {

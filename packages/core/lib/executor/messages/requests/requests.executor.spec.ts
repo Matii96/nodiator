@@ -1,23 +1,23 @@
 import 'reflect-metadata';
 import { delay, firstValueFrom, Observable, of, Subject } from 'rxjs';
 import { TestRequest, TestRequestHandler } from '../../../messages/request/messages.mocks';
-import { IRequestsProvidersSchema } from '../../../providers-manager';
-import { IProvidersManager } from '../../../providers-manager/ports/providers-manager.port';
+import { RequestsProvidersSchema } from '../../../providers-manager';
+import { ProvidersManager } from '../../../providers-manager/ports/providers-manager.port';
 import { ProvidersManagerMock } from '../../../providers-manager/providers-manager.mocks';
 import { MessageTimeoutException } from '../../exceptions/message-timeout.exception';
 import { RequestsProvidersChainerMock } from '../../executor.mocks';
-import { IMessageExecutor } from '../../ports/message-executor.port';
+import { MessageExecutor } from '../../ports/message-executor.port';
 import { ProvidersInstantiator } from '../../ports/providers-instantiator.port';
-import { IRequestsProvidersChainer } from './ports/requests-providers-chainer.port';
-import { RequestsExecutor } from './requests.executor';
+import { RequestsProvidersChainer } from './ports/requests-providers-chainer.port';
+import { MediatorRequestsExecutor } from './requests.executor';
 
 describe('RequestsExecutor', () => {
   const request = new TestRequest('success');
   const handler = new TestRequestHandler();
   const providersInstantiatorMock: ProvidersInstantiator = () => handler as any;
-  let providersManager: IProvidersManager;
-  let requestsProvidersChainer: IRequestsProvidersChainer;
-  let executor: IMessageExecutor<TestRequest, Observable<string>>;
+  let providersManager: ProvidersManager;
+  let requestsProvidersChainer: RequestsProvidersChainer;
+  let executor: MessageExecutor<TestRequest, Observable<string>>;
 
   beforeEach(() => {
     providersManager = new ProvidersManagerMock();
@@ -25,7 +25,7 @@ describe('RequestsExecutor', () => {
     specific.set(TestRequest, { pipelines: [], handler: [TestRequestHandler] });
     jest
       .spyOn(providersManager, 'get')
-      .mockReturnValue({ global: { pipelines: [] }, specific } as IRequestsProvidersSchema);
+      .mockReturnValue({ global: { pipelines: [] }, specific } as RequestsProvidersSchema);
 
     requestsProvidersChainer = new RequestsProvidersChainerMock();
   });
@@ -36,7 +36,7 @@ describe('RequestsExecutor', () => {
 
   describe('requests handling', () => {
     beforeEach(() => {
-      executor = new RequestsExecutor(
+      executor = new MediatorRequestsExecutor(
         { dynamicOptions: () => ({}) },
         providersManager,
         providersInstantiatorMock,
@@ -55,7 +55,7 @@ describe('RequestsExecutor', () => {
 
   describe('timeouts handling', () => {
     beforeEach(() => {
-      executor = new RequestsExecutor(
+      executor = new MediatorRequestsExecutor(
         { dynamicOptions: () => ({ requests: { timeout: 1 } }) },
         providersManager,
         providersInstantiatorMock,

@@ -1,24 +1,24 @@
 import 'reflect-metadata';
-import { IMessageTypeProvidersSchemaDefiner } from './ports/message-type-providers-schema-definer.port';
-import { IProviderTypeAdapter } from './ports/provider-type-adapter.port';
-import { IMessageTypeProvidersSchema } from './interfaces/message-type-providers-schema.interface';
+import { MessageTypeProvidersSchemaDefiner } from './ports/message-type-providers-schema-definer.port';
+import { ProviderTypeAdapter } from './ports/provider-type-adapter.port';
+import { MessageTypeProvidersSchema } from './interfaces/message-type-providers-schema.interface';
 import {
   MessageTypeProvidersSchemaDefinerMock,
   ProviderMock,
   ProviderTypeAdapterMock,
 } from './providers-manager.mocks';
-import { IProvidersManager } from './ports/providers-manager.port';
-import { ProvidersManager } from './providers-manager';
+import { ProvidersManager } from './ports/providers-manager.port';
+import { MediatorProvidersManager } from './providers-manager';
 
 describe('ProvidersManager', () => {
-  let manager: IProvidersManager;
-  let adapters: IProviderTypeAdapter<object>[];
-  let schemaDefiners: IMessageTypeProvidersSchemaDefiner[];
+  let manager: ProvidersManager;
+  let adapters: ProviderTypeAdapter<object>[];
+  let schemaDefiners: MessageTypeProvidersSchemaDefiner[];
 
   beforeEach(() => {
     schemaDefiners = [new MessageTypeProvidersSchemaDefinerMock()];
     adapters = [new ProviderTypeAdapterMock()];
-    manager = new ProvidersManager(schemaDefiners, adapters);
+    manager = new MediatorProvidersManager(schemaDefiners, adapters);
   });
 
   describe('getting message type providers', () => {
@@ -27,7 +27,7 @@ describe('ProvidersManager', () => {
     });
 
     it('should get single message type providers', () => {
-      expect(manager.get<IMessageTypeProvidersSchema>(schemaDefiners[0].messageType)).toEqual({});
+      expect(manager.get<MessageTypeProvidersSchema>(schemaDefiners[0].messageType)).toEqual({});
     });
   });
 

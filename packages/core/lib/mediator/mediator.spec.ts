@@ -6,17 +6,22 @@ import { ExtensionsManagerMock } from '../extensions/extensions-manager.mocks';
 import { TestRequest } from '../messages/request/messages.mocks';
 import { ExecutorMock } from '../executor/executor.mocks';
 import { TestEvent } from '../messages/event/events.mocks';
-import { IExecutor } from '../executor/ports/executor.port';
-import { IMediator } from './ports/mediator.port';
-import { Mediator } from './mediator';
+import { Executor } from '../executor/ports/executor.port';
+import { Mediator } from './ports/mediator.port';
+import { MediatorImplementation } from './mediator';
 
 describe('Mediator', () => {
-  let executor: IExecutor;
-  let mediator: IMediator;
+  let executor: Executor;
+  let mediator: Mediator;
 
   beforeEach(() => {
     executor = new ExecutorMock();
-    mediator = new Mediator(new Subject(), new ProvidersManagerMock(), new ExtensionsManagerMock(), executor);
+    mediator = new MediatorImplementation(
+      new Subject(),
+      new ProvidersManagerMock(),
+      new ExtensionsManagerMock(),
+      executor
+    );
   });
 
   it('should execute request', (done) => {

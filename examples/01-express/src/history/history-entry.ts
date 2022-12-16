@@ -1,14 +1,14 @@
-import { IMessage } from '@nodiator/core';
+import { Message } from '@nodiator/core';
 
 interface HistoryEntryOptions {
-  message: IMessage;
+  message: Message;
   executionTime: number;
   timestamp: Date;
 }
 
 export class HistoryEntry {
   message: string;
-  payload: IMessage;
+  payload: Message;
   executionTime: number;
   timestamp: Date;
 

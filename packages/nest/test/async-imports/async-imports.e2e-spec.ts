@@ -1,6 +1,6 @@
 import { Type } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { IMediator } from '@nodiator/core';
+import { Mediator } from '@nodiator/core';
 import { getMediatorToken } from '../../lib';
 import { ClassAppModule } from './mocks/class.app.module';
 import { ExistingAppModule } from './mocks/existing.app.module';
@@ -13,7 +13,7 @@ const initMediator = async (module: Type<any>) => {
 };
 
 describe('@nodiator/nest async imports (e2e)', () => {
-  let mediator: IMediator;
+  let mediator: Mediator;
 
   describe('use factory', () => {
     beforeEach(async () => {

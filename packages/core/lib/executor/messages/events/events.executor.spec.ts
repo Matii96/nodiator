@@ -1,14 +1,14 @@
 import 'reflect-metadata';
 import { lastValueFrom, Subject } from 'rxjs';
 import { TestEvent, TestEventHandler } from '../../../messages/event/events.mocks';
-import { IProvidersManager } from '../../../providers-manager/ports/providers-manager.port';
+import { ProvidersManager } from '../../../providers-manager/ports/providers-manager.port';
 import { ProvidersManagerMock } from '../../../providers-manager/providers-manager.mocks';
-import { IEventsProvidersSchema } from '../../../providers-manager/messages/events/interfaces/events-providers-schema.interface';
+import { EventsProvidersSchema } from '../../../providers-manager/messages/events/interfaces/events-providers-schema.interface';
 import { ProvidersInstantiator } from '../../ports/providers-instantiator.port';
 import { MessageTimeoutException } from '../../exceptions/message-timeout.exception';
-import { IMessageProcessingState } from '../../message-processing';
-import { IEventsExecutor } from './ports/events.executor.port';
-import { EventsExecutor } from './events.executor';
+import { MessageProcessingState } from '../../message-processing';
+import { EventsExecutor } from './ports/events.executor.port';
+import { MediatorEventsExecutor } from './events.executor';
 import {
   HandlingCompletedEventProcessingState,
   HandlingErrorEventProcessingState,
@@ -19,10 +19,10 @@ describe('EventsExecutor', () => {
   const event = new TestEvent();
   const handler = new TestEventHandler();
   const providersInstantiatorMock: ProvidersInstantiator = () => handler as any;
-  let subject: Subject<IMessageProcessingState>;
-  let providersManager: IProvidersManager;
-  let eventStates: IMessageProcessingState[];
-  let executor: IEventsExecutor;
+  let subject: Subject<MessageProcessingState>;
+  let providersManager: ProvidersManager;
+  let eventStates: MessageProcessingState[];
+  let executor: EventsExecutor;
 
   beforeEach(() => {
     providersManager = new ProvidersManagerMock();
@@ -30,7 +30,7 @@ describe('EventsExecutor', () => {
     specific.set(TestEvent, { handlers: [TestEventHandler] });
     jest
       .spyOn(providersManager, 'get')
-      .mockReturnValue({ global: { handlers: [] }, specific } as IEventsProvidersSchema);
+      .mockReturnValue({ global: { handlers: [] }, specific } as EventsProvidersSchema);
 
     subject = new Subject();
     eventStates = [];
@@ -43,7 +43,11 @@ describe('EventsExecutor', () => {
 
   describe('events handling', () => {
     beforeEach(() => {
-      executor = new EventsExecutor({ dynamicOptions: () => ({}) }, providersManager, providersInstantiatorMock);
+      executor = new MediatorEventsExecutor(
+        { dynamicOptions: () => ({}) },
+        providersManager,
+        providersInstantiatorMock
+      );
     });
 
     it('should handle event', (done) => {
@@ -70,7 +74,7 @@ describe('EventsExecutor', () => {
 
   describe('timeouts handling', () => {
     beforeEach(() => {
-      executor = new EventsExecutor(
+      executor = new MediatorEventsExecutor(
         { dynamicOptions: () => ({ events: { timeout: 1 } }) },
         providersManager,
         providersInstantiatorMock

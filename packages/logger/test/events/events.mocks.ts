@@ -1,5 +1,5 @@
-import { from, of, throwError } from 'rxjs';
 import { EventHandler, GlobalEventHandler, IEventHandler, IGlobalEventHandler } from '@nodiator/core';
+import { from, of, throwError } from 'rxjs';
 
 export class TestEvent {}
 

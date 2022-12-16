@@ -1,8 +1,8 @@
 import { MediatorException } from '../../exceptions';
-import { IMessage } from '../../messages/interfaces/message.interface';
+import { Message } from '../../messages/interfaces/message.interface';
 
 export class MessageTimeoutException extends MediatorException {
-  constructor(message: IMessage) {
+  constructor(message: Message) {
     super(`${message.constructor.name} execution has timed out`);
   }
 }

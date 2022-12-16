@@ -1,9 +1,9 @@
 import { MediatorLoggerMock } from '../mediator-logger/mediator-logger.mocks';
-import { IMediatorLogger } from '../mediator-logger/mediator-logger.port';
+import { MediatorLogger } from '../mediator-logger/mediator-logger.port';
 import { LoggingLevelProxy } from './logging-level.proxy';
 import { MediatorLoggingLevels } from './logging-levels.enum';
 
-const logAll = (logger: IMediatorLogger) => {
+const logAll = (logger: MediatorLogger) => {
   const msg = 'some message';
   logger.debug(msg);
   logger.info(msg);
@@ -12,8 +12,8 @@ const logAll = (logger: IMediatorLogger) => {
 };
 
 describe('proxy', () => {
-  let baseLogger: IMediatorLogger;
-  let logger: IMediatorLogger;
+  let baseLogger: MediatorLogger;
+  let logger: MediatorLogger;
 
   beforeEach(() => {
     baseLogger = new MediatorLoggerMock();

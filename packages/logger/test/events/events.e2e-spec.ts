@@ -1,4 +1,4 @@
-import { IMediator, MediatorFactory } from '@nodiator/core';
+import { Mediator, MediatorFactory } from '@nodiator/core';
 import { delay, lastValueFrom } from 'rxjs';
 import { LoggerExtension } from '../../lib';
 import { MediatorLoggerMock } from '../../lib/mediator-logger/mediator-logger.mocks';
@@ -9,7 +9,7 @@ import { FailingTestEventHandler, TestEvent, TestEventHandler, TestGlobalEventHa
 describe('@nodiator/logger events (e2e)', () => {
   const testevent = new TestEvent();
   let logger: MediatorLoggerMock;
-  let mediator: IMediator;
+  let mediator: Mediator;
 
   beforeEach(() => {
     logger = new MediatorLoggerMock();

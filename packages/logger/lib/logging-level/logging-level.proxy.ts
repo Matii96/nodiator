@@ -1,7 +1,7 @@
-import { IMediatorLogger } from '../mediator-logger/mediator-logger.port';
+import { MediatorLogger } from '../mediator-logger/mediator-logger.port';
 import { MediatorLoggingLevels } from './logging-levels.enum';
 
-export class LoggingLevelProxy implements IMediatorLogger {
+export class LoggingLevelProxy implements MediatorLogger {
   private readonly _acceptedLevels = [
     MediatorLoggingLevels.DEBUG,
     MediatorLoggingLevels.INFO,
@@ -11,7 +11,7 @@ export class LoggingLevelProxy implements IMediatorLogger {
   ] satisfies MediatorLoggingLevels[];
 
   constructor(
-    private readonly _base: IMediatorLogger,
+    private readonly _base: MediatorLogger,
     private readonly _dynamicOptions: () => { level?: MediatorLoggingLevels }
   ) {}
 

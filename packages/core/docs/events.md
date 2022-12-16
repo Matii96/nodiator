@@ -16,13 +16,13 @@ Semi Fire-and-forget type of messages. All it's handlers are executed simultaneo
 class SomeEvent {}
 
 @EventHandler(SomeEvent)
-export class SomeEventHandler implements IEventHandler<SomeEvent> {
+export class SomeEventHandler implements EventHandler<SomeEvent> {
   async handle(event: SomeEvent) {}
 }
 
 // Handler can be attached to multiple events
 @EventHandler(SomeEvent, OtherEvent)
-export class SharedHandler implements IEventHandler<SomeEvent | OtherEvent> {
+export class SharedHandler implements EventHandler<SomeEvent | OtherEvent> {
   async handle(event: SomeEvent | OtherEvent) {}
 }
 ```
@@ -35,8 +35,8 @@ In simmilar way handlers for all events can be defined, without passing list of 
 
 ```ts
 @GlobalEventHandler()
-export class EventsGlobalHandler implements IGlobalEventHandler {
-  async handle(event: IEvent) {}
+export class EventsGlobalHandler implements GlobalEventHandler {
+  async handle(event: Event) {}
 }
 ```
 

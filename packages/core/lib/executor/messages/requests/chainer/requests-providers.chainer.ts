@@ -1,6 +1,6 @@
 import { catchError, defer, from, Observable, share, Subject, tap, throwError } from 'rxjs';
-import { IRequest, IRequestHandler, IRequestPipeline } from '../../../../messages';
-import { IRequestsProvidersChainer } from '../ports/requests-providers-chainer.port';
+import { Request, IRequestPipeline, IRequestHandler } from '../../../../messages';
+import { RequestsProvidersChainer } from '../ports/requests-providers-chainer.port';
 import {
   HandlingCompletedRequestProcessingState,
   HandlingErrorRequestProcessingState,
@@ -8,12 +8,12 @@ import {
   RequestsProcessingStates,
 } from '../processing-states';
 
-export class RequestsProvidersChainer implements IRequestsProvidersChainer {
+export class MediatorRequestsProvidersChainer implements RequestsProvidersChainer {
   chain<TResult>(
     messageProcessing: Subject<RequestsProcessingStates>,
-    request: IRequest,
-    pipelines: IRequestPipeline<IRequest, TResult>[],
-    handler: IRequestHandler<IRequest, TResult>
+    request: Request,
+    pipelines: IRequestPipeline<Request, TResult>[],
+    handler: IRequestHandler<Request, TResult>
   ) {
     let next = this.wrapNext(messageProcessing, request, handler);
     for (let idx = pipelines.length - 1; idx >= 0; idx--) {
@@ -25,16 +25,16 @@ export class RequestsProvidersChainer implements IRequestsProvidersChainer {
 
   private wrapNext<TResult>(
     messageProcessing: Subject<RequestsProcessingStates>,
-    request: IRequest,
-    provider: IRequestHandler<IRequest, TResult> | IRequestPipeline<IRequest, TResult>,
+    request: Request,
+    provider: IRequestHandler<Request, TResult> | IRequestPipeline<Request, TResult>,
     next?: Observable<TResult>
   ) {
     return defer(() => {
       messageProcessing.next(new HandlingStartedRequestProcessingState(provider));
 
       const call = next
-        ? (provider as IRequestPipeline<IRequest, TResult>).handle(request, next)
-        : (provider as IRequestHandler<IRequest, TResult>).handle(request);
+        ? (provider as IRequestPipeline<Request, TResult>).handle(request, next)
+        : (provider as IRequestHandler<Request, TResult>).handle(request);
       const handler = call instanceof Observable ? call : from(call);
 
       return handler.pipe(

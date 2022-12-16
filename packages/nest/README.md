@@ -37,7 +37,7 @@ export class GetAllCatsUseCase {}
 
 // get-all-cats.use-case.handler.ts
 @RequestHandler(GetAllCatsUseCase)
-export class GetAllCatsUseCaseHandler implements IRequestHandler<GetAllCatsUseCase, GetAllCatsUseCaseResult> {
+export class GetAllCatsUseCaseHandler implements RequestHandler<GetAllCatsUseCase, GetAllCatsUseCaseResult> {
   async handle(request: GetAllCatsUseCase) {
     return 'ok';
   }
@@ -54,7 +54,7 @@ Nest module allows to declare and inject scoped mediators. Providers defined in 
 // cats.controller.ts
 @Controller('cats-feeding')
 export class CatsFeedingController {
-  constructor(@InjectMediator('CATS_FEEDING') private readonly mediator: IMediator) {}
+  constructor(@InjectMediator('CATS_FEEDING') private readonly mediator: Mediator) {}
 
   @Get()
   getAllCats() {
@@ -150,7 +150,7 @@ export class AppModule {}
 // cats.controller.ts
 @Controller('cats')
 export class CatsController {
-  constructor(@InjectMediator() private readonly mediator: IMediator) {}
+  constructor(@InjectMediator() private readonly mediator: Mediator) {}
 
   @Get()
   getAllCats() {

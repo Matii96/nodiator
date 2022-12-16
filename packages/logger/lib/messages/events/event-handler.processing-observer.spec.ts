@@ -1,21 +1,21 @@
 import {
-  IMessageProcessing,
-  IMessageProcessingState,
+  MessageProcessing,
+  MessageProcessingState,
   MessageTypes,
   HandlingStartedEventProcessingState,
   HandlingCompletedEventProcessingState,
 } from '@nodiator/core';
 import { Subject } from 'rxjs';
 import { MediatorLoggerMock } from '../../mediator-logger/mediator-logger.mocks';
-import { IMediatorLogger } from '../../mediator-logger/mediator-logger.port';
-import { IProcessingObserver } from '../shared/processing-observer.interface';
+import { MediatorLogger } from '../../mediator-logger/mediator-logger.port';
+import { ProcessingObserver } from '../shared/processing-observer.interface';
 import { EventProvidersProcessingObserver } from './event-handler.processing-observer';
 
 describe('EventProvidersProcessingObserver', () => {
-  let processSubject = new Subject<IMessageProcessingState>();
-  let processing: IMessageProcessing;
-  let mediatorLogger: IMediatorLogger;
-  let observer: IProcessingObserver;
+  let processSubject = new Subject<MessageProcessingState>();
+  let processing: MessageProcessing;
+  let mediatorLogger: MediatorLogger;
+  let observer: ProcessingObserver;
 
   beforeEach(() => {
     processSubject = new Subject();

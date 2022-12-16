@@ -1,7 +1,7 @@
 import { ClassConstructor } from '../utils/class-constructor.interface';
-import { IMessageTypeProvidersSchemaDefiner } from './ports/message-type-providers-schema-definer.port';
-import { IProviderTypeAdapter } from './ports/provider-type-adapter.port';
-import { ProvidersManager } from './providers-manager';
+import { MessageTypeProvidersSchemaDefiner } from './ports/message-type-providers-schema-definer.port';
+import { ProviderTypeAdapter } from './ports/provider-type-adapter.port';
+import { MediatorProvidersManager } from './providers-manager';
 import { GlobalEventsHandlersAdapter } from './messages/events/adapters/global-events-handlers.adapter';
 import { EventsHandlersAdapter } from './messages/events/adapters/events-handlers.adapter';
 import { EventsProvidersSchemaDefiner } from './messages/events/events.providers-schema-definer';
@@ -11,11 +11,11 @@ import { RequestsPipelinesAdapter } from './messages/requests/adapters/requests-
 import { RequestsHandlersAdapter } from './messages/requests/adapters/requests-handlers.adapter';
 
 export class ProvidersManagerFactory {
-  private readonly schemaDefinersTypes: ClassConstructor<IMessageTypeProvidersSchemaDefiner>[] = [
+  private readonly schemaDefinersTypes: ClassConstructor<MessageTypeProvidersSchemaDefiner>[] = [
     EventsProvidersSchemaDefiner,
     RequestsProvidersSchemaDefiner,
   ];
-  private readonly adaptersTypes: ClassConstructor<IProviderTypeAdapter<object>>[] = [
+  private readonly adaptersTypes: ClassConstructor<ProviderTypeAdapter<object>>[] = [
     GlobalEventsHandlersAdapter,
     EventsHandlersAdapter,
     GlobalRequestsPipelinesAdapter,
@@ -24,7 +24,7 @@ export class ProvidersManagerFactory {
   ];
 
   create() {
-    return new ProvidersManager(
+    return new MediatorProvidersManager(
       this.schemaDefinersTypes.map((definer) => new definer()),
       this.adaptersTypes.map((adapter) => new adapter())
     );
