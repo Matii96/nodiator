@@ -8,7 +8,7 @@ export class DefaultProvidersInstantiator {
 
   instantiate<TProvider extends MessageProvider>(type: ClassConstructor<TProvider>) {
     const scopeOptions: ScopeOptions = Reflect.getMetadata(SCOPE_OPTIONS_METADATA, type) || {};
-    return (scopeOptions.scoped ? this.scoped(type) : this.singleton(type)) as TProvider;
+    return scopeOptions.scoped ? this.scoped(type) : this.singleton(type);
   }
 
   private scoped<TProvider extends MessageProvider>(type: ClassConstructor<TProvider>) {

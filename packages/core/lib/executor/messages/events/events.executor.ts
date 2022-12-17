@@ -18,7 +18,7 @@ import {
 
 export class MediatorEventsExecutor implements EventsExecutor {
   constructor(
-    private readonly _options: MediatorOptions,
+    private readonly _options: Pick<MediatorOptions, 'dynamicOptions'>,
     private readonly _providersManager: ProvidersManager,
     private readonly _providersInstantiator: ProvidersInstantiator
   ) {}

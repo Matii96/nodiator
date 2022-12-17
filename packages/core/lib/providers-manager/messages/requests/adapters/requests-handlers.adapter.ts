@@ -2,10 +2,7 @@ import { ClassConstructor } from '../../../../utils/class-constructor.interface'
 import { Request, MessageTypes, IRequestHandler } from '../../../../messages';
 import { REQUEST_HANDLER_METADATA } from '../../../../messages/request/constants';
 import { ProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
-import {
-  RequestsProvidersSchema,
-  RequestsSpecificProvidersSchema,
-} from '../interfaces/requests-providers-schema.interface';
+import { RequestsProvidersSchema } from '../interfaces/requests-providers-schema.interface';
 import { DuplicatedRequestHandlerException } from '../exceptions/duplicated-request-handler.exception';
 
 export class RequestsHandlersAdapter implements ProviderTypeAdapter<RequestsProvidersSchema> {
@@ -23,6 +20,6 @@ export class RequestsHandlersAdapter implements ProviderTypeAdapter<RequestsProv
     if (!adaptedProviders.specific.has(requestType)) {
       adaptedProviders.specific.set(requestType, { pipelines: [], handler: provider });
     }
-    (adaptedProviders.specific.get(requestType) as RequestsSpecificProvidersSchema).handler = provider;
+    adaptedProviders.specific.get(requestType)!.handler = provider;
   }
 }

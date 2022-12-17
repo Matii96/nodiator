@@ -16,7 +16,7 @@ export class ExecutorsFactory {
   private readonly executors: Record<MessageTypes, MessageExecutor<Message, any>>;
 
   constructor(
-    options: MediatorOptions,
+    options: Pick<MediatorOptions, 'providersInstantiator' | 'dynamicOptions'>,
     providersManager: ProvidersManager,
     private readonly _bus: Subject<MessageProcessing>
   ) {

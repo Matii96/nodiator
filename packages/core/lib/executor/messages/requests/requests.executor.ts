@@ -16,7 +16,7 @@ import { PipelineErrorRequestProcessingState } from './processing-states';
 
 export class MediatorRequestsExecutor implements RequestsExecutor {
   constructor(
-    private readonly _options: MediatorOptions,
+    private readonly _options: Pick<MediatorOptions, 'dynamicOptions'>,
     private readonly _providersManager: ProvidersManager,
     private readonly _providersInstantiator: ProvidersInstantiator,
     private readonly _requestsProvidersChainer: RequestsProvidersChainer

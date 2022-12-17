@@ -2,10 +2,7 @@ import { ClassConstructor } from '../../../../utils/class-constructor.interface'
 import { Request, MessageTypes, IRequestPipeline } from '../../../../messages';
 import { REQUEST_PIPELINE_METADATA } from '../../../../messages/request/constants';
 import { ProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
-import {
-  RequestsProvidersSchema,
-  RequestsSpecificProvidersSchema,
-} from '../interfaces/requests-providers-schema.interface';
+import { RequestsProvidersSchema } from '../interfaces/requests-providers-schema.interface';
 
 export class RequestsPipelinesAdapter implements ProviderTypeAdapter<RequestsProvidersSchema> {
   readonly messageType = MessageTypes.REQUEST;
@@ -29,6 +26,6 @@ export class RequestsPipelinesAdapter implements ProviderTypeAdapter<RequestsPro
     if (!specific.has(requestType)) {
       specific.set(requestType, { pipelines: [], handler: null });
     }
-    (specific.get(requestType) as RequestsSpecificProvidersSchema).pipelines.push(provider);
+    specific.get(requestType)!.pipelines.push(provider);
   }
 }
