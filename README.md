@@ -39,6 +39,7 @@ Nodiator aims to address this problem by providing configurable mediator object 
 <a name="packages"></a>
 
 - [Core](https://github.com/Matii96/nodiator/tree/main/packages/core) - project implementation for vanilla typescript
+- [Logger](https://github.com/Matii96/nodiator/tree/main/packages/extension-logger) - extension supporting explicit logging
 - [Nest](https://github.com/Matii96/nodiator/tree/main/packages/nest) - nestjs integration
 
 ## Examples
