@@ -1,13 +1,13 @@
 import { DynamicModule, Provider, FactoryProvider, Type, Module, OnModuleInit } from '@nestjs/common';
+import { Mediator } from '@nodiator/core';
 import { getMediatorToken } from '../injection';
 import { MediatorModuleOptions } from '../shared/options/mediator.module.options';
 import { MediatorModuleOptionsFactory } from '../shared/options/mediator.module.options-factory';
 import { MediatorModuleAsyncFeatureOptions } from './options/mediator.module.feature-async-options';
 import { MediatorFeatureConfigurator } from './configurator/mediator.feature.configurator';
-import { MediatorFeatureExplorer } from './configurator/mediator.feature.explorer';
+import { MediatorFeatureExplorer } from './explorer/mediator.feature.explorer';
 import { MediatorModuleFeatureOptions } from './options/mediator.module.feature-options';
 import { MEDIATOR_MODULE_FEATURE_INSTANCE, MEDIATOR_MODULE_FEATURE_OPTIONS } from './constants';
-import { Mediator } from '@nodiator/core';
 
 @Module({
   providers: [MediatorFeatureConfigurator, MediatorFeatureExplorer],

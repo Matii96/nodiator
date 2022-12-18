@@ -4,7 +4,7 @@ import { Mediator, MediatorFactory, MessageProvider, ScopeOptions, SCOPE_OPTIONS
 import { MediatorModuleOptions } from '../../shared/options/mediator.module.options';
 import { MEDIATOR_MODULE_GLOBAL_OPTIONS } from '../../root/constants';
 import { MEDIATOR_MODULE_FEATURE_INSTANCE, MEDIATOR_MODULE_FEATURE_OPTIONS } from '../constants';
-import { MediatorFeatureExplorer } from './mediator.feature.explorer';
+import { MediatorFeatureExplorer } from '../explorer/mediator.feature.explorer';
 
 @Injectable()
 export class MediatorFeatureConfigurator {
