@@ -20,10 +20,7 @@ Flexible [mediator](https://refactoring.guru/design-patterns/mediator) pattern i
 - [Quick Start](#quick_start)
 - [Messages documentation](#messages)
 - [Providers scope](#providers_scope)
-- [Logging](#logging)
-  - [Logging levels](#logging_levels)
-  - [Custom logger](#logging_custom_logger)
-  - [Exceptions levels override](#logging_exceptions_levels)
+- [Extensions](#extensions)
 - [License](#license)
 
 ## 💡 Idea
@@ -124,7 +121,18 @@ const mediator = MediatorFactory.create({
 });
 ```
 
-Above example implementation is identical with call-scoped instatiting.
+## Extensions
+
+<a name="extensions"></a>
+
+Mediator exposes `bus` property which is an observable emitting messages processings. It allows to easily extended default behavior. To add an extension to mediator's instance go with
+
+```ts
+const mediator = MediatorFactory.create();
+mediator.use(new MediatorExtension());
+```
+
+For operating example look at [logger extension](https://github.com/Matii96/nodiator/tree/main/packages/extension-logger).
 
 ## License
 
