@@ -5,6 +5,7 @@ import { ProvidersManagerMock } from '../providers-manager/providers-manager.moc
 import { ExtensionsManagerMock } from '../extensions/extensions-manager.mocks';
 import { TestRequest } from '../messages/request/messages.mocks';
 import { ExecutorMock } from '../executor/executor.mocks';
+import { ExtensionsManager } from '../extensions/ports/extensions-manager.port';
 import { TestEvent } from '../messages/event/events.mocks';
 import { Executor } from '../executor/ports/executor.port';
 import { Mediator } from './ports/mediator.port';
@@ -12,16 +13,18 @@ import { MediatorImplementation } from './mediator';
 
 describe('Mediator', () => {
   let executor: Executor;
+  let extensionsManager: ExtensionsManager;
   let mediator: Mediator;
 
   beforeEach(() => {
     executor = new ExecutorMock();
-    mediator = new MediatorImplementation(
-      new Subject(),
-      new ProvidersManagerMock(),
-      new ExtensionsManagerMock(),
-      executor
-    );
+    extensionsManager = new ExtensionsManagerMock();
+    mediator = new MediatorImplementation(new Subject(), new ProvidersManagerMock(), extensionsManager, executor);
+  });
+
+  it('should use an extension', () => {
+    mediator.use({ init: jest.fn() }, { init: jest.fn() });
+    expect(extensionsManager.load).toHaveBeenCalledTimes(2);
   });
 
   it('should execute request', (done) => {

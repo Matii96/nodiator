@@ -22,5 +22,10 @@ describe('MediatorRootModule', () => {
         module.providers!.map((provider: FactoryProvider) => provider.provide).includes(MEDIATOR_MODULE_GLOBAL_OPTIONS)
       ).toBe(true);
     });
+
+    it('should configure root using factory function', () => {
+      const module = MediatorRootModule.forRootAsync({ useFactory: () => ({}) });
+      expect(module.providers!.length).toBeGreaterThan(0);
+    });
   });
 });

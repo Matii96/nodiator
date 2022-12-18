@@ -38,5 +38,10 @@ describe('MediatorFeatureModule', () => {
           .includes(MEDIATOR_MODULE_FEATURE_INSTANCE)
       ).toBe(true);
     });
+
+    it('should configure feature using factory function', () => {
+      const module = MediatorFeatureModule.forFeatureAsync(class {}, { useFactory: () => ({}) });
+      expect(module.providers!.length).toBeGreaterThan(0);
+    });
   });
 });
