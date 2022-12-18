@@ -1,103 +1,42 @@
-import { DynamicModule, Module, Type, Provider, FactoryProvider } from '@nestjs/common';
-import { MissingAsyncConfigurationException } from './exceptions/missing-async-configuration.exception';
-import { MediatorModuleConfigurator } from './configurator/mediator.module.configurator';
-import { MediatorModuleOptionsValidator } from './options/module.options.validator';
-import {
-  ConfigurationFactory,
-  MediatorOptionsFactory,
-  MediatorModuleAsyncConfiguration,
-  MediatorModuleAsyncOptions,
-  MediatorModuleSingleAsyncOptions,
-} from './options/root-async.module.options';
-import { MediatorForFeatureOptions } from './options/feature.module.options';
-import { MediatorModuleOptions } from './options/root.module.options';
-import { getMediatorToken } from './injection/get-mediator-token.factory';
-import { NAMESPACE_MEDIATOR } from './injection/constants';
+import { DynamicModule, Module, Type } from '@nestjs/common';
+import { MediatorModuleOptions } from './shared/options/mediator.module.options';
+import { MediatorModuleGlobalAsyncOptions } from './root/options/mediator.module.global-async-options';
+import { MediatorModuleFeatureOptions } from './feature/options/mediator.module.feature-options';
+import { MediatorModuleAsyncFeatureOptions } from './feature/options/mediator.module.feature-async-options';
+import { MediatorFeatureModule } from './feature/mediator.feature.module';
+import { MediatorRootModule } from './root/mediator.root.module';
 
-@Module({
-  providers: [MediatorModuleConfigurator],
-})
+@Module({})
 export class MediatorModule {
-  static forRoot(...configurations: MediatorModuleOptions[]): DynamicModule {
-    MediatorModuleOptionsValidator.validate(configurations);
-
-    if (configurations.length === 0) {
-      configurations = [{}];
-    }
-
-    const providers = configurations.map<FactoryProvider>((configuration) => ({
-      provide: getMediatorToken(configuration.namespace),
-      inject: [MediatorModuleConfigurator],
-      useFactory: (optionsFactory: MediatorModuleConfigurator) => optionsFactory.configureRoot(configuration),
-    }));
-    return { global: true, module: MediatorModule, providers, exports: providers.map(({ provide }) => provide) };
-  }
-
-  static async forRootAsync(options: MediatorModuleAsyncOptions): Promise<DynamicModule>;
-  static async forRootAsync(options: MediatorModuleSingleAsyncOptions): Promise<DynamicModule>;
-  static async forRootAsync(options: MediatorModuleAsyncOptions | MediatorModuleSingleAsyncOptions) {
-    const asyncConfigurations: MediatorModuleAsyncConfiguration[] = (options as MediatorModuleAsyncOptions)
-      ?.configurations || [options as MediatorModuleSingleAsyncOptions];
-    MediatorModuleOptionsValidator.validate(asyncConfigurations);
-
-    const providers = asyncConfigurations.flatMap((configuration) => this.getRootAsyncProviders(configuration));
+  static forRoot(options: MediatorModuleOptions = {}): DynamicModule {
     return {
-      global: true,
       module: MediatorModule,
-      imports: options.imports || [],
-      providers,
-      exports: asyncConfigurations.map(({ namespace }) => getMediatorToken(namespace)),
+      imports: [MediatorRootModule.forRoot(options)],
+      exports: [MediatorRootModule],
     };
   }
 
-  static forFeature(module: Type<any>, options: MediatorForFeatureOptions): DynamicModule {
+  static forRootAsync(options: MediatorModuleGlobalAsyncOptions) {
     return {
       module: MediatorModule,
-      providers: [
-        {
-          provide: NAMESPACE_MEDIATOR,
-          inject: [MediatorModuleConfigurator],
-          useFactory: (moduleConfigurator: MediatorModuleConfigurator) =>
-            moduleConfigurator.configureFeature(module, options),
-        },
-      ],
+      imports: [MediatorRootModule.forRootAsync(options)],
+      exports: [MediatorRootModule],
     };
   }
 
-  private static getRootAsyncProviders(configuration: MediatorModuleAsyncConfiguration): Provider[] {
-    const provide = getMediatorToken(configuration.namespace);
+  static forFeature(module: Type, options: MediatorModuleFeatureOptions = {}): DynamicModule {
+    return {
+      module: MediatorModule,
+      imports: [MediatorFeatureModule.forFeature(module, options)],
+      exports: [MediatorFeatureModule],
+    };
+  }
 
-    if (configuration.useFactory) {
-      return [
-        {
-          provide,
-          inject: [MediatorModuleConfigurator, ...(configuration.inject || [])],
-          async useFactory(configurator: MediatorModuleConfigurator, ...providers: any[]) {
-            const loadedOptions = await (configuration.useFactory as ConfigurationFactory)(...providers);
-            return configurator.configureRoot({ namespace: configuration.namespace, ...loadedOptions });
-          },
-        },
-      ];
-    }
-
-    if (configuration.useClass || configuration.useExisting) {
-      const mediatorProvider: FactoryProvider = {
-        provide,
-        inject: [
-          MediatorModuleConfigurator,
-          configuration.useClass ?? configuration.useExisting,
-          ...(configuration.inject || []),
-        ],
-        async useFactory(configurator: MediatorModuleConfigurator, optionsFactory: MediatorOptionsFactory) {
-          const loadedOptions = await optionsFactory.createMediatorOptions();
-          return configurator.configureRoot({ namespace: configuration.namespace, ...loadedOptions });
-        },
-      };
-      return configuration.useExisting
-        ? [mediatorProvider]
-        : [mediatorProvider, configuration.useClass as Type<MediatorOptionsFactory>];
-    }
-
-    throw new MissingAsyncConfigurationException();
+  static forFeatureAsync(module: Type, options: MediatorModuleAsyncFeatureOptions): DynamicModule {
+    return {
+      module: MediatorModule,
+      imports: [MediatorFeatureModule.forFeatureAsync(module, options)],
+      exports: [MediatorFeatureModule],
+    };
   }
 }
