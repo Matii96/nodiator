@@ -47,7 +47,7 @@ body:
         Which package (or packages) do you think your issue is related to?
       options:
         - label: '<code>@nodiator/core</code>'
-        - label: '<code>@nodiator/logger</code>'
+        - label: '<code>@nodiator/extension-logger</code>'
         - label: '<code>@nodiator/nest</code>'
         - label: 'Not sure'
 

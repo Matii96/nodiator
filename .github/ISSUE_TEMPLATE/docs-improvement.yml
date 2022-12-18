@@ -20,7 +20,7 @@ body:
         Which package (or packages) the change applies to?
       options:
         - label: '<code>@nodiator/core</code>'
-        - label: '<code>@nodiator/logger</code>'
+        - label: '<code>@nodiator/extension-logger</code>'
         - label: '<code>@nodiator/nest</code>'
         - label: '<code>nodiator-example-express</code>'
         - label: 'New example'

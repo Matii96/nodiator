@@ -19,7 +19,7 @@
   "homepage": "https://github.com/Matii96/nodiator#readme",
   "dependencies": {
     "@nodiator/core": "workspace:^",
-    "@nodiator/logger": "workspace:^",
+    "@nodiator/extension-logger": "workspace:^",
     "express": "^4.18.2",
     "uuid": "^9.0.0"
   },

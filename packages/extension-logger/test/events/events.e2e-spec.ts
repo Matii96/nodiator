@@ -6,7 +6,7 @@ import { MediatorLoggingLevels } from '../../lib/logging-level/logging-levels.en
 import { generalizeLogs } from '../utils/generalize-logs';
 import { FailingTestEventHandler, TestEvent, TestEventHandler, TestGlobalEventHandler } from './events.mocks';
 
-describe('@nodiator/logger events (e2e)', () => {
+describe('@nodiator/extension-logger events (e2e)', () => {
   const testevent = new TestEvent();
   let logger: MediatorLoggerMock;
   let mediator: Mediator;

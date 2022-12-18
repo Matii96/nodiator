@@ -17,9 +17,9 @@ Provides low configuration logging and visibility utility for tracking messages 
 <a name="installation"></a>
 
 ```bash
-npm i @nodiator/logger
+npm i @nodiator/extension-logger
 # or
-yarn add @nodiator/logger
+yarn add @nodiator/extension-logger
 ```
 
 ## Quick Start
@@ -27,7 +27,7 @@ yarn add @nodiator/logger
 <a name="quick_start"></a>
 
 ```ts
-import { LoggerExtension } from '@nodiator/logger';
+import { LoggerExtension } from '@nodiator/extension-logger';
 
 const mediator = MediatorFactory.create();
 mediator.use(new LoggerExtension());

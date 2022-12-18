@@ -1922,9 +1922,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nodiator/logger@workspace:^, @nodiator/logger@workspace:packages/logger":
+"@nodiator/extension-logger@workspace:^, @nodiator/extension-logger@workspace:packages/extension-logger":
   version: 0.0.0-use.local
-  resolution: "@nodiator/logger@workspace:packages/logger"
+  resolution: "@nodiator/extension-logger@workspace:packages/extension-logger"
   dependencies:
     "@nodiator/core": "workspace:^"
     reflect-metadata: ^0.1.13
@@ -1945,7 +1945,7 @@ __metadata:
     "@nestjs/platform-express": ">=8.0.0"
     "@nestjs/testing": ">=8.0.0"
     "@nodiator/core": "workspace:^"
-    "@nodiator/logger": "workspace:^"
+    "@nodiator/extension-logger": "workspace:^"
     reflect-metadata: ^0.1.13
     rxjs: ^7.6.0
   peerDependencies:
@@ -2549,9 +2549,9 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*":
-  version: 18.11.16
-  resolution: "@types/node@npm:18.11.16"
-  checksum: 23603ecc1cc5afdd2311671565e1bd1a8905e18ed7f05857089eebe524824a3347dd0c3de9c1c291839f7cf21bcf5633903cdf7905efa0fdc7464cc7606fc9fa
+  version: 18.11.17
+  resolution: "@types/node@npm:18.11.17"
+  checksum: 1933afd068d5c75c068c6c4df6d10edb3b0b2bb6503d544e2f0496ac007c90596e6a5e284a8ef032451bc16f871b7e46719d7d2bea60e9b25d13a77d52161cac
   languageName: node
   linkType: hard
 
@@ -6698,16 +6698,16 @@ __metadata:
   linkType: hard
 
 "just-diff-apply@npm:^5.2.0":
-  version: 5.4.1
-  resolution: "just-diff-apply@npm:5.4.1"
-  checksum: e324ccfdb5df174e3ec30751f6b7e8d84a75a1c559c7b294ccba79c94390b424cc84714cb2dc72cef41e0ba0cf5ecce33e5d6dedd14f5700285de38892d81cce
+  version: 5.5.0
+  resolution: "just-diff-apply@npm:5.5.0"
+  checksum: ed6bbd59781542ccb786bd843038e4591e8390aa788075beb69d358051f68fbeb122bda050b7f42515d51fb64b907d5c7bea694a0543b87b24ce406cfb5f5bfa
   languageName: node
   linkType: hard
 
 "just-diff@npm:^5.0.1":
-  version: 5.1.1
-  resolution: "just-diff@npm:5.1.1"
-  checksum: a6dfd778658c56c0144a22a435dd0a1cae890c4c7a973dbc1c16be0b092cfb5c8ac2d42d608d9713c3fc83683722ecb1585f67c30205f2836bfbe61022bd6999
+  version: 5.2.0
+  resolution: "just-diff@npm:5.2.0"
+  checksum: 5527fb6d28a446185250fba501ad857370c049bac7aa5a34c9ec82a45e1380af1a96137be7df2f87252d9f75ef67be41d4c0267d481ed0235b2ceb3ee1f5f75d
   languageName: node
   linkType: hard
 
@@ -7593,7 +7593,7 @@ __metadata:
   resolution: "nodiator-example-express@workspace:examples/01-express"
   dependencies:
     "@nodiator/core": "workspace:^"
-    "@nodiator/logger": "workspace:^"
+    "@nodiator/extension-logger": "workspace:^"
     "@types/express": ^4.17.14
     "@types/uuid": ^9.0.0
     express: ^4.18.2

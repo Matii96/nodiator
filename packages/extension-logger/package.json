@@ -1,5 +1,5 @@
 {
-  "name": "@nodiator/logger",
+  "name": "@nodiator/extension-logger",
   "version": "0.0.1",
   "description": "Logger extension for Nodiator",
   "keywords": [
