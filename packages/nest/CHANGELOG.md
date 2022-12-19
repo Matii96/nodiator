@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/Matii96/nodiator/compare/v2.2.1...v3.0.0) (2022-12-19)
+
+### Features
+
+- **core:** added extensions manager ([ed8bbf4](https://github.com/Matii96/nodiator/commit/ed8bbf48291754dcdb65235b54f52232cbcabb8e))
+- **nest:** module rework ([2a46ffd](https://github.com/Matii96/nodiator/commit/2a46ffde4db1dd863168e141250aaed5506b8aca))
+- removed I prefix from interfaces ([f2a1e86](https://github.com/Matii96/nodiator/commit/f2a1e86eaaf59c506a920d6ecdfbd9ee0767304f))
+
+### BREAKING CHANGES
+
+- **nest:** forRoot and forFeature interfaces changed. The latter is reponsible for creating
+  mediator instance and exporting it whereas forRoot for global configuring options shared by all
+  mediators instances
+- changed exported interfaces naming
+
 ## [2.2.1](https://github.com/Matii96/nodiator/compare/v2.2.0...v2.2.1) (2022-10-28)
 
 ### Bug Fixes

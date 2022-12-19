@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/Matii96/nodiator/compare/v2.2.1...v3.0.0) (2022-12-19)
+
+### Bug Fixes
+
+- **core:** added missing export ([87618fb](https://github.com/Matii96/nodiator/commit/87618fb0418af7b6849c93110d72fff0393ef126))
+- **core:** passing correct providers instances in requests processing bus ([107ea46](https://github.com/Matii96/nodiator/commit/107ea46eeafc82f4829f72cef4c571ae20422e9d))
+
+### Features
+
+- **core:** added extensions manager ([ed8bbf4](https://github.com/Matii96/nodiator/commit/ed8bbf48291754dcdb65235b54f52232cbcabb8e))
+- **core:** added startedAt property to messages processing bus ([74c34cb](https://github.com/Matii96/nodiator/commit/74c34cbf340462e9205d0546177c23e437bed918))
+- **core:** extracted logger from core to be moved to separate package ([b044b4f](https://github.com/Matii96/nodiator/commit/b044b4fe1ba533ef8042f88f2d7e445bc240d933))
+- **core:** mediator messages processing bus remake ([32e306c](https://github.com/Matii96/nodiator/commit/32e306cb9b3bbda4192f968c16387c61d9cf75e4))
+- **core:** moved to Symbol data type for mediator metadata ([ae88e65](https://github.com/Matii96/nodiator/commit/ae88e65aa82406325dee7752fc99e6c25727bf4d))
+- removed I prefix from interfaces ([f2a1e86](https://github.com/Matii96/nodiator/commit/f2a1e86eaaf59c506a920d6ecdfbd9ee0767304f))
+
+### BREAKING CHANGES
+
+- changed exported interfaces naming
+- **core:** New mediator options structure
+- **core:** Messages bus as new sub property of mediator object. Bus emits objects with unique
+  id, message type and observable which represent message processing states
+
 ## [2.2.1](https://github.com/Matii96/nodiator/compare/v2.2.0...v2.2.1) (2022-10-28)
 
 ### Bug Fixes

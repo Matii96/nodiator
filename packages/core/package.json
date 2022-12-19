@@ -1,6 +1,6 @@
 {
   "name": "@nodiator/core",
-  "version": "2.2.1",
+  "version": "3.0.0",
   "description": "Mediator pattern implementation for node.js",
   "keywords": [
     "mediator",

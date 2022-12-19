@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/Matii96/nodiator/compare/v2.2.1...v3.0.0) (2022-12-19)
+
+### Bug Fixes
+
+- **nodiator-example-express:** providers interfaces implementations fix ([f9bd8c6](https://github.com/Matii96/nodiator/commit/f9bd8c612197aff50064fe8d600b7353f03d4f00))
+
+### Features
+
+- **core:** added extensions manager ([ed8bbf4](https://github.com/Matii96/nodiator/commit/ed8bbf48291754dcdb65235b54f52232cbcabb8e))
+- **core:** extracted logger from core to be moved to separate package ([b044b4f](https://github.com/Matii96/nodiator/commit/b044b4fe1ba533ef8042f88f2d7e445bc240d933))
+- **extension-logger:** logger extension for Nodiator ([41596a5](https://github.com/Matii96/nodiator/commit/41596a597a876d6b38dadd9bee383b502294b1ca))
+- **nodiator-example-express:** added logger to mediator instance ([5beedb6](https://github.com/Matii96/nodiator/commit/5beedb6317e1dffacea15d4c32a3bd9a9b3c8763))
+- **nodiator-example-express:** adjusted example to new options structure ([fb75b3d](https://github.com/Matii96/nodiator/commit/fb75b3da493bc57c14a93aaa80cd665e8d595902))
+- removed I prefix from interfaces ([f2a1e86](https://github.com/Matii96/nodiator/commit/f2a1e86eaaf59c506a920d6ecdfbd9ee0767304f))
+
+### BREAKING CHANGES
+
+- **extension-logger:** to attach logger to mediator separate package needs to be installed
+- changed exported interfaces naming
+- **core:** New mediator options structure
+
 ## [2.2.1](https://github.com/Matii96/nodiator/compare/v2.2.0...v2.2.1) (2022-10-28)
 
 **Note:** Version bump only for package nodiator-example-express
