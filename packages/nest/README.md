@@ -9,6 +9,7 @@ Utilizes Nest's DI system to manage providers and mediator instances.
 - [Usage](#usage)
   - [Exporting Mediators](#usage_exporting_mediators)
   - [Custom Namespaces](#usage_custom_namespaces)
+- [Logger](#logger)
 - [License](#license)
 
 ## Installation
@@ -170,6 +171,30 @@ export class CatsController {
     return firstValueFrom(this.mediator.request<GetAllCatsUseCaseResult>(new GetAllCatsUseCase()));
   }
 }
+```
+
+## Logger
+
+<a name="logger"></a>
+
+The package exports logger integration if nest module is used in combination with logger extension.
+
+```ts
+// app.module.ts
+import { MediatorModule } from '@nodiator/nest';
+import { LoggerExtension } from '@nodiator/extension-logger';
+
+@Module({
+  imports: [
+    MediatorModule.forRoot({
+      dynamicOptions: () => ({
+        extensions: [new LoggerExtension({ logger: new NestMediatorLogger() })],
+      }),
+    }),
+    CatsModule,
+  ],
+})
+export class AppModule {}
 ```
 
 ## License
