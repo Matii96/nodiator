@@ -1,9 +1,9 @@
-import { RequestHandler, RequestHandler } from '@nodiator/core';
+import { RequestHandler, IRequestHandler } from '@nodiator/core';
 import { ItemsRepository } from '../../items.repository';
 import { UpdateItemUseCase } from './update-item.use-case';
 
 @RequestHandler(UpdateItemUseCase)
-export class UpdateItemUseCaseHandler implements RequestHandler<UpdateItemUseCase, void> {
+export class UpdateItemUseCaseHandler implements IRequestHandler<UpdateItemUseCase, void> {
   async handle(request: UpdateItemUseCase) {
     ItemsRepository.update(request);
   }
