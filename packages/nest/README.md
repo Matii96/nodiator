@@ -181,8 +181,8 @@ The package exports logger integration if nest module is used in combination wit
 
 ```ts
 // app.module.ts
-import { MediatorModule } from '@nodiator/nest';
 import { LoggerExtension } from '@nodiator/extension-logger';
+import { MediatorModule, NestMediatorLogger } from '@nodiator/nest';
 
 @Module({
   imports: [
