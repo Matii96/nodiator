@@ -1,4 +1,4 @@
-import { TestRequest } from '../../../../messages/messages.mocks';
+import { TestRequest } from '../../../../messages/request/messages.mocks';
 import { DuplicatedRequestHandlerException } from './duplicated-request-handler.exception';
 
 describe('DuplicatedRequestHandlerException', () => {

@@ -1,32 +1,38 @@
-import { from, mergeMap, Observable, Subject } from 'rxjs';
-import { IMessageProcessingState } from '../executor';
-import { IExecutor } from '../executor/ports/executor.port';
-import { IEvent, IRequest, MessageTypes } from '../messages';
-import { IProvidersManager } from '../providers-manager/ports/providers-manager.port';
-import { IMediatorLogger } from '../config/mediator.options';
-import { IMediator } from './ports/mediator.port';
+import { from, mergeMap, Subject } from 'rxjs';
+import { MessageProcessing } from '../executor';
+import { Event, Request, MessageTypes } from '../messages';
+import { Executor } from '../executor/ports/executor.port';
+import { ExtensionsManager } from '../extensions/ports/extensions-manager.port';
+import { ProvidersManager } from '../providers-manager/ports/providers-manager.port';
+import { MediatorExtension } from '../extensions';
+import { Mediator } from './ports/mediator.port';
 
-export class Mediator extends Observable<IMessageProcessingState> implements IMediator {
+export class MediatorImplementation implements Mediator {
   constructor(
-    private readonly _logger: IMediatorLogger,
-    private readonly _subject: Subject<IMessageProcessingState>,
-    private readonly _providersManager: IProvidersManager,
-    private readonly _executor: IExecutor
-  ) {
-    super();
-    this.source = this._subject;
-    this._logger.info('Mediator initialized');
-  }
+    protected readonly _subject: Subject<MessageProcessing>,
+    protected readonly _providersManager: ProvidersManager,
+    protected readonly _extensionsManager: ExtensionsManager,
+    protected readonly _executor: Executor
+  ) {}
 
   get providers() {
     return this._providersManager;
   }
 
-  request<TResult>(request: IRequest) {
-    return this._executor.execute<TResult>(request, MessageTypes.REQUEST);
+  get bus() {
+    return this._subject.asObservable();
   }
 
-  publish(...events: IEvent[]) {
-    return from(events).pipe(mergeMap((event) => this._executor.execute<IEvent>(event, MessageTypes.EVENT)));
+  use(...extensions: MediatorExtension[]) {
+    extensions.forEach((extension) => this._extensionsManager.load(extension, this));
+    return this;
+  }
+
+  request<TResult>(request: Request) {
+    return this._executor.execute<TResult>(MessageTypes.REQUEST, request);
+  }
+
+  publish(...events: Event[]) {
+    return from(events).pipe(mergeMap((event) => this._executor.execute<Event>(MessageTypes.EVENT, event)));
   }
 }

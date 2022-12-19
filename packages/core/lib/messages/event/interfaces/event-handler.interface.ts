@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
-import { IMessageProvider } from '../../interfaces/message-provider.interface';
-import { IEvent } from './event.interface';
+import { MessageProvider } from '../../interfaces/message-provider.interface';
+import { Event } from './event.interface';
 
-export interface IEventHandler<TEvent extends IEvent> extends IMessageProvider {
+export interface IEventHandler<TEvent extends Event> extends MessageProvider {
   handle(event: TEvent): Promise<void> | Observable<void>;
 }

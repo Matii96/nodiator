@@ -1,11 +1,11 @@
 import { MessageTypes } from '../../../messages';
-import { IMessageTypeProvidersSchemaDefiner } from '../../ports/message-type-providers-schema-definer.port';
-import { IRequestsProvidersSchema } from './interfaces/requests-providers-schema.interface';
+import { MessageTypeProvidersSchemaDefiner } from '../../ports/message-type-providers-schema-definer.port';
+import { RequestsProvidersSchema } from './interfaces/requests-providers-schema.interface';
 
-export class RequestsProvidersSchemaDefiner implements IMessageTypeProvidersSchemaDefiner {
+export class RequestsProvidersSchemaDefiner implements MessageTypeProvidersSchemaDefiner {
   readonly messageType = MessageTypes.REQUEST;
 
-  define(): IRequestsProvidersSchema {
+  define(): RequestsProvidersSchema {
     return {
       global: { pipelines: [] },
       specific: new Map(),

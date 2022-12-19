@@ -1,4 +1,4 @@
 import { MessageTypes } from '../../messages/message-types.enum';
-import { IMessageTypeProvidersSchema } from './message-type-providers-schema.interface';
+import { MessageTypeProvidersSchema } from './message-type-providers-schema.interface';
 
-export type IMessagesProvidersSchema = Record<MessageTypes, IMessageTypeProvidersSchema>;
+export type MessagesProvidersSchema = Record<MessageTypes, MessageTypeProvidersSchema>;

@@ -1,14 +1,12 @@
 import express from 'express';
-import { MediatorFactory, MediatorLoggingLevels } from '@nodiator/core';
+import { MediatorFactory } from '@nodiator/core';
+import { LoggerExtension, MediatorLoggingLevels } from '@nodiator/extension-logger';
 import { itemsBootstrapper } from './items/items.bootstrapper';
 import { historyBootstrapper } from './history/history.bootstrapper';
 
 const app = express();
-const mediator = MediatorFactory.create({
-  config() {
-    return { requests: { timeout: 10 }, logs: { level: MediatorLoggingLevels.DEBUG } };
-  },
-});
+const mediator = MediatorFactory.create({ dynamicOptions: () => ({ requests: { timeout: 10 } }) });
+mediator.use(new LoggerExtension({ dynamicOptions: () => ({ level: MediatorLoggingLevels.DEBUG }) }));
 
 itemsBootstrapper(app, mediator);
 historyBootstrapper(app, mediator);

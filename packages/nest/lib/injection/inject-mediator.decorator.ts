@@ -1,8 +1,10 @@
-import { Inject } from '@nestjs/common';
+import { Inject, Type } from '@nestjs/common';
+import { MEDIATOR_MODULE_FEATURE_INSTANCE } from '../feature/constants';
 import { getMediatorToken } from './get-mediator-token.factory';
 
 /**
- * Injects Mediator instance from the given namespace if specified.
- * @param namespace
+ * Injects mediator instance.
+ * @param {string} namespace Custom instance identifier. Allows to import mediator from outside of current module.
  */
-export const InjectMediator = (namespace?: string): ParameterDecorator => Inject(getMediatorToken(namespace));
+export const InjectMediator = (namespace?: string | symbol | Type): ParameterDecorator =>
+  namespace ? Inject(getMediatorToken(namespace)) : Inject(MEDIATOR_MODULE_FEATURE_INSTANCE);

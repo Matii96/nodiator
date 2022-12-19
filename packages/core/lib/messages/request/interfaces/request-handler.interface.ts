@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
-import { IMessageProvider } from '../../interfaces/message-provider.interface';
-import { IRequest } from './request.interface';
+import { MessageProvider } from '../../interfaces/message-provider.interface';
+import { Request } from './request.interface';
 
-export interface IRequestHandler<TRequest extends IRequest, TResult> extends IMessageProvider {
+export interface IRequestHandler<TRequest extends Request, TResult> extends MessageProvider {
   handle(request: TRequest): Promise<TResult> | Observable<TResult>;
 }

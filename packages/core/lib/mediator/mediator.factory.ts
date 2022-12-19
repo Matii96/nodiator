@@ -1,22 +1,20 @@
 import 'reflect-metadata';
 import { Subject } from 'rxjs';
 import { ProvidersManagerFactory } from '../providers-manager/providers-manager.factory';
-import { LoggerFactory } from '../logging/logger.factory';
-import { LoggingBootstrapper } from '../logging/logging.bootstraper';
+import { MessageProcessing } from '../executor';
 import { ExecutorsFactory } from '../executor/executors.factory';
-import { IMessageProcessingState } from '../executor/interfaces/message-processing-state.interface';
-import { MediatorOptions } from '../config/mediator.options';
-import { IMediator } from './ports/mediator.port';
-import { Mediator } from './mediator';
+import { MediatorExtensionsManager } from '../extensions/extensions-manager';
+import { MediatorOptions } from '../options/mediator.options';
+import { Mediator } from './ports/mediator.port';
+import { MediatorImplementation } from './mediator';
 
 export class MediatorFactory {
-  static create(options: MediatorOptions = {}): IMediator {
-    const logger = new LoggerFactory(options).create();
-    const providersManager = new ProvidersManagerFactory(logger).create();
-    const subject = new Subject<IMessageProcessingState>();
-    const executor = new ExecutorsFactory(options, providersManager, subject).create();
-    const mediator = new Mediator(logger, subject, providersManager, executor);
-    LoggingBootstrapper.bootstrap(logger, mediator, options);
+  static create(options: MediatorOptions = {}): Mediator {
+    const providersManager = new ProvidersManagerFactory().create();
+    const extensionsManager = new MediatorExtensionsManager();
+    const bus = new Subject<MessageProcessing>();
+    const executor = new ExecutorsFactory(options, providersManager, bus).create();
+    const mediator = new MediatorImplementation(bus, providersManager, extensionsManager, executor);
     providersManager.register(...(options.providers ?? []));
     return mediator;
   }

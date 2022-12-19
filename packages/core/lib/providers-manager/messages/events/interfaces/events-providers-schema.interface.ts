@@ -1,12 +1,12 @@
-import { Type } from '../../../../utils/type.interface';
-import { IEvent, IEventHandler } from '../../../../messages';
-import { IMessageTypeProvidersSchema } from '../../../interfaces/message-type-providers-schema.interface';
+import { ClassConstructor } from '../../../../utils/class-constructor.interface';
+import { Event, IEventHandler } from '../../../../messages';
+import { MessageTypeProvidersSchema } from '../../../interfaces/message-type-providers-schema.interface';
 
-export interface IEventsSpecificProvidersSchema {
-  handlers: Type<IEventHandler<IEvent>>[];
+export interface EventsSpecificProvidersSchema {
+  readonly handlers: ClassConstructor<IEventHandler<Event>>[];
 }
 
-export interface IEventsProvidersSchema extends IMessageTypeProvidersSchema {
-  global: IEventsSpecificProvidersSchema;
-  specific: Map<Type<IEvent>, IEventsSpecificProvidersSchema>;
+export interface EventsProvidersSchema extends MessageTypeProvidersSchema {
+  readonly global: EventsSpecificProvidersSchema;
+  readonly specific: Map<ClassConstructor<Event>, EventsSpecificProvidersSchema>;
 }

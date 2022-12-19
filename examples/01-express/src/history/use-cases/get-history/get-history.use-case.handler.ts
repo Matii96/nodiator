@@ -1,4 +1,4 @@
-import { IRequestHandler, RequestHandler } from '@nodiator/core';
+import { RequestHandler, IRequestHandler } from '@nodiator/core';
 import { HistoryRepository } from '../../history.repository';
 import { GetHistoryUseCaseResult } from './get-history.use-case.result';
 import { GetHistoryUseCase } from './get-history.use-case';

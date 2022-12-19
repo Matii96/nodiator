@@ -1,4 +1,4 @@
-import { IRequestHandler, RequestHandler } from '@nodiator/core';
+import { RequestHandler, IRequestHandler } from '@nodiator/core';
 import { ItemsRepository } from '../../items.repository';
 import { GetAllItemsUseCase } from './get-all-items.use-case';
 import { GetAllItemsUseCaseResult } from './get-all-items.use-case.result';

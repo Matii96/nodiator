@@ -1,5 +1,5 @@
-import { TestRequest, TestRequestPipeline } from '../../../../messages/messages.mocks';
-import { IRequestsProvidersSchema } from '../interfaces';
+import { TestRequest, TestRequestPipeline } from '../../../../messages/request/messages.mocks';
+import { RequestsProvidersSchema } from '../interfaces';
 import { RequestsPipelinesAdapter } from './requests-pipelines.adapter';
 
 describe('RequestsPipelinesAdapter', () => {
@@ -10,7 +10,7 @@ describe('RequestsPipelinesAdapter', () => {
   });
 
   it('should register providers', () => {
-    const adaptedProviders: IRequestsProvidersSchema = { global: { pipelines: [] }, specific: new Map() };
+    const adaptedProviders: RequestsProvidersSchema = { global: { pipelines: [] }, specific: new Map() };
     adapter.register(adaptedProviders, TestRequestPipeline, new Set([TestRequest]));
     expect(adaptedProviders.specific.has(TestRequest)).toBe(true);
   });

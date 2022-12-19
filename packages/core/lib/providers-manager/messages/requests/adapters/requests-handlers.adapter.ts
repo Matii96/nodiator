@@ -1,21 +1,18 @@
-import { Type } from '../../../../utils/type.interface';
-import { IRequest, IRequestHandler, MessageTypes } from '../../../../messages';
-import { REQUEST_HANDLER_METADATA } from '../../../../messages/constants';
-import { IProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
-import {
-  IRequestsProvidersSchema,
-  IRequestsSpecificProvidersSchema,
-} from '../interfaces/requests-providers-schema.interface';
+import { ClassConstructor } from '../../../../utils/class-constructor.interface';
+import { Request, MessageTypes, IRequestHandler } from '../../../../messages';
+import { REQUEST_HANDLER_METADATA } from '../../../../messages/request/constants';
+import { ProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
+import { RequestsProvidersSchema } from '../interfaces/requests-providers-schema.interface';
 import { DuplicatedRequestHandlerException } from '../exceptions/duplicated-request-handler.exception';
 
-export class RequestsHandlersAdapter implements IProviderTypeAdapter<IRequestsProvidersSchema> {
+export class RequestsHandlersAdapter implements ProviderTypeAdapter<RequestsProvidersSchema> {
   readonly messageType = MessageTypes.REQUEST;
   readonly metadataKey = REQUEST_HANDLER_METADATA;
 
   register(
-    adaptedProviders: IRequestsProvidersSchema,
-    provider: Type<IRequestHandler<IRequest, unknown>>,
-    requestType: Type<IRequest>
+    adaptedProviders: RequestsProvidersSchema,
+    provider: ClassConstructor<IRequestHandler<Request, unknown>>,
+    requestType: ClassConstructor<Request>
   ) {
     if (adaptedProviders.specific.get(requestType)?.handler) {
       throw new DuplicatedRequestHandlerException(requestType);
@@ -23,6 +20,6 @@ export class RequestsHandlersAdapter implements IProviderTypeAdapter<IRequestsPr
     if (!adaptedProviders.specific.has(requestType)) {
       adaptedProviders.specific.set(requestType, { pipelines: [], handler: provider });
     }
-    (adaptedProviders.specific.get(requestType) as IRequestsSpecificProvidersSchema).handler = provider;
+    adaptedProviders.specific.get(requestType)!.handler = provider;
   }
 }

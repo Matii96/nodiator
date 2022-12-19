@@ -1,5 +1,6 @@
-import { GLOBAL_REQUEST_PIPELINE_METADATA, SCOPE_OPTIONS_METADATA } from '../../constants';
+import { SCOPE_OPTIONS_METADATA } from '../../constants';
 import { ScopeOptions } from '../../interfaces/scope.options';
+import { GLOBAL_REQUEST_PIPELINE_METADATA } from '../constants';
 
 /**
  * Represents global pipeline executable before each request or event is handled.

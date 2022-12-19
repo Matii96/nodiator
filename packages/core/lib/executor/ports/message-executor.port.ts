@@ -1,5 +1,7 @@
-import { IMessage } from '../../messages/interfaces/message.interface';
+import { Observable, Subject } from 'rxjs';
+import { Message } from '../../messages/interfaces/message.interface';
+import { MessageProcessingState } from '../message-processing';
 
-export interface IMessageExecutor<TMessage extends IMessage, TResult> {
-  execute(id: string, message: TMessage): TResult;
+export interface MessageExecutor<TMessage extends Message, TResult> {
+  execute(messageProcessing: Subject<MessageProcessingState>, message: TMessage): Observable<TResult>;
 }

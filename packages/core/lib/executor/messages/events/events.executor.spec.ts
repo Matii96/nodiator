@@ -1,25 +1,28 @@
 import 'reflect-metadata';
 import { lastValueFrom, Subject } from 'rxjs';
-import { MessageTypes } from '../../../messages';
-import { TestEvent, TestEventHandler } from '../../../messages/messages.mocks';
-import { IProvidersManager } from '../../../providers-manager/ports/providers-manager.port';
+import { TestEvent, TestEventHandler } from '../../../messages/event/events.mocks';
+import { ProvidersManager } from '../../../providers-manager/ports/providers-manager.port';
 import { ProvidersManagerMock } from '../../../providers-manager/providers-manager.mocks';
-import { IEventsProvidersSchema } from '../../../providers-manager/messages/events/interfaces/events-providers-schema.interface';
+import { EventsProvidersSchema } from '../../../providers-manager/messages/events/interfaces/events-providers-schema.interface';
 import { ProvidersInstantiator } from '../../ports/providers-instantiator.port';
 import { MessageTimeoutException } from '../../exceptions/message-timeout.exception';
-import { IEventProcessingState } from './interfaces/event-processing-state.interface';
-import { IEventsExecutor } from './ports/events.executor.port';
-import { EventsExecutor } from './events.executor';
+import { MessageProcessingState } from '../../message-processing';
+import { EventsExecutor } from './ports/events.executor.port';
+import { MediatorEventsExecutor } from './events.executor';
+import {
+  HandlingCompletedEventProcessingState,
+  HandlingErrorEventProcessingState,
+  HandlingStartedEventProcessingState,
+} from './processing-states';
 
 describe('EventsExecutor', () => {
-  const id = 'id';
   const event = new TestEvent();
   const handler = new TestEventHandler();
   const providersInstantiatorMock: ProvidersInstantiator = () => handler as any;
-  let subject: Subject<IEventProcessingState>;
-  let providersManager: IProvidersManager;
-  let eventStates: IEventProcessingState[];
-  let executor: IEventsExecutor;
+  let subject: Subject<MessageProcessingState>;
+  let providersManager: ProvidersManager;
+  let eventStates: MessageProcessingState[];
+  let executor: EventsExecutor;
 
   beforeEach(() => {
     providersManager = new ProvidersManagerMock();
@@ -27,7 +30,7 @@ describe('EventsExecutor', () => {
     specific.set(TestEvent, { handlers: [TestEventHandler] });
     jest
       .spyOn(providersManager, 'get')
-      .mockReturnValue({ global: { handlers: [] }, specific } as IEventsProvidersSchema);
+      .mockReturnValue({ global: { handlers: [] }, specific } as EventsProvidersSchema);
 
     subject = new Subject();
     eventStates = [];
@@ -40,11 +43,15 @@ describe('EventsExecutor', () => {
 
   describe('events handling', () => {
     beforeEach(() => {
-      executor = new EventsExecutor(subject, { config: () => ({}) }, providersManager, providersInstantiatorMock);
+      executor = new MediatorEventsExecutor(
+        { dynamicOptions: () => ({}) },
+        providersManager,
+        providersInstantiatorMock
+      );
     });
 
     it('should handle event', (done) => {
-      executor.execute(id, event).subscribe({
+      executor.execute(subject, event).subscribe({
         complete() {
           expect(handler.handle).toHaveBeenCalledTimes(1);
           done();
@@ -52,21 +59,23 @@ describe('EventsExecutor', () => {
       });
     });
 
-    it('should emit event handling steps', async () => {
-      await lastValueFrom(executor.execute(id, event));
-      expect(eventStates).toEqual([
-        { id, messageType: MessageTypes.EVENT, message: event, provider: handler },
-        { id, messageType: MessageTypes.EVENT, message: event, provider: handler, handled: true },
-        { id, messageType: MessageTypes.EVENT, message: event, processed: true },
-      ]);
+    it('should emit event handling steps', (done) => {
+      executor.execute(subject, event).subscribe({
+        complete() {
+          expect(eventStates).toEqual([
+            new HandlingStartedEventProcessingState(handler),
+            new HandlingCompletedEventProcessingState(handler),
+          ]);
+          done();
+        },
+      });
     });
   });
 
   describe('timeouts handling', () => {
     beforeEach(() => {
-      executor = new EventsExecutor(
-        subject,
-        { config: () => ({ events: { timeout: 1 } }) },
+      executor = new MediatorEventsExecutor(
+        { dynamicOptions: () => ({ events: { timeout: 1 } }) },
         providersManager,
         providersInstantiatorMock
       );
@@ -74,7 +83,7 @@ describe('EventsExecutor', () => {
     });
 
     it('should throw timeout exception', async () => {
-      const task = lastValueFrom(executor.execute(id, event));
+      const task = lastValueFrom(executor.execute(subject, event));
       expect(task).rejects.toThrow(MessageTimeoutException);
       try {
         await task;
@@ -83,14 +92,13 @@ describe('EventsExecutor', () => {
 
     it('should emit event handling steps', async () => {
       try {
-        await lastValueFrom(executor.execute(id, event));
+        await lastValueFrom(executor.execute(subject, event));
       } catch {}
 
       const error = new MessageTimeoutException(event);
       expect(eventStates).toEqual([
-        { id, messageType: MessageTypes.EVENT, message: event, provider: handler },
-        { id, messageType: MessageTypes.EVENT, message: event, provider: handler, error },
-        { id, messageType: MessageTypes.EVENT, message: event, processed: true },
+        new HandlingStartedEventProcessingState(handler),
+        new HandlingErrorEventProcessingState(handler, error),
       ]);
     });
   });

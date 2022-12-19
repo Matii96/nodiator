@@ -1,17 +1,17 @@
-import { Type } from '../../../../utils/type.interface';
-import { IRequest, IRequestHandler, IRequestPipeline } from '../../../../messages';
-import { IMessageTypeProvidersSchema } from '../../../interfaces/message-type-providers-schema.interface';
+import { ClassConstructor } from '../../../../utils/class-constructor.interface';
+import { Request, IRequestHandler, IRequestPipeline } from '../../../../messages';
+import { MessageTypeProvidersSchema } from '../../../interfaces/message-type-providers-schema.interface';
 
-interface IRequestsGlobalProvidersSchema {
-  pipelines: Type<IRequestPipeline<IRequest, any>>[];
+interface RequestsGlobalProvidersSchema {
+  readonly pipelines: ClassConstructor<IRequestPipeline<Request, any>>[];
 }
 
-export interface IRequestsSpecificProvidersSchema {
-  pipelines: Type<IRequestPipeline<IRequest, any>>[];
-  handler: Type<IRequestHandler<IRequest, any>> | null;
+export interface RequestsSpecificProvidersSchema {
+  readonly pipelines: ClassConstructor<IRequestPipeline<Request, any>>[];
+  handler: ClassConstructor<IRequestHandler<Request, any>> | null;
 }
 
-export interface IRequestsProvidersSchema extends IMessageTypeProvidersSchema {
-  global: IRequestsGlobalProvidersSchema;
-  specific: Map<Type<IRequest>, IRequestsSpecificProvidersSchema>;
+export interface RequestsProvidersSchema extends MessageTypeProvidersSchema {
+  readonly global: RequestsGlobalProvidersSchema;
+  readonly specific: Map<ClassConstructor<Request>, RequestsSpecificProvidersSchema>;
 }

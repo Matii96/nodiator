@@ -31,8 +31,10 @@
     "@nestjs/core": ">=8.0.0",
     "@nestjs/platform-express": ">=8.0.0",
     "@nestjs/testing": ">=8.0.0",
-    "@nodiator/core": "^2.2.1",
-    "reflect-metadata": "^0.1.13"
+    "@nodiator/core": "workspace:^",
+    "@nodiator/extension-logger": "workspace:^",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.6.0"
   },
   "peerDependencies": {
     "@nestjs/common": ">=8.0.0",

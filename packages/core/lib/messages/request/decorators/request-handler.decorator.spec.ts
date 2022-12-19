@@ -1,10 +1,11 @@
 import 'reflect-metadata';
-import { MESSAGE_METADATA, REQUEST_HANDLER_METADATA, SCOPE_OPTIONS_METADATA } from '../../constants';
+import { MESSAGE_METADATA, SCOPE_OPTIONS_METADATA } from '../../constants';
 import { MessageTypeInterferenceException } from '../../exceptions/message-type-interference.exception';
 import { ScopeOptions } from '../../interfaces';
-import { IMessageMetadata } from '../../interfaces/message-metadata.interface';
+import { MessageMetadata } from '../../interfaces/message-metadata.interface';
 import { MessageTypes } from '../../message-types.enum';
-import { TestRequestHandler, TestRequest } from '../../messages.mocks';
+import { REQUEST_HANDLER_METADATA } from '../constants';
+import { TestRequest, TestRequestHandler } from '../messages.mocks';
 import { RequestHandler } from './request-handler.decorator';
 
 describe('RequestHandler', () => {
@@ -20,11 +21,11 @@ describe('RequestHandler', () => {
       expect(Reflect.getMetadata(REQUEST_HANDLER_METADATA, TestRequestHandler)).toEqual(TestRequest);
       expect(Reflect.getMetadata(MESSAGE_METADATA, TestRequest)).toEqual({
         type: MessageTypes.REQUEST,
-      } as IMessageMetadata);
+      } as MessageMetadata);
     });
 
     it('should throw MessageTypeInterferenceException', () => {
-      Reflect.defineMetadata(MESSAGE_METADATA, { type: MessageTypes.EVENT } as IMessageMetadata, TestRequest);
+      Reflect.defineMetadata(MESSAGE_METADATA, { type: MessageTypes.EVENT } as MessageMetadata, TestRequest);
       expect(() => RequestHandler(TestRequest)(TestRequestHandler)).toThrow(MessageTypeInterferenceException);
     });
   });

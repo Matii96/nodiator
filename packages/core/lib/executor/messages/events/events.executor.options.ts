@@ -1,9 +1,11 @@
-import { MediatorConfig } from '../../../config/mediator.config';
-import { IEvent, IEventHandler } from '../../../messages';
+import { Subject } from 'rxjs';
+import { Event, IEventHandler } from '../../../messages';
+import { MediatorDynamicOptions } from '../../../options';
+import { MessageProcessingState } from '../../message-processing';
 
 export interface HandleEventOptions {
-  config: MediatorConfig;
-  id: string;
-  event: IEvent;
-  handler: IEventHandler<IEvent>;
+  config: MediatorDynamicOptions;
+  messageProcessing: Subject<MessageProcessingState>;
+  event: Event;
+  handler: IEventHandler<Event>;
 }

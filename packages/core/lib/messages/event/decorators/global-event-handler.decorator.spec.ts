@@ -1,7 +1,8 @@
 import 'reflect-metadata';
-import { GLOBAL_EVENT_HANDLER_METADATA, SCOPE_OPTIONS_METADATA } from '../../constants';
+import { SCOPE_OPTIONS_METADATA } from '../../constants';
 import { ScopeOptions } from '../../interfaces';
-import { TestEventHandler } from '../../messages.mocks';
+import { GLOBAL_EVENT_HANDLER_METADATA } from '../constants';
+import { TestEventHandler } from '../events.mocks';
 import { GlobalEventHandler } from './global-event-handler.decorator';
 
 describe('GlobalEventHandler', () => {

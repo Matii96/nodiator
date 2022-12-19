@@ -1,11 +1,12 @@
-import { Observable } from 'rxjs';
-import { IRequest, IRequestHandler, IRequestPipeline } from '../../../../messages';
+import { Observable, Subject } from 'rxjs';
+import { Request, IRequestHandler, IRequestPipeline } from '../../../../messages';
+import { MessageProcessingState } from '../../../message-processing/message-processing-state.interface';
 
-export interface IRequestsProvidersChainer {
+export interface RequestsProvidersChainer {
   chain<TResult>(
-    id: string,
-    request: IRequest,
-    pipelines: IRequestPipeline<IRequest, TResult>[],
-    handler: IRequestHandler<IRequest, TResult>
+    messageProcessingState: Subject<MessageProcessingState>,
+    request: Request,
+    pipelines: IRequestPipeline<Request, TResult>[],
+    handler: IRequestHandler<Request, TResult>
   ): Observable<TResult>;
 }

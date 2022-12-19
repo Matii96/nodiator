@@ -1,20 +1,17 @@
-import { Type } from '../../../../utils/type.interface';
-import { IRequest, IRequestPipeline, MessageTypes } from '../../../../messages';
-import { REQUEST_PIPELINE_METADATA } from '../../../../messages/constants';
-import { IProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
-import {
-  IRequestsProvidersSchema,
-  IRequestsSpecificProvidersSchema,
-} from '../interfaces/requests-providers-schema.interface';
+import { ClassConstructor } from '../../../../utils/class-constructor.interface';
+import { Request, MessageTypes, IRequestPipeline } from '../../../../messages';
+import { REQUEST_PIPELINE_METADATA } from '../../../../messages/request/constants';
+import { ProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
+import { RequestsProvidersSchema } from '../interfaces/requests-providers-schema.interface';
 
-export class RequestsPipelinesAdapter implements IProviderTypeAdapter<IRequestsProvidersSchema> {
+export class RequestsPipelinesAdapter implements ProviderTypeAdapter<RequestsProvidersSchema> {
   readonly messageType = MessageTypes.REQUEST;
   readonly metadataKey = REQUEST_PIPELINE_METADATA;
 
   register(
-    adaptedProviders: IRequestsProvidersSchema,
-    provider: Type<IRequestPipeline<IRequest, unknown>>,
-    requestsTypes: Set<Type<IRequest>>
+    adaptedProviders: RequestsProvidersSchema,
+    provider: ClassConstructor<IRequestPipeline<Request, unknown>>,
+    requestsTypes: Set<ClassConstructor<Request>>
   ) {
     for (const requestType of requestsTypes) {
       this.registerPipeline(adaptedProviders, provider, requestType);
@@ -22,13 +19,13 @@ export class RequestsPipelinesAdapter implements IProviderTypeAdapter<IRequestsP
   }
 
   private registerPipeline(
-    { specific }: Pick<IRequestsProvidersSchema, 'specific'>,
-    provider: Type<IRequestPipeline<IRequest, unknown>>,
-    requestType: Type<IRequest>
+    { specific }: Pick<RequestsProvidersSchema, 'specific'>,
+    provider: ClassConstructor<IRequestPipeline<Request, unknown>>,
+    requestType: ClassConstructor<Request>
   ) {
     if (!specific.has(requestType)) {
       specific.set(requestType, { pipelines: [], handler: null });
     }
-    (specific.get(requestType) as IRequestsSpecificProvidersSchema).pipelines.push(provider);
+    specific.get(requestType)!.pipelines.push(provider);
   }
 }

@@ -1,12 +1,13 @@
-import { Type } from '../../../utils/type.interface';
-import { MESSAGE_METADATA, REQUEST_HANDLER_METADATA, SCOPE_OPTIONS_METADATA } from '../../constants';
+import { ClassConstructor } from '../../../utils/class-constructor.interface';
+import { MESSAGE_METADATA, SCOPE_OPTIONS_METADATA } from '../../constants';
 import { MessageTypeInterferenceException } from '../../exceptions/message-type-interference.exception';
-import { IMessageMetadata } from '../../interfaces/message-metadata.interface';
+import { MessageMetadata } from '../../interfaces/message-metadata.interface';
 import { ScopeOptions } from '../../interfaces/scope.options';
 import { MessageTypes } from '../../message-types.enum';
-import { IRequest } from '../interfaces/request.interface';
+import { REQUEST_HANDLER_METADATA } from '../constants';
+import { Request } from '../interfaces/request.interface';
 
-type RequestType = Type<IRequest>;
+type RequestType = ClassConstructor<Request>;
 
 interface RequestHandlerOptions extends ScopeOptions {
   /**
@@ -42,7 +43,7 @@ export function RequestHandler(requestOrOptions: RequestType | RequestHandlerOpt
     Reflect.defineMetadata(REQUEST_HANDLER_METADATA, requestType, target);
 
     // Many handlers can be defined yet only one can be registered at the same time
-    const existingMetadata: IMessageMetadata = Reflect.getMetadata(MESSAGE_METADATA, requestType);
+    const existingMetadata: MessageMetadata = Reflect.getMetadata(MESSAGE_METADATA, requestType);
     if (existingMetadata) {
       if (existingMetadata.type !== MessageTypes.REQUEST) {
         throw new MessageTypeInterferenceException(requestType);
@@ -50,6 +51,6 @@ export function RequestHandler(requestOrOptions: RequestType | RequestHandlerOpt
       return;
     }
 
-    Reflect.defineMetadata(MESSAGE_METADATA, { type: MessageTypes.REQUEST } as IMessageMetadata, requestType);
+    Reflect.defineMetadata(MESSAGE_METADATA, { type: MessageTypes.REQUEST } as MessageMetadata, requestType);
   };
 }

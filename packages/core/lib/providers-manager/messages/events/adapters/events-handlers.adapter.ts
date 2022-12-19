@@ -1,20 +1,17 @@
-import { Type } from '../../../../utils/type.interface';
-import { IEvent, IEventHandler, MessageTypes } from '../../../../messages';
-import { EVENT_HANDLER_METADATA } from '../../../../messages/constants';
-import { IProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
-import {
-  IEventsProvidersSchema,
-  IEventsSpecificProvidersSchema,
-} from '../interfaces/events-providers-schema.interface';
+import { ClassConstructor } from '../../../../utils/class-constructor.interface';
+import { Event, IEventHandler, MessageTypes } from '../../../../messages';
+import { EVENT_HANDLER_METADATA } from '../../../../messages/event/constants';
+import { ProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
+import { EventsProvidersSchema } from '../interfaces/events-providers-schema.interface';
 
-export class EventsHandlersAdapter implements IProviderTypeAdapter<IEventsProvidersSchema> {
+export class EventsHandlersAdapter implements ProviderTypeAdapter<EventsProvidersSchema> {
   readonly messageType = MessageTypes.EVENT;
   readonly metadataKey = EVENT_HANDLER_METADATA;
 
   register(
-    adaptedProviders: IEventsProvidersSchema,
-    provider: Type<IEventHandler<IEvent>>,
-    eventTypes: Set<Type<IEvent>>
+    adaptedProviders: EventsProvidersSchema,
+    provider: ClassConstructor<IEventHandler<Event>>,
+    eventTypes: Set<ClassConstructor<Event>>
   ) {
     for (const eventType of eventTypes) {
       this.registerHandler(adaptedProviders, provider, eventType);
@@ -22,13 +19,13 @@ export class EventsHandlersAdapter implements IProviderTypeAdapter<IEventsProvid
   }
 
   private registerHandler(
-    { specific }: Pick<IEventsProvidersSchema, 'specific'>,
-    provider: Type<IEventHandler<IEvent>>,
-    eventType: Type<IEvent>
+    { specific }: Pick<EventsProvidersSchema, 'specific'>,
+    provider: ClassConstructor<IEventHandler<Event>>,
+    eventType: ClassConstructor<Event>
   ) {
     if (!specific.has(eventType)) {
       specific.set(eventType, { handlers: [] });
     }
-    (specific.get(eventType) as IEventsSpecificProvidersSchema).handlers.push(provider);
+    specific.get(eventType)!.handlers.push(provider);
   }
 }

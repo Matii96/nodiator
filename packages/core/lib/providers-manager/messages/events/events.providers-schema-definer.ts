@@ -1,11 +1,11 @@
 import { MessageTypes } from '../../../messages';
-import { IMessageTypeProvidersSchemaDefiner } from '../../ports/message-type-providers-schema-definer.port';
-import { IEventsProvidersSchema } from './interfaces/events-providers-schema.interface';
+import { MessageTypeProvidersSchemaDefiner } from '../../ports/message-type-providers-schema-definer.port';
+import { EventsProvidersSchema } from './interfaces/events-providers-schema.interface';
 
-export class EventsProvidersSchemaDefiner implements IMessageTypeProvidersSchemaDefiner {
+export class EventsProvidersSchemaDefiner implements MessageTypeProvidersSchemaDefiner {
   readonly messageType = MessageTypes.EVENT;
 
-  define(): IEventsProvidersSchema {
+  define(): EventsProvidersSchema {
     return {
       global: { handlers: [] },
       specific: new Map(),

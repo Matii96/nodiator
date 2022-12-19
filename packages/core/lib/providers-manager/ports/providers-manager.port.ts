@@ -1,13 +1,11 @@
-import { Type } from '../../utils/type.interface';
-import { IMessageProvider, MessageTypes } from '../../messages';
-import { IMessagesProvidersSchema } from '../interfaces/messages-providers-schema.interface';
-import { IMessageTypeProvidersSchema } from '../interfaces/message-type-providers-schema.interface';
-import { ProvidersManagerOptions } from '../providers-manager.options';
+import { ClassConstructor } from '../../utils/class-constructor.interface';
+import { MessageProvider, MessageTypes } from '../../messages';
+import { MessagesProvidersSchema } from '../interfaces/messages-providers-schema.interface';
+import { MessageTypeProvidersSchema } from '../interfaces/message-type-providers-schema.interface';
 
-export interface IProvidersManager {
-  get(): IMessagesProvidersSchema;
-  get<TProvidersSchema extends IMessageTypeProvidersSchema>(messageType: MessageTypes): TProvidersSchema;
+export interface ProvidersManager {
+  list(): MessagesProvidersSchema;
+  get<TProvidersSchema extends MessageTypeProvidersSchema>(messageType: MessageTypes): TProvidersSchema;
 
-  register(...providers: Type<IMessageProvider>[]): Type<IMessageProvider>[];
-  register(args: ProvidersManagerOptions): Type<IMessageProvider>[];
+  register(...providers: ClassConstructor<MessageProvider>[]): ClassConstructor<MessageProvider>[];
 }

@@ -48,7 +48,7 @@ export class ExampleRequestPipeline implements IRequestPipeline<ExampleRequest, 
 
 // Pipelines unlike handlers can be attached to many requests types
 @RequestPipeline(ExampleRequest, OtherExampleRequest)
-export class ExampleRequestPipeline implements IRequestPipeline<IRequest, string> {
+export class ExampleRequestPipeline implements IRequestPipeline<Request, string> {
   ...
 }
 ```
@@ -76,7 +76,7 @@ export class ExampleGlobalRequestPipeline implements IGlobalRequestPipeline {
 ```ts
 const mediator = MediatorFactory.create({
   providers: [GlobalRequestPipeline, RequestPipeline, RequestHandler],
-  config: () => ({ requests: { timeout: 1000 } }), // Requests handling will be terminated after 1s with timeout exception
+  dynamicOptions: () => ({ requests: { timeout: 1000 } }), // Requests handling will be terminated after 1s with timeout exception
 });
 
 console.log(await firstValueFrom(mediator.request<string>(new ExampleRequest())));

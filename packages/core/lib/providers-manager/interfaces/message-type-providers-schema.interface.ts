@@ -1,1 +1,1 @@
-export interface IMessageTypeProvidersSchema {}
+export interface MessageTypeProvidersSchema {}

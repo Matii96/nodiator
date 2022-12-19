@@ -1,12 +1,13 @@
-import { Type } from '../../../utils/type.interface';
-import { MESSAGE_METADATA, EVENT_HANDLER_METADATA, SCOPE_OPTIONS_METADATA } from '../../constants';
+import { ClassConstructor } from '../../../utils/class-constructor.interface';
+import { MESSAGE_METADATA, SCOPE_OPTIONS_METADATA } from '../../constants';
 import { MessageTypeInterferenceException } from '../../exceptions/message-type-interference.exception';
-import { IMessageMetadata } from '../../interfaces/message-metadata.interface';
+import { MessageMetadata } from '../../interfaces/message-metadata.interface';
 import { ScopeOptions } from '../../interfaces/scope.options';
+import { Event } from '../interfaces/event.interface';
 import { MessageTypes } from '../../message-types.enum';
-import { IEvent } from '../interfaces/event.interface';
+import { EVENT_HANDLER_METADATA } from '../constants';
 
-type EventType = Type<IEvent>;
+type EventType = ClassConstructor<Event>;
 
 interface EventHandlerSingleOptions extends ScopeOptions {
   /**
@@ -61,7 +62,7 @@ export function EventHandler(
     Reflect.defineMetadata(EVENT_HANDLER_METADATA, eventsTypes, target);
 
     eventsTypes.forEach((eventType) => {
-      const existingMetadata: IMessageMetadata = Reflect.getMetadata(MESSAGE_METADATA, eventType);
+      const existingMetadata: MessageMetadata = Reflect.getMetadata(MESSAGE_METADATA, eventType);
       if (existingMetadata) {
         if (existingMetadata.type !== MessageTypes.EVENT) {
           throw new MessageTypeInterferenceException(eventType);
@@ -69,7 +70,7 @@ export function EventHandler(
         return;
       }
 
-      Reflect.defineMetadata(MESSAGE_METADATA, { type: MessageTypes.EVENT } as IMessageMetadata, eventType);
+      Reflect.defineMetadata(MESSAGE_METADATA, { type: MessageTypes.EVENT } as MessageMetadata, eventType);
     });
   };
 }

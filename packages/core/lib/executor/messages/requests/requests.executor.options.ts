@@ -1,8 +1,9 @@
-import { Observable } from 'rxjs';
-import { IRequest } from '../../../messages';
+import { Observable, Subject } from 'rxjs';
+import { Request } from '../../../messages';
+import { MessageProcessingState } from '../../message-processing/message-processing-state.interface';
 
 export interface CallOptions<TResult> {
-  id: string;
-  request: IRequest;
-  chain: Observable<TResult>;
+  readonly messageProcessing: Subject<MessageProcessingState>;
+  readonly request: Request;
+  readonly chain: Observable<TResult>;
 }
