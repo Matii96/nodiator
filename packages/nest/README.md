@@ -5,14 +5,10 @@ Utilizes Nest's DI system to manage providers and mediator instances.
 ## Table of contents
 
 - [Installation](#installation)
-- [Quick Start](#quick_start)
-  - [Namespaces](#quick_start_namespaces)
-  - [Importing mediator module](#quick_start_importing)
-    - [Single namespace](#quick_start_importing_single)
-    - [Multiple namespaces](#quick_start_importing_multiple)
-    - [Async single namespace](#quick_start_importing_async_single)
-    - [Async multiple namespaces](#quick_start_importing_async_multiple)
-  - [Usage](#quick_start_usage)
+- [Global Configuration](#global_configuration)
+- [Usage](#usage)
+  - [Exporting Mediators](#usage_exporting_mediators)
+  - [Custom Namespaces](#usage_custom_namespaces)
 - [License](#license)
 
 ## Installation
@@ -25,129 +21,38 @@ npm i @nodiator/core @nodiator/nest
 yarn add @nodiator/core @nodiator/nest
 ```
 
-## Quick Start
+## Global Configuration
 
-<a name="quick_start"></a>
+<a name="global_configuration"></a>
 
-Messages declaration remain the same as in core implementation.
-
-```ts
-// get-all-cats.use-case.ts
-export class GetAllCatsUseCase {}
-
-// get-all-cats.use-case.handler.ts
-@RequestHandler(GetAllCatsUseCase)
-export class GetAllCatsUseCaseHandler implements RequestHandler<GetAllCatsUseCase, GetAllCatsUseCaseResult> {
-  async handle(request: GetAllCatsUseCase) {
-    return 'ok';
-  }
-}
-```
-
-### Namespaces
-
-<a name="quick_start_namespaces"></a>
-
-Nest module allows to declare and inject scoped mediators. Providers defined in given namespace are only visible to the mediator injected with same namespace token.
+Nest module allows to manage multiple instances of mediators. Configuration shared by all of them can me defined via
 
 ```ts
-// cats.controller.ts
-@Controller('cats-feeding')
-export class CatsFeedingController {
-  constructor(@InjectMediator('CATS_FEEDING') private readonly mediator: Mediator) {}
-
-  @Get()
-  getAllCats() {
-    return firstValueFrom(this.mediator.request<GetAllCatsUseCaseResult>(new GetAllCatsUseCase()));
-  }
-}
-
-// cats.module.ts
-@Module({
-  imports: [MediatorModule.forFeature(CatsSubModule, { namespace: 'CATS_FEEDING' })],
-  controllers: [CatsFeedingController],
-  providers: [GetAllCatsUseCaseHandler],
-})
-export class CatsFeedingModule {}
-
 // app.module.ts
+import { MediatorModule } from '@nodiator/nest';
+
 @Module({
-  imports: [MediatorModule.forRoot({ namespace: 'CATS_FEEDING' }), CatsFeedingModule],
+  imports: [
+    MediatorModule.forRoot({
+      dynamicOptions: () => ({
+        requests: { timeout: 1000 },
+        extensions: [...],
+      }),
+    }),
+    CatsModule,
+  ],
 })
 export class AppModule {}
 ```
 
-### Importing mediator module
+## Usage
 
-<a name="quick_start_importing"></a>
-
-#### Import for single global namespace
-
-<a name="quick_start_importing_single"></a>
-
-```ts
-@Module({
-  imports: [MediatorModule.forRoot(), CatsModule],
-})
-export class AppModule {}
-```
-
-#### Import for multiple namespaces
-
-<a name="quick_start_importing_multiple"></a>
-
-```ts
-@Module({
-  imports: [MediatorModule.forRoot({}, { namespace: 'CATS_FEEDING' } as MediatorNestOptions), CatsModule],
-})
-export class AppModule {}
-```
-
-#### Async import for single global namespace
-
-<a name="quick_start_importing_async_single"></a>
-
-```ts
-@Module({
-  imports: [MediatorModule.forRootAsync({
-    imports: [ConfigModule],
-    inject: [ConfigService],
-    useFactory: async (config: ConfigService): Promise<MediatorNestOptions> => { ... }
-  }), CatsFeedingModule],
-})
-export class AppModule {}
-```
-
-#### Async import for multiple namespaces
-
-<a name="quick_start_importing_async_multiple"></a>
-
-```ts
-@Module({
-  imports: [MediatorModule.forRootAsync({
-    imports: [ConfigModule],
-    configurations: [
-      { // global namespace
-        inject: [ConfigService],
-        useFactory: async (config: ConfigService): Promise<MediatorNestOptions> => { ... },
-      },
-      {
-        namespace: 'CATS_FEEDING',
-        inject: [ConfigService],
-        useFactory: async (config: ConfigService): Promise<MediatorNestOptions> => { ... },
-      }
-    ]
-  }), CatsFeedingModule]
-})
-export class AppModule {}
-```
-
-### Usage
-
-<a name="quick_start_usage"></a>
+<a name="usage"></a>
 
 ```ts
 // cats.controller.ts
+import { Mediator } from '@nodiator/nest';
+
 @Controller('cats')
 export class CatsController {
   constructor(@InjectMediator() private readonly mediator: Mediator) {}
@@ -157,13 +62,114 @@ export class CatsController {
     return firstValueFrom(this.mediator.request<GetAllCatsUseCaseResult>(new GetAllCatsUseCase()));
   }
 }
+```
 
+```ts
 // cats.module.ts
+import { MediatorModule } from '@nodiator/nest';
+
 @Module({
-  controllers: [CatsController],
+  imports: [
+    MediatorModule.forFeature(CatsModule, {
+      dynamicOptions: () => ({
+        requests: { timeout: 1000 },
+        extensions: [...],
+      }),
+    }),
+  ],
   providers: [GetAllCatsUseCaseHandler],
+  controllers: [CatsController],
 })
 export class CatsModule {}
+```
+
+Mediator module resolves all providers available in the scope of given module.
+
+### Exporting Mediators
+
+<a name="usage_exporting_mediators"></a>
+
+Above example shows how to inject local module's mediator. To access instance from another module use
+
+```ts
+// dogs.module.ts
+import { MediatorModule } from '@nodiator/nest';
+
+@Module({
+  imports: [MediatorModule.forFeature(DogsModule)],
+  exports: [MediatorModule], // export configured dogs mediator
+})
+export class DogsModule {}
+```
+
+```ts
+// cats.module.ts
+import { MediatorModule } from '@nodiator/nest';
+
+@Module({
+  imports: [
+    MediatorModule.forFeature(CatsModule),
+    DogsModule, // import dogs mediator into cats module
+  ],
+  providers: [GetAllCatsUseCaseHandler],
+  controllers: [CatsController],
+})
+export class CatsModule {}
+```
+
+```ts
+import { Mediator } from '@nodiator/nest';
+
+@Controller('cats')
+export class CatsController {
+  constructor(
+    @InjectMediator() private readonly catsMediator: Mediator,
+    @InjectMediator(DogsModule) private readonly dogsMediator: Mediator
+  ) {}
+
+  ...
+}
+```
+
+### Custom Namespaces
+
+<a name="usage_custom_namespaces"></a>
+
+Mediators can be provided and injected using custom string identifier. It' useful for creating abstraction from module imports dependencies.
+
+```ts
+// cats.module.ts
+import { MediatorModule } from '@nodiator/nest';
+
+@Module({
+  imports: [
+    MediatorModule.forFeature(CatsModule, {
+      namespace: 'CATS_NAMESPACE',
+      dynamicOptions: () => ({
+        requests: { timeout: 1000 },
+        extensions: [...],
+      }),
+    }),
+  ],
+  providers: [GetAllCatsUseCaseHandler],
+  controllers: [CatsController],
+})
+export class CatsModule {}
+```
+
+```ts
+// cats.controller.ts
+import { Mediator } from '@nodiator/nest';
+
+@Controller('cats')
+export class CatsController {
+  constructor(@InjectMediator('CATS_NAMESPACE') private readonly mediator: Mediator) {}
+
+  @Get()
+  getAllCats() {
+    return firstValueFrom(this.mediator.request<GetAllCatsUseCaseResult>(new GetAllCatsUseCase()));
+  }
+}
 ```
 
 ## License
