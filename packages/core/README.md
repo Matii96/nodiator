@@ -61,14 +61,14 @@ class ExampleRequest {
 class SomeEvent {}
 
 @RequestHandler(ExampleRequest)
-export class ExampleRequestHandler implements RequestHandler<ExampleRequest, string> {
+export class ExampleRequestHandler implements IRequestHandler<ExampleRequest, string> {
   async handle(request: ExampleRequest) {
     return request.msg;
   }
 }
 
 @EventHandler(SomeEvent)
-export class SomeEventHandler implements EventHandler<SomeEvent> {
+export class SomeEventHandler implements IEventHandler<SomeEvent> {
   async handle(event: SomeEvent) {
     console.log('SomeEvent handled');
   }
@@ -107,7 +107,7 @@ One that's done the its instance is saved internally for application lifetime. T
 
 ```ts
 @RequestHandler({ request: ExampleRequest, scoped: true })
-export class ExampleRequestHandler implements RequestHandler<ExampleRequest, string> {
+export class ExampleRequestHandler implements IRequestHandler<ExampleRequest, string> {
   ...
 }
 ```

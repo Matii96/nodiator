@@ -16,13 +16,13 @@ Semi Fire-and-forget type of messages. All it's handlers are executed simultaneo
 class SomeEvent {}
 
 @EventHandler(SomeEvent)
-export class SomeEventHandler implements EventHandler<SomeEvent> {
+export class SomeEventHandler implements IEventHandler<SomeEvent> {
   async handle(event: SomeEvent) {}
 }
 
 // Handler can be attached to multiple events
 @EventHandler(SomeEvent, OtherEvent)
-export class SharedHandler implements EventHandler<SomeEvent | OtherEvent> {
+export class SharedHandler implements IEventHandler<SomeEvent | OtherEvent> {
   async handle(event: SomeEvent | OtherEvent) {}
 }
 ```
