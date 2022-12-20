@@ -1,5 +1,5 @@
 import { FactoryProvider } from '@nestjs/common';
-import { ModuleConfigurator } from '../shared/mediator.module.mocks';
+import { ModuleConfiguratorMock } from '../shared/mediator.module.mocks';
 import { MEDIATOR_MODULE_GLOBAL_OPTIONS } from './constants';
 import { MediatorRootModule } from './mediator.root.module';
 
@@ -16,7 +16,7 @@ describe('MediatorRootModule', () => {
 
   describe('root async', () => {
     it('should configure root options', () => {
-      const module = MediatorRootModule.forRootAsync({ useClass: ModuleConfigurator });
+      const module = MediatorRootModule.forRootAsync({ useClass: ModuleConfiguratorMock });
       expect(module.providers).toHaveLength(2); // Mediator + ModuleConfigurator instance
       expect(
         module.providers!.map((provider: FactoryProvider) => provider.provide).includes(MEDIATOR_MODULE_GLOBAL_OPTIONS)
