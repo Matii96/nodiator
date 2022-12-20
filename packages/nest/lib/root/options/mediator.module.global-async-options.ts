@@ -3,7 +3,7 @@ import { MediatorModuleOptionsFactory } from '../../shared/options/mediator.modu
 import { MediatorModuleOptionsFactoryFunction } from '../../shared/options/mediator.module.options-factory-function';
 
 export interface MediatorModuleGlobalAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
-  readonly inject?: any[];
+  inject?: any[];
   useFactory?: MediatorModuleOptionsFactoryFunction;
   useClass?: Type<MediatorModuleOptionsFactory>;
   useExisting?: Type<MediatorModuleOptionsFactory>;
