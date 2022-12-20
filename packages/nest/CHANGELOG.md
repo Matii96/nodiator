@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/Matii96/nodiator/compare/v3.0.1...v3.0.2) (2022-12-20)
+
+### Bug Fixes
+
+- **nest:** removed readonly from module global options inject property ([1dcc0be](https://github.com/Matii96/nodiator/commit/1dcc0be1857c399854f419477d9be3af25ade65a))
+
 ## [3.0.1](https://github.com/Matii96/nodiator/compare/v3.0.0...v3.0.1) (2022-12-20)
 
 ### Bug Fixes
