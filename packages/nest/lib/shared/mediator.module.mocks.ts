@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { MediatorModuleOptionsFactory } from './options';
 
 @Injectable()
-export class ModuleConfigurator implements MediatorModuleOptionsFactory {
+export class ModuleConfiguratorMock implements MediatorModuleOptionsFactory {
   createMediatorStaticOptions() {
     return {};
   }
