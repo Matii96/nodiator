@@ -1,6 +1,7 @@
 import { Injectable, Scope, Type } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { Mediator, MediatorFactory, MessageProvider, ScopeOptions, SCOPE_OPTIONS_METADATA } from '@nodiator/core';
+import { overrideObject } from '../../utils/override-object';
 import { MediatorModuleOptions } from '../../shared/options/mediator.module.options';
 import { MEDIATOR_MODULE_GLOBAL_OPTIONS } from '../../root/constants';
 import { MEDIATOR_MODULE_FEATURE_INSTANCE, MEDIATOR_MODULE_FEATURE_OPTIONS } from '../constants';
@@ -36,10 +37,11 @@ export class MediatorFeatureConfigurator {
     const featureDynamicOptions = this._moduleRef.get<MediatorModuleOptions>(
       MEDIATOR_MODULE_FEATURE_OPTIONS
     ).dynamicOptions;
-    return {
-      ...(globalDynamicOptions ? globalDynamicOptions() : {}),
-      ...(featureDynamicOptions ? featureDynamicOptions() : {}),
-    };
+
+    return overrideObject(
+      globalDynamicOptions ? globalDynamicOptions() : {},
+      featureDynamicOptions ? featureDynamicOptions() : {}
+    );
   }
 
   private scopeProviders(providers: Type<MessageProvider>[]) {
