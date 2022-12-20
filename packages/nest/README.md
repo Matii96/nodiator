@@ -35,9 +35,9 @@ import { MediatorModule } from '@nodiator/nest';
 @Module({
   imports: [
     MediatorModule.forRoot({
+      extensions: [...],
       dynamicOptions: () => ({
         requests: { timeout: 1000 },
-        extensions: [...],
       }),
     }),
     CatsModule,
@@ -72,9 +72,9 @@ import { MediatorModule } from '@nodiator/nest';
 @Module({
   imports: [
     MediatorModule.forFeature(CatsModule, {
+      extensions: [...],
       dynamicOptions: () => ({
         requests: { timeout: 1000 },
-        extensions: [...],
       }),
     }),
   ],
@@ -146,9 +146,9 @@ import { MediatorModule } from '@nodiator/nest';
   imports: [
     MediatorModule.forFeature(CatsModule, {
       namespace: 'CATS_NAMESPACE',
+      extensions: [...],
       dynamicOptions: () => ({
         requests: { timeout: 1000 },
-        extensions: [...],
       }),
     }),
   ],
@@ -187,9 +187,7 @@ import { MediatorModule, NestMediatorLogger } from '@nodiator/nest';
 @Module({
   imports: [
     MediatorModule.forRoot({
-      dynamicOptions: () => ({
-        extensions: [new LoggerExtension({ logger: new NestMediatorLogger() })],
-      }),
+      extensions: [new LoggerExtension({ logger: new NestMediatorLogger() })],
     }),
     CatsModule,
   ],
