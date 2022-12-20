@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/Matii96/nodiator/compare/v3.0.0...v3.0.1) (2022-12-20)
+
+### Bug Fixes
+
+- **nest:** added missing logger extension integration guide ([1469b99](https://github.com/Matii96/nodiator/commit/1469b996cc279d2b6176cf02fbfdcb65a416bed8))
+- **nest:** dynamic options deep override ([1296cc9](https://github.com/Matii96/nodiator/commit/1296cc99b30979bfd5dd0344faba901bf9f85806))
+
 # [3.0.0](https://github.com/Matii96/nodiator/compare/v2.2.1...v3.0.0) (2022-12-19)
 
 ### Features
