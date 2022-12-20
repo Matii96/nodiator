@@ -1,14 +1,14 @@
 import 'reflect-metadata';
 import { lastValueFrom, Subject } from 'rxjs';
 import { TestEvent, TestEventHandler } from '../../../messages/event/events.mocks';
-import { ProvidersManager } from '../../../providers-manager/ports/providers-manager.port';
+import { ProvidersManager } from '../../../providers-manager/providers-manager';
 import { ProvidersManagerMock } from '../../../providers-manager/providers-manager.mocks';
 import { EventsProvidersSchema } from '../../../providers-manager/messages/events/interfaces/events-providers-schema.interface';
-import { ProvidersInstantiator } from '../../ports/providers-instantiator.port';
+import { ProvidersInstantiator } from '../../types/providers-instantiator.port';
 import { MessageTimeoutException } from '../../exceptions/message-timeout.exception';
 import { MessageProcessingState } from '../../message-processing';
-import { EventsExecutor } from './ports/events.executor.port';
-import { MediatorEventsExecutor } from './events.executor';
+import { EventsExecutor } from './events.executor';
+import { MediatorEventsExecutor } from './events.executor.impl';
 import {
   HandlingCompletedEventProcessingState,
   HandlingErrorEventProcessingState,
@@ -79,7 +79,7 @@ describe('EventsExecutor', () => {
         providersManager,
         providersInstantiatorMock
       );
-      jest.spyOn(handler, 'handle').mockImplementationOnce(() => new Promise((resolve) => setTimeout(resolve, 5)));
+      jest.spyOn(handler, 'handle').mockImplementationOnce(() => new Promise((resolve) => setTimeout(resolve, 20)));
     });
 
     it('should throw timeout exception', async () => {

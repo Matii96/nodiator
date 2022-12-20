@@ -1,4 +1,4 @@
-import { MediatorLogger } from '../mediator-logger/mediator-logger.port';
+import { MediatorLogger } from '../mediator-logger/mediator-logger';
 import { MediatorLoggingLevels } from './logging-levels.enum';
 
 export class LoggingLevelProxy implements MediatorLogger {

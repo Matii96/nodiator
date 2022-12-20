@@ -7,7 +7,7 @@ import {
 } from '@nodiator/core';
 import { Subject } from 'rxjs';
 import { MediatorLoggerMock } from '../../mediator-logger/mediator-logger.mocks';
-import { MediatorLogger } from '../../mediator-logger/mediator-logger.port';
+import { MediatorLogger } from '../../mediator-logger/mediator-logger';
 import { ProcessingObserver } from '../shared/processing-observer.interface';
 import { EventProvidersProcessingObserver } from './event-handler.processing-observer';
 

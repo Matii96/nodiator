@@ -7,9 +7,9 @@ import { TestRequest } from '../messages/request/messages.mocks';
 import { ExecutorMock } from '../executor/executor.mocks';
 import { ExtensionsManager } from '../extensions/ports/extensions-manager.port';
 import { TestEvent } from '../messages/event/events.mocks';
-import { Executor } from '../executor/ports/executor.port';
-import { Mediator } from './ports/mediator.port';
-import { MediatorImplementation } from './mediator';
+import { Executor } from '../executor/executor.port';
+import { MediatorImplementation } from './mediator.impl';
+import { Mediator } from './mediator';
 
 describe('Mediator', () => {
   let executor: Executor;

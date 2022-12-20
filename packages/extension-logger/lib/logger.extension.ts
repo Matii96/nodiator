@@ -1,9 +1,9 @@
 import { Mediator, MediatorExtension } from '@nodiator/core';
 import { LoggerExtensionOptions } from './options/logger.extension.options';
 import { LoggerExtensionDynamicOptions } from './options/logger.extension.dynamic-options';
-import { MediatorLogger } from './mediator-logger/mediator-logger.port';
-import { ExceptionsLogger } from './exceptions-logger/exceptions.logger.port';
-import { MediatorExceptionsLogger } from './exceptions-logger/exceptions.logger';
+import { MediatorLogger } from './mediator-logger/mediator-logger';
+import { ExceptionsLogger } from './exceptions-logger/exceptions.logger';
+import { MediatorExceptionsLogger } from './exceptions-logger/exceptions.logger.impl';
 import { LoggingLevelProxy } from './logging-level/logging-level.proxy';
 import { DefaultMediatorLogger } from './mediator-logger/default-logger/default.mediator-logger';
 import { PROCESSING_OBSERVERS } from './messages/processing-observers.map';

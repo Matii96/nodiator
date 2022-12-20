@@ -1,38 +1,38 @@
-import { from, mergeMap, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
+import { Event, Request } from '../messages';
 import { MessageProcessing } from '../executor';
-import { Event, Request, MessageTypes } from '../messages';
-import { Executor } from '../executor/ports/executor.port';
-import { ExtensionsManager } from '../extensions/ports/extensions-manager.port';
-import { ProvidersManager } from '../providers-manager/ports/providers-manager.port';
 import { MediatorExtension } from '../extensions';
-import { Mediator } from './ports/mediator.port';
+import { ProvidersManager } from '../providers-manager/providers-manager';
 
-export class MediatorImplementation implements Mediator {
-  constructor(
-    protected readonly _subject: Subject<MessageProcessing>,
-    protected readonly _providersManager: ProvidersManager,
-    protected readonly _extensionsManager: ExtensionsManager,
-    protected readonly _executor: Executor
-  ) {}
+export interface Mediator {
+  /**
+   * Access to mediator's providers set.
+   */
+  readonly providers: ProvidersManager;
 
-  get providers() {
-    return this._providersManager;
-  }
+  /**
+   * Sequence of messages execution emitter.
+   */
+  readonly bus: Observable<MessageProcessing>;
 
-  get bus() {
-    return this._subject.asObservable();
-  }
+  /**
+   * Registers mediator extensions.
+   * @param {MediatorExtension[]} extensions
+   * @returns {Mediator}
+   */
+  use(...extensions: MediatorExtension[]): Mediator;
 
-  use(...extensions: MediatorExtension[]) {
-    extensions.forEach((extension) => this._extensionsManager.load(extension, this));
-    return this;
-  }
+  /**
+   * Dispatches request instance and emits back a response to it. Handling is deferred until first subscription to the response stream.
+   * @param {Request} request
+   * @returns {Observable<TResult>} response stream.
+   */
+  request<TResult>(request: Request): Observable<TResult>;
 
-  request<TResult>(request: Request) {
-    return this._executor.execute<TResult>(MessageTypes.REQUEST, request);
-  }
-
-  publish(...events: Event[]) {
-    return from(events).pipe(mergeMap((event) => this._executor.execute<Event>(MessageTypes.EVENT, event)));
-  }
+  /**
+   * Dispatches events instances to any number of their handlers.
+   * @param {Event} events
+   * @returns {Observable<void>} response stream. Ends with participating handlers finished processing events.
+   */
+  publish(...events: Event[]): Observable<Event>;
 }

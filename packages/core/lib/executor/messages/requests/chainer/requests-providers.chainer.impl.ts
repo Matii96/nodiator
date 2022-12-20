@@ -1,6 +1,6 @@
 import { catchError, defer, from, Observable, share, Subject, tap, throwError } from 'rxjs';
 import { Request, IRequestPipeline, IRequestHandler } from '../../../../messages';
-import { RequestsProvidersChainer } from '../ports/requests-providers-chainer.port';
+import { RequestsProvidersChainer } from './requests-providers-chainer';
 import {
   HandlingCompletedRequestProcessingState,
   HandlingErrorRequestProcessingState,

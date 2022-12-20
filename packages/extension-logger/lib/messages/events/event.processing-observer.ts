@@ -1,6 +1,6 @@
 import { HandlingErrorEventProcessingState, MessageProcessing } from '@nodiator/core';
-import { ExceptionsLogger } from '../../exceptions-logger/exceptions.logger.port';
-import { MediatorLogger } from '../../mediator-logger/mediator-logger.port';
+import { ExceptionsLogger } from '../../exceptions-logger/exceptions.logger';
+import { MediatorLogger } from '../../mediator-logger/mediator-logger';
 import { ProcessingObserver } from '../shared/processing-observer.interface';
 
 export class EventProcessingObserver implements ProcessingObserver {

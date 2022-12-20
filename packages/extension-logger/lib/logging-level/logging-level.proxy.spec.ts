@@ -1,5 +1,5 @@
 import { MediatorLoggerMock } from '../mediator-logger/mediator-logger.mocks';
-import { MediatorLogger } from '../mediator-logger/mediator-logger.port';
+import { MediatorLogger } from '../mediator-logger/mediator-logger';
 import { LoggingLevelProxy } from './logging-level.proxy';
 import { MediatorLoggingLevels } from './logging-levels.enum';
 

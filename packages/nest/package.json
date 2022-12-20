@@ -34,7 +34,7 @@
     "@nodiator/core": "workspace:^",
     "@nodiator/extension-logger": "workspace:^",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.6.0"
+    "rxjs": "^7.8.0"
   },
   "peerDependencies": {
     "@nestjs/common": ">=8.0.0",

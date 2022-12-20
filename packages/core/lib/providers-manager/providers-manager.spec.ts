@@ -1,14 +1,14 @@
 import 'reflect-metadata';
-import { MessageTypeProvidersSchemaDefiner } from './ports/message-type-providers-schema-definer.port';
-import { ProviderTypeAdapter } from './ports/provider-type-adapter.port';
+import { ProviderTypeAdapter } from './messages/shared/provider-type-adapter.port';
 import { MessageTypeProvidersSchema } from './interfaces/message-type-providers-schema.interface';
 import {
   MessageTypeProvidersSchemaDefinerMock,
   ProviderMock,
   ProviderTypeAdapterMock,
 } from './providers-manager.mocks';
-import { ProvidersManager } from './ports/providers-manager.port';
-import { MediatorProvidersManager } from './providers-manager';
+import { ProvidersManager } from './providers-manager';
+import { MediatorProvidersManager } from './providers-manager.impl';
+import { MessageTypeProvidersSchemaDefiner } from './messages/shared/message-type-providers-schema-definer.port';
 
 describe('ProvidersManager', () => {
   let manager: ProvidersManager;

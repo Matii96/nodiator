@@ -1,10 +1,10 @@
 import { Subject } from 'rxjs';
 import { Message, MessageTypes } from '../messages';
 import { TestRequest } from '../messages/request/messages.mocks';
-import { Executor } from './ports/executor.port';
-import { MessageExecutor } from './ports/message-executor.port';
+import { Executor } from './executor.port';
+import { MessageExecutor } from './messages/shared/message-executor';
 import { MessageExecutorMock } from './executor.mocks';
-import { MediatorExecutor } from './executor';
+import { MediatorExecutor } from './executor.impl';
 
 describe('Executor', () => {
   let messageExecutor: MessageExecutor<Message, any>;

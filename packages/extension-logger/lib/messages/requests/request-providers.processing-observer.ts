@@ -4,7 +4,7 @@ import {
   HandlingStartedRequestProcessingState,
 } from '@nodiator/core';
 import { filter } from 'rxjs';
-import { MediatorLogger } from '../../mediator-logger/mediator-logger.port';
+import { MediatorLogger } from '../../mediator-logger/mediator-logger';
 import { ProcessingObserver } from '../shared/processing-observer.interface';
 
 export class RequestProvidersProcessingObserver implements ProcessingObserver {

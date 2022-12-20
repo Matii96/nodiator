@@ -1,5 +1,5 @@
 import { MessageTypes } from '../../../messages';
-import { MessageTypeProvidersSchemaDefiner } from '../../ports/message-type-providers-schema-definer.port';
+import { MessageTypeProvidersSchemaDefiner } from '../shared/message-type-providers-schema-definer.port';
 import { RequestsProvidersSchema } from './interfaces/requests-providers-schema.interface';
 
 export class RequestsProvidersSchemaDefiner implements MessageTypeProvidersSchemaDefiner {

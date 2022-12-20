@@ -1,4 +1,4 @@
-import { MediatorLogger } from '../mediator-logger.port';
+import { MediatorLogger } from '../mediator-logger';
 
 export class DefaultMediatorLogger implements MediatorLogger {
   private standardizeMessage(msg: string) {

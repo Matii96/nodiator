@@ -2,9 +2,9 @@ import { finalize, Subject } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { MessageTypes } from '../messages';
 import { Message } from '../messages/interfaces/message.interface';
-import { MessageExecutor } from './ports/message-executor.port';
+import { MessageExecutor } from './messages/shared/message-executor';
 import { MessageProcessing } from './message-processing';
-import { Executor } from './ports/executor.port';
+import { Executor } from './executor.port';
 
 export class MediatorExecutor implements Executor {
   constructor(

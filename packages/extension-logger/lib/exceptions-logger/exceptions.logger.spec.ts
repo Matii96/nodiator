@@ -1,8 +1,8 @@
 import { MediatorException } from '@nodiator/core';
 import { MediatorLoggingLevels } from '../logging-level';
-import { MediatorLogger } from '../mediator-logger/mediator-logger.port';
+import { MediatorLogger } from '../mediator-logger/mediator-logger';
 import { MediatorLoggerMock } from '../mediator-logger/mediator-logger.mocks';
-import { MediatorExceptionsLogger } from './exceptions.logger';
+import { MediatorExceptionsLogger } from './exceptions.logger.impl';
 
 class ErrorMock extends Error {}
 class MediatorExceptionMock extends MediatorException {}

@@ -1,7 +1,7 @@
 import { ClassConstructor } from '../../../../utils/class-constructor.interface';
 import { Event, IEventHandler, MessageTypes } from '../../../../messages';
 import { EVENT_HANDLER_METADATA } from '../../../../messages/event/constants';
-import { ProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
+import { ProviderTypeAdapter } from '../../shared/provider-type-adapter.port';
 import { EventsProvidersSchema } from '../interfaces/events-providers-schema.interface';
 
 export class EventsHandlersAdapter implements ProviderTypeAdapter<EventsProvidersSchema> {

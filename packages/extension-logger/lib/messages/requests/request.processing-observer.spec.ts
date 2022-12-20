@@ -6,9 +6,9 @@ import {
 } from '@nodiator/core';
 import { Subject } from 'rxjs';
 import { ExceptionsLoggerMock } from '../../exceptions-logger/exceptions.logger.mocks';
-import { ExceptionsLogger } from '../../exceptions-logger/exceptions.logger.port';
+import { ExceptionsLogger } from '../../exceptions-logger/exceptions.logger';
 import { MediatorLoggerMock } from '../../mediator-logger/mediator-logger.mocks';
-import { MediatorLogger } from '../../mediator-logger/mediator-logger.port';
+import { MediatorLogger } from '../../mediator-logger/mediator-logger';
 import { ProcessingObserver } from '../shared/processing-observer.interface';
 import { RequestProcessingObserver } from './request.processing-observer';
 

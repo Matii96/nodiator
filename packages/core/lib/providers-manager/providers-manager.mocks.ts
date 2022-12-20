@@ -1,8 +1,8 @@
 import { MessageTypes } from '../messages';
 import { MessageTypeProvidersSchema } from './interfaces/message-type-providers-schema.interface';
-import { MessageTypeProvidersSchemaDefiner } from './ports/message-type-providers-schema-definer.port';
-import { ProviderTypeAdapter } from './ports/provider-type-adapter.port';
-import { ProvidersManager } from './ports/providers-manager.port';
+import { MessageTypeProvidersSchemaDefiner } from './messages/shared/message-type-providers-schema-definer.port';
+import { ProviderTypeAdapter } from './messages/shared/provider-type-adapter.port';
+import { ProvidersManager } from './providers-manager';
 
 export class ProvidersManagerMock implements ProvidersManager {
   list = jest.fn();

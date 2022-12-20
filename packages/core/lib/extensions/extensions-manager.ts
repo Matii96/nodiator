@@ -1,4 +1,4 @@
-import { Mediator } from '../mediator/ports/mediator.port';
+import { Mediator } from '../mediator/mediator';
 import { MediatorExtension } from './extension.interface';
 import { ExtensionsManager } from './ports/extensions-manager.port';
 

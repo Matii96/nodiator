@@ -20,8 +20,8 @@
   },
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
-    "test": "jest --config ../../jest-units.config.json packages/logger",
-    "test:e2e": "jest --config ../../jest-e2e.config.json packages/logger"
+    "test": "jest --config ../../jest-units.config.json packages/extension-logger",
+    "test:e2e": "jest --config ../../jest-e2e.config.json packages/extension-logger"
   },
   "bugs": {
     "url": "https://github.com/Matii96/nodiator/issues"
@@ -30,7 +30,7 @@
   "devDependencies": {
     "@nodiator/core": "workspace:^",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.6.0"
+    "rxjs": "^7.8.0"
   },
   "peerDependencies": {
     "@nodiator/core": "^2.0.0",

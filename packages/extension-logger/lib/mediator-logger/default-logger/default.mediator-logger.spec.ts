@@ -1,5 +1,5 @@
 import { DefaultMediatorLogger } from './default.mediator-logger';
-import { MediatorLogger } from '../mediator-logger.port';
+import { MediatorLogger } from '../mediator-logger';
 
 describe('DefaultMediatorLogger', () => {
   const msg = 'some message';

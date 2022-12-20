@@ -34,7 +34,7 @@
   "devDependencies": {
     "@types/uuid": "^9.0.0",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.6.0"
+    "rxjs": "^7.8.0"
   },
   "peerDependencies": {
     "reflect-metadata": "^0.1.13",

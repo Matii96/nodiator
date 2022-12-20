@@ -5,8 +5,8 @@ import { MessageProcessing } from '../executor';
 import { ExecutorsFactory } from '../executor/executors.factory';
 import { MediatorExtensionsManager } from '../extensions/extensions-manager';
 import { MediatorOptions } from '../options/mediator.options';
-import { Mediator } from './ports/mediator.port';
-import { MediatorImplementation } from './mediator';
+import { Mediator } from './mediator';
+import { MediatorImplementation } from './mediator.impl';
 
 export class MediatorFactory {
   static create(options: MediatorOptions = {}): Mediator {

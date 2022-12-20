@@ -1,7 +1,7 @@
 import { ClassConstructor } from '../../../../utils/class-constructor.interface';
 import { Request, MessageTypes, IRequestPipeline } from '../../../../messages';
 import { REQUEST_PIPELINE_METADATA } from '../../../../messages/request/constants';
-import { ProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
+import { ProviderTypeAdapter } from '../../shared/provider-type-adapter.port';
 import { RequestsProvidersSchema } from '../interfaces/requests-providers-schema.interface';
 
 export class RequestsPipelinesAdapter implements ProviderTypeAdapter<RequestsProvidersSchema> {

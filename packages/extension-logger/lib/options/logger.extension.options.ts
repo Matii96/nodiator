@@ -1,6 +1,6 @@
 import { LoggerExtensionDynamicOptions } from './logger.extension.dynamic-options';
 import { ExceptionsLoggingLevels } from '../exceptions-logger/exceptions.logger.options';
-import { MediatorLogger } from '../mediator-logger/mediator-logger.port';
+import { MediatorLogger } from '../mediator-logger/mediator-logger';
 
 export interface LoggerExtensionOptions {
   /**

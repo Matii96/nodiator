@@ -1,1 +1,1 @@
-export * from './mediator-logger.port';
+export * from './mediator-logger';

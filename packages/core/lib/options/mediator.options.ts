@@ -1,4 +1,4 @@
-import { ProvidersInstantiator } from '../executor/ports/providers-instantiator.port';
+import { ProvidersInstantiator } from '../executor/types/providers-instantiator.port';
 import { MessageProvider } from '../messages';
 import { ClassConstructor } from '../utils/class-constructor.interface';
 import { MediatorDynamicConfigurator } from './mediator.dynamic-configurator';

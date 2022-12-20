@@ -1,7 +1,7 @@
 import { ClassConstructor } from '../../../../utils/class-constructor.interface';
 import { Request, MessageTypes, IRequestHandler } from '../../../../messages';
 import { REQUEST_HANDLER_METADATA } from '../../../../messages/request/constants';
-import { ProviderTypeAdapter } from '../../../ports/provider-type-adapter.port';
+import { ProviderTypeAdapter } from '../../shared/provider-type-adapter.port';
 import { RequestsProvidersSchema } from '../interfaces/requests-providers-schema.interface';
 import { DuplicatedRequestHandlerException } from '../exceptions/duplicated-request-handler.exception';
 
