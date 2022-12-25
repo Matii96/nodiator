@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.1](https://github.com/Matii96/nodiator/compare/v3.1.0...v3.1.1) (2022-12-25)
+
+### Bug Fixes
+
+- **extension-logger:** upgraded core dependency version ([a3cafb8](https://github.com/Matii96/nodiator/commit/a3cafb80fb5fe69cd4635a5aa24066d65368548a))
+
 # [3.1.0](https://github.com/Matii96/nodiator/compare/v3.0.2...v3.1.0) (2022-12-25)
 
 **Note:** Version bump only for package @nodiator/extension-logger

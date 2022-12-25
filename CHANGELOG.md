@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.1](https://github.com/Matii96/nodiator/compare/v3.1.0...v3.1.1) (2022-12-25)
+
+### Bug Fixes
+
+- **extension-logger:** upgraded core dependency version ([a3cafb8](https://github.com/Matii96/nodiator/commit/a3cafb80fb5fe69cd4635a5aa24066d65368548a))
+- **nest:** moved initialization log to post module init ([1a5f6f1](https://github.com/Matii96/nodiator/commit/1a5f6f1ed8a0a596f65dd92d9efd4210de677538))
+- **nest:** upgraded core dependency version ([0b75dd8](https://github.com/Matii96/nodiator/commit/0b75dd814238cc15321c0d798baf863a712c17d1))
+
 # [3.1.0](https://github.com/Matii96/nodiator/compare/v3.0.2...v3.1.0) (2022-12-25)
 
 ### Features
