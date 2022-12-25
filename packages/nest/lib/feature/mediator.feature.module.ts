@@ -71,7 +71,7 @@ export class MediatorFeatureModule implements OnModuleInit {
         provide: MEDIATOR_MODULE_FEATURE_OPTIONS,
         inject: [options.useClass ?? options.useExisting, ...(options.inject ?? [])],
         useFactory: async (optionsFactory: MediatorModuleOptionsFactory): Promise<MediatorModuleOptions> => ({
-          ...(await optionsFactory.createMediatorStaticOptions()),
+          ...(optionsFactory.createMediatorStaticOptions ? await optionsFactory.createMediatorStaticOptions() : {}),
           dynamicOptions: optionsFactory.createMediatorDynamicOptions?.bind(optionsFactory),
         }),
       };

@@ -30,7 +30,7 @@ export class MediatorRootModule {
         provide: MEDIATOR_MODULE_GLOBAL_OPTIONS,
         inject: [options.useClass ?? options.useExisting, ...(options.inject ?? [])],
         useFactory: async (optionsFactory: MediatorModuleOptionsFactory): Promise<MediatorModuleOptions> => ({
-          ...(await optionsFactory.createMediatorStaticOptions()),
+          ...(optionsFactory.createMediatorStaticOptions ? await optionsFactory.createMediatorStaticOptions() : {}),
           dynamicOptions: optionsFactory.createMediatorDynamicOptions?.bind(optionsFactory),
         }),
       };
