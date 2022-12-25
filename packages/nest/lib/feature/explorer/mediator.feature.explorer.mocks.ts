@@ -1,4 +1,5 @@
 import { Injectable, Module } from '@nestjs/common';
+
 @Injectable()
 export class ProviderMock {}
 
@@ -16,7 +17,3 @@ export class SubmoduleMock {}
   providers: [ProviderMock],
 })
 export class ModuleMock {}
-
-export class MediatorFeatureExplorerMock {
-  exploreProviders = jest.fn(() => []);
-}
