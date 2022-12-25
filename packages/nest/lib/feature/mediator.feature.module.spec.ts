@@ -1,5 +1,4 @@
 import { FactoryProvider, Logger, OnModuleInit } from '@nestjs/common';
-import { ModuleRef } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import { InternalNestMediatorLogger } from '../mediator.logger';
 import { ModuleConfiguratorMock, StaticModuleConfiguratorMock } from '../shared/mediator.module.mocks';
@@ -70,7 +69,6 @@ describe('MediatorFeatureModule', () => {
       const module: TestingModule = await Test.createTestingModule({
         providers: [
           MediatorFeatureModule,
-          { provide: ModuleRef, useValue: { get: jest.fn() } },
           { provide: InternalNestMediatorLogger, useValue: { log: jest.fn() } },
           { provide: MediatorFeatureConfigurator, useClass: MediatorFeatureConfiguratorMock },
           {
