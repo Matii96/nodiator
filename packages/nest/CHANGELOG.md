@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/Matii96/nodiator/compare/v3.0.2...v3.1.0) (2022-12-25)
+
+### Features
+
+- **nest:** added mediator initialization log at application startup ([e276fb4](https://github.com/Matii96/nodiator/commit/e276fb44577243c9debf78c82273a3bf827f91a5))
+- **nest:** factory options methods made optional ([ddccd9d](https://github.com/Matii96/nodiator/commit/ddccd9db85848c5dcd4405394d3afd0a226f0a1d))
+
 ## [3.0.2](https://github.com/Matii96/nodiator/compare/v3.0.1...v3.0.2) (2022-12-20)
 
 ### Bug Fixes
