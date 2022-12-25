@@ -1,9 +1,8 @@
 import { ModuleRef } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import { lastValueFrom } from 'rxjs';
-import { InternalNestMediatorLogger } from '../../mediator.logger';
 import { MediatorFeatureExplorer } from '../explorer/mediator.feature.explorer';
-import { MediatorFeatureExplorerMock } from '../explorer/mediator.feature.explorer.mocks';
+import { MediatorFeatureExplorerMock } from '../explorer/mediator.feature.explorer.mock';
 import { MediatorFeatureConfigurator } from './mediator.feature.configurator';
 import { TestRequest, TestRequestHandler } from './mediator.feature.configurator.mocks';
 
@@ -17,7 +16,6 @@ describe('MediatorFeatureConfigurator', () => {
       providers: [
         MediatorFeatureConfigurator,
         { provide: ModuleRef, useValue: { get: jest.fn(), resolve: jest.fn() } },
-        { provide: InternalNestMediatorLogger, useValue: { log: jest.fn() } },
         { provide: MediatorFeatureExplorer, useClass: MediatorFeatureExplorerMock },
       ],
     }).compile();
@@ -31,7 +29,7 @@ describe('MediatorFeatureConfigurator', () => {
     jest.spyOn(moduleRef, 'resolve').mockResolvedValueOnce(new TestRequestHandler());
     jest.spyOn(moduleRef, 'get').mockReturnValueOnce({}).mockReturnValueOnce({});
     jest.spyOn(explorer, 'exploreProviders').mockReturnValueOnce([TestRequestHandler]);
-    const mediator = configurator.configureFeature(class {}, 'custom-namespace');
+    const mediator = configurator.configureFeature(class {});
     await lastValueFrom(mediator.request(new TestRequest()));
     expect(mediator).toBeDefined();
   });
