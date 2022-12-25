@@ -1,6 +1,7 @@
 import { DynamicModule, Provider, FactoryProvider, Type, Module, OnModuleInit } from '@nestjs/common';
 import { Mediator } from '@nodiator/core';
 import { getMediatorToken } from '../injection';
+import { InternalNestMediatorLogger } from '../mediator.logger';
 import { MediatorModuleOptions } from '../shared/options/mediator.module.options';
 import { MediatorModuleOptionsFactory } from '../shared/options/mediator.module.options-factory';
 import { MediatorModuleAsyncFeatureOptions } from './options/mediator.module.feature-async-options';
@@ -10,7 +11,7 @@ import { MediatorModuleFeatureOptions } from './options/mediator.module.feature-
 import { MEDIATOR_MODULE_FEATURE_INSTANCE, MEDIATOR_MODULE_FEATURE_OPTIONS } from './constants';
 
 @Module({
-  providers: [MediatorFeatureConfigurator, MediatorFeatureExplorer],
+  providers: [InternalNestMediatorLogger, MediatorFeatureConfigurator, MediatorFeatureExplorer],
 })
 export class MediatorFeatureModule implements OnModuleInit {
   constructor(private readonly _moduleConfigurator: MediatorFeatureConfigurator) {}
@@ -30,7 +31,8 @@ export class MediatorFeatureModule implements OnModuleInit {
         {
           provide: mediatorToken,
           inject: [MediatorFeatureConfigurator],
-          useFactory: (moduleConfigurator: MediatorFeatureConfigurator) => moduleConfigurator.configureFeature(module),
+          useFactory: (moduleConfigurator: MediatorFeatureConfigurator) =>
+            moduleConfigurator.configureFeature(module, options.namespace),
         },
         {
           provide: MEDIATOR_MODULE_FEATURE_INSTANCE,
@@ -57,7 +59,8 @@ export class MediatorFeatureModule implements OnModuleInit {
       {
         provide: mediatorToken,
         inject: [MediatorFeatureConfigurator, ...(options.inject ?? [])],
-        useFactory: (moduleConfigurator: MediatorFeatureConfigurator) => moduleConfigurator.configureFeature(module),
+        useFactory: (moduleConfigurator: MediatorFeatureConfigurator) =>
+          moduleConfigurator.configureFeature(module, options.namespace),
       },
       {
         provide: MEDIATOR_MODULE_FEATURE_INSTANCE,

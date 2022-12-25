@@ -1,11 +1,7 @@
-import { Logger } from '@nestjs/common';
 import { MediatorLogger } from '@nodiator/extension-logger';
+import { InternalNestMediatorLogger } from '../mediator.logger';
 
-export class NestMediatorLogger extends Logger implements MediatorLogger {
-  constructor() {
-    super('Mediator');
-  }
-
+export class NestMediatorLogger extends InternalNestMediatorLogger implements MediatorLogger {
   info(msg: string) {
     return this.log(msg);
   }
