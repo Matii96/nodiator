@@ -1,7 +1,16 @@
-import { FactoryProvider } from '@nestjs/common';
+import { FactoryProvider, Logger, OnModuleInit } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import { InternalNestMediatorLogger } from '../mediator.logger';
 import { ModuleConfiguratorMock, StaticModuleConfiguratorMock } from '../shared/mediator.module.mocks';
-import { MEDIATOR_MODULE_FEATURE_INSTANCE, MEDIATOR_MODULE_FEATURE_OPTIONS } from './constants';
+import { MediatorFeatureConfigurator } from './configurator/mediator.feature.configurator';
+import { MediatorFeatureConfiguratorMock } from './configurator/mediator.feature.configurator.mock';
 import { MediatorFeatureModule } from './mediator.feature.module';
+import { InjectionMetadata } from './injection-metadata';
+import {
+  MEDIATOR_MODULE_FEATURE_INJECTION_METADATA,
+  MEDIATOR_MODULE_FEATURE_INSTANCE,
+  MEDIATOR_MODULE_FEATURE_OPTIONS,
+} from './constants';
 
 describe('MediatorFeatureModule', () => {
   describe('feature sync', () => {
@@ -49,6 +58,33 @@ describe('MediatorFeatureModule', () => {
     it('should configure feature using factory function', () => {
       const module = MediatorFeatureModule.forFeatureAsync(class {}, { useFactory: () => ({}) });
       expect(module.providers!.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('initialization', () => {
+    let logger: Logger;
+    let feature: OnModuleInit;
+
+    beforeEach(async () => {
+      const module: TestingModule = await Test.createTestingModule({
+        providers: [
+          MediatorFeatureModule,
+          { provide: InternalNestMediatorLogger, useValue: { log: jest.fn() } },
+          { provide: MediatorFeatureConfigurator, useClass: MediatorFeatureConfiguratorMock },
+          {
+            provide: MEDIATOR_MODULE_FEATURE_INJECTION_METADATA,
+            useValue: { module: class {}, namespace: 'custom-namespace' } as InjectionMetadata,
+          },
+        ],
+      }).compile();
+
+      logger = module.get(InternalNestMediatorLogger);
+      feature = module.get(MediatorFeatureModule);
+    });
+
+    it('should log initialization info', () => {
+      feature.onModuleInit();
+      expect(logger.log).toHaveBeenCalledTimes(1);
     });
   });
 });
