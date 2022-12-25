@@ -1,5 +1,5 @@
 import { FactoryProvider } from '@nestjs/common';
-import { ModuleConfiguratorMock } from '../shared/mediator.module.mocks';
+import { ModuleConfiguratorMock, StaticModuleConfiguratorMock } from '../shared/mediator.module.mocks';
 import { MEDIATOR_MODULE_FEATURE_INSTANCE, MEDIATOR_MODULE_FEATURE_OPTIONS } from './constants';
 import { MediatorFeatureModule } from './mediator.feature.module';
 
@@ -23,7 +23,14 @@ describe('MediatorFeatureModule', () => {
   });
 
   describe('feature async', () => {
-    it('should configure feature options', () => {
+    it('should configure feature static options', () => {
+      const module = MediatorFeatureModule.forFeatureAsync(class {}, { useClass: StaticModuleConfiguratorMock });
+      expect(
+        module.providers!.map((provider: FactoryProvider) => provider.provide).includes(MEDIATOR_MODULE_FEATURE_OPTIONS)
+      ).toBe(true);
+    });
+
+    it('should configure all feature options', () => {
       const module = MediatorFeatureModule.forFeatureAsync(class {}, { useClass: ModuleConfiguratorMock });
       expect(
         module.providers!.map((provider: FactoryProvider) => provider.provide).includes(MEDIATOR_MODULE_FEATURE_OPTIONS)
