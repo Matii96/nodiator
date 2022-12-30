@@ -11,7 +11,7 @@ import { GetDogNameRequestHandler } from './get-dog-name-request/get-dog-name.re
       useClass: DogsMediatorModuleOptionsFactory,
     }),
   ],
-  providers: [GetDogNameRequestHandler],
+  providers: [{ provide: GetDogNameRequestHandler, useFactory: () => new GetDogNameRequestHandler() }],
   exports: [MediatorModule],
 })
 export class DogsModuleMock {}
