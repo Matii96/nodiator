@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/Matii96/nodiator/compare/v3.1.1...v3.2.0) (2022-12-30)
+
+### Bug Fixes
+
+- **nest:** fixed useFactory declaration of providers instances ([2acc13d](https://github.com/Matii96/nodiator/commit/2acc13df50c31ccd2a803548f257d897330bb76d))
+
 ## [3.1.1](https://github.com/Matii96/nodiator/compare/v3.1.0...v3.1.1) (2022-12-25)
 
 ### Bug Fixes

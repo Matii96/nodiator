@@ -1,7 +1,7 @@
 {
   "name": "nodiator-example-express",
   "private": true,
-  "version": "3.1.1",
+  "version": "3.2.0",
   "description": "Demonstration of nodiator using express",
   "main": "dist/main.js",
   "scripts": {

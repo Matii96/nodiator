@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/Matii96/nodiator/compare/v3.1.1...v3.2.0) (2022-12-30)
+
+### Features
+
+- **nodiator-example-express:** removed uuid dependency ([f520188](https://github.com/Matii96/nodiator/commit/f520188e61e01aecfca0b435987e4792959d3492))
+
 ## [3.1.1](https://github.com/Matii96/nodiator/compare/v3.1.0...v3.1.1) (2022-12-25)
 
 **Note:** Version bump only for package nodiator-example-express

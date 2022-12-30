@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/Matii96/nodiator/compare/v3.1.1...v3.2.0) (2022-12-30)
+
+### Features
+
+- **core:** removed uuid dependency ([bc2da40](https://github.com/Matii96/nodiator/commit/bc2da40db168ad432b8f6b34e5941b30aa70c841))
+
 # [3.1.0](https://github.com/Matii96/nodiator/compare/v3.0.2...v3.1.0) (2022-12-25)
 
 **Note:** Version bump only for package @nodiator/core
