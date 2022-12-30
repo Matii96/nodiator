@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.1](https://github.com/Matii96/nodiator/compare/v3.2.0...v3.2.1) (2022-12-30)
+
+### Bug Fixes
+
+- **nest:** tokens explorer wrong type fix ([5e77592](https://github.com/Matii96/nodiator/commit/5e775923e9d7912324c5ba23af7274c9f6e2d3b9))
+
 # [3.2.0](https://github.com/Matii96/nodiator/compare/v3.1.1...v3.2.0) (2022-12-30)
 
 ### Bug Fixes
