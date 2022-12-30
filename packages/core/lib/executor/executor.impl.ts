@@ -1,5 +1,5 @@
 import { finalize, Subject } from 'rxjs';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 import { MessageTypes } from '../messages';
 import { Message } from '../messages/interfaces/message.interface';
 import { MessageExecutor } from './messages/shared/message-executor';
@@ -15,7 +15,7 @@ export class MediatorExecutor implements Executor {
   execute(messageType: MessageTypes, message: Message) {
     const messageProcessingState = new Subject<MessageProcessing>();
     this._bus.next({
-      id: uuidv4(),
+      id: randomUUID(),
       startedAt: new Date(),
       messageType,
       message,
