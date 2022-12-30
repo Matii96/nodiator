@@ -1,7 +1,8 @@
-import { MessageProvider } from '@nodiator/core';
 import { Injectable, Type } from '@nestjs/common';
 import { ModulesContainer } from '@nestjs/core';
+import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
 import { Module } from '@nestjs/core/injector/module';
+import { MessageProvider } from '@nodiator/core';
 
 @Injectable()
 export class MediatorFeatureExplorer {
@@ -10,8 +11,8 @@ export class MediatorFeatureExplorer {
   exploreProviders(moduleType: Type): Type<MessageProvider>[] {
     const module = Array.from(this._modulesContainer.values()).find(({ metatype }) => metatype === moduleType)!;
     const moduleProviders = Array.from(module.providers.values())
-      .map(({ instance }) => instance?.constructor as Type<MessageProvider>)
-      .filter((instance) => instance);
+      .map((wrapper) => this.getInstanceProvider(wrapper))
+      .filter((provider) => provider);
 
     const submodulesProviders = Array.from(module.imports).flatMap((module) => this.exploreSubmoduleProviders(module));
     return [...moduleProviders, ...submodulesProviders];
@@ -27,8 +28,13 @@ export class MediatorFeatureExplorer {
         return this.exploreSubmoduleProviders(module);
       }
 
-      const provider = module.providers.get(moduleExport)?.instance?.constructor as Type<MessageProvider>;
+      const moduleProvider = module.providers.get(moduleExport);
+      const provider = moduleProvider && this.getInstanceProvider(moduleProvider);
       return provider ? [provider] : [];
     });
+  }
+
+  private getInstanceProvider(wrapper: InstanceWrapper): Type<MessageProvider> {
+    return typeof wrapper.token === 'object' ? wrapper.token : wrapper?.instance?.constructor;
   }
 }
