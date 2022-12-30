@@ -35,6 +35,6 @@ export class MediatorFeatureExplorer {
   }
 
   private getInstanceProvider(wrapper: InstanceWrapper): Type<MessageProvider> {
-    return typeof wrapper.token === 'object' ? wrapper.token : wrapper?.instance?.constructor;
+    return typeof wrapper.token === 'function' ? wrapper.token : wrapper?.instance?.constructor;
   }
 }
