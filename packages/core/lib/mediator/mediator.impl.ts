@@ -2,7 +2,7 @@ import { from, mergeMap, Subject } from 'rxjs';
 import { MessageProcessing } from '../executor';
 import { Event, Request, MessageTypes } from '../messages';
 import { Executor } from '../executor/executor.port';
-import { ExtensionsManager } from '../extensions/ports/extensions-manager.port';
+import { ExtensionsManager } from '../extensions/extensions-manager';
 import { ProvidersManager } from '../providers-manager/providers-manager';
 import { MediatorExtension } from '../extensions';
 import { Mediator } from './mediator';

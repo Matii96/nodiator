@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { ProvidersManagerFactory } from '../providers-manager/providers-manager.factory';
 import { MessageProcessing } from '../executor';
 import { ExecutorsFactory } from '../executor/executors.factory';
-import { MediatorExtensionsManager } from '../extensions/extensions-manager';
+import { MediatorExtensionsManager } from '../extensions/extensions-manager.impl';
 import { MediatorOptions } from '../options/mediator.options';
 import { Mediator } from './mediator';
 import { MediatorImplementation } from './mediator.impl';

@@ -5,7 +5,7 @@ import { ProvidersManagerMock } from '../providers-manager/providers-manager.moc
 import { ExtensionsManagerMock } from '../extensions/extensions-manager.mocks';
 import { TestRequest } from '../messages/request/messages.mocks';
 import { ExecutorMock } from '../executor/executor.mocks';
-import { ExtensionsManager } from '../extensions/ports/extensions-manager.port';
+import { ExtensionsManager } from '../extensions/extensions-manager';
 import { TestEvent } from '../messages/event/events.mocks';
 import { Executor } from '../executor/executor.port';
 import { MediatorImplementation } from './mediator.impl';

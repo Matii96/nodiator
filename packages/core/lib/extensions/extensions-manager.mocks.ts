@@ -1,4 +1,4 @@
-import { ExtensionsManager } from './ports/extensions-manager.port';
+import { ExtensionsManager } from './extensions-manager';
 
 export class ExtensionsManagerMock implements ExtensionsManager {
   list = jest.fn();

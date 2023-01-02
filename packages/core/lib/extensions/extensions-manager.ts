@@ -1,16 +1,7 @@
 import { Mediator } from '../mediator/mediator';
-import { MediatorExtension } from './extension.interface';
-import { ExtensionsManager } from './ports/extensions-manager.port';
+import { MediatorExtension } from './extension';
 
-export class MediatorExtensionsManager implements ExtensionsManager {
-  private readonly _extensions = new Set<MediatorExtension>();
-
-  list() {
-    return Array.from(this._extensions);
-  }
-
-  load(extension: MediatorExtension, mediator: Mediator) {
-    extension.init(mediator);
-    this._extensions.add(extension);
-  }
+export interface ExtensionsManager {
+  list(): MediatorExtension[];
+  load(extension: MediatorExtension, mediator: Mediator): void;
 }

@@ -38,6 +38,7 @@ export class MediatorProvidersManager implements ProvidersManager {
     }
     for (const adapter of this._adapters) {
       if (!this.adaptProvider(adapter, provider)) continue;
+      this._flattenedProviders.add(provider);
       return true;
     }
     return false;
@@ -47,7 +48,6 @@ export class MediatorProvidersManager implements ProvidersManager {
     const metadata = Reflect.getMetadata(adapter.metadataKey, provider);
     if (!metadata) return false;
     adapter.register(this._providers[adapter.messageType], provider, metadata);
-    this._flattenedProviders.add(provider);
     return true;
   }
 }

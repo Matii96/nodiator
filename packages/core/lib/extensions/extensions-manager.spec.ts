@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { MediatorMock } from '../mediator/mediator.mocks';
-import { MediatorExtension } from './extension.interface';
-import { ExtensionsManager } from './ports/extensions-manager.port';
-import { MediatorExtensionsManager } from './extensions-manager';
+import { MediatorExtension } from './extension';
+import { ExtensionsManager } from './extensions-manager';
+import { MediatorExtensionsManager } from './extensions-manager.impl';
 
 describe('ExtensionsManager', () => {
   let manager: ExtensionsManager;
