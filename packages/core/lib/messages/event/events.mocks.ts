@@ -1,4 +1,4 @@
-import { IEventHandler } from './interfaces';
+import { IEventHandler } from './event-handler';
 
 export class TestEvent {}
 

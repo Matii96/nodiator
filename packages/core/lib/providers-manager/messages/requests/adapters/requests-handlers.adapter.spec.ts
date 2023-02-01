@@ -1,4 +1,4 @@
-import { TestRequest, TestRequestHandler } from '../../../../messages/request/messages.mocks';
+import { TestRequest, TestRequestHandler } from '../../../../messages/request/requests.mocks';
 import { RequestsProvidersSchema } from '../interfaces';
 import { RequestsHandlersAdapter } from './requests-handlers.adapter';
 

@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs';
-import { IRequestHandler, IRequestPipeline } from './interfaces';
+import { IRequestHandler } from './request-handler';
+import { IRequestPipeline } from './request-pipeline';
 
 export class TestRequest {
   constructor(readonly property = '') {}

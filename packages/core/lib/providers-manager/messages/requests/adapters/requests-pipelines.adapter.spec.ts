@@ -1,4 +1,4 @@
-import { TestRequest, TestRequestPipeline } from '../../../../messages/request/messages.mocks';
+import { TestRequest, TestRequestPipeline } from '../../../../messages/request/requests.mocks';
 import { RequestsProvidersSchema } from '../interfaces';
 import { RequestsPipelinesAdapter } from './requests-pipelines.adapter';
 

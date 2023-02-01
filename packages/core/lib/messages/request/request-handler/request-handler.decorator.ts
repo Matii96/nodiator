@@ -5,7 +5,7 @@ import { MessageMetadata } from '../../interfaces/message-metadata.interface';
 import { ScopeOptions } from '../../interfaces/scope.options';
 import { MessageTypes } from '../../message-types.enum';
 import { REQUEST_HANDLER_METADATA } from '../constants';
-import { Request } from '../interfaces/request.interface';
+import { Request } from '../request';
 
 type RequestType = ClassConstructor<Request>;
 

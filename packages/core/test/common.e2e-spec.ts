@@ -14,7 +14,7 @@ describe('@nodiator/core common (e2e)', () => {
   });
 
   it('should manually register handler and execute it', async () => {
-    const requestResult = await firstValueFrom(mediator.request<string>(testRequest));
+    const requestResult = await firstValueFrom(mediator.request(testRequest));
     expect(requestResult).toBe(testRequest.property);
 
     await lastValueFrom(mediator.publish(testEvent));

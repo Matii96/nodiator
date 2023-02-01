@@ -41,21 +41,21 @@ describe('@nodiator/core requests (e2e)', () => {
     const testRequest = new TestRequest('success');
 
     it('should return "success"', (done) => {
-      mediator.request<string>(testRequest).subscribe((response) => {
+      mediator.request(testRequest).subscribe((response) => {
         expect(response).toBe(testRequest.property);
         done();
       });
     });
 
     it('should call all providers', (done) => {
-      mediator.request<string>(testRequest).subscribe(() => {
+      mediator.request(testRequest).subscribe(() => {
         providers.forEach((providerType) => expect(providerType.handle).toHaveBeenCalledTimes(1));
         done();
       });
     });
 
     it('should not start execution until subscribed', (done) => {
-      mediator.request<string>(testRequest);
+      mediator.request(testRequest);
       of(1)
         .pipe(delay(5))
         .subscribe(() => {
@@ -67,7 +67,7 @@ describe('@nodiator/core requests (e2e)', () => {
 
   describe('passing plain object', () => {
     it('should reject plain object request', () => {
-      expect(() => mediator.request<string>({ property: 'property' })).toThrow(PlainObjectMessageException);
+      expect(() => mediator.request({ property: 'property' })).toThrow(PlainObjectMessageException);
     });
   });
 
@@ -80,7 +80,7 @@ describe('@nodiator/core requests (e2e)', () => {
     });
 
     it('should throw timeout exception', async () => {
-      const task = lastValueFrom(mediator.request<string>(testRequest));
+      const task = lastValueFrom(mediator.request(testRequest));
       expect(task).rejects.toThrow(MessageTimeoutException);
       try {
         await task;
@@ -91,7 +91,7 @@ describe('@nodiator/core requests (e2e)', () => {
 
     it('should call all providers excluding the handler', async () => {
       try {
-        await lastValueFrom(mediator.request<string>(testRequest));
+        await lastValueFrom(mediator.request(testRequest));
       } catch {}
       expect(TestGlobalRequestPipeline.handle).toHaveBeenCalledTimes(1);
       expect(TestRequestPipeline.handle).toHaveBeenCalledTimes(1);

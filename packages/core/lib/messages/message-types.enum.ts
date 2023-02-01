@@ -3,4 +3,4 @@ export const MessageTypes = {
   EVENT: 1,
 } as const;
 
-export type MessageTypes = typeof MessageTypes[keyof typeof MessageTypes];
+export type MessageTypes = (typeof MessageTypes)[keyof typeof MessageTypes];

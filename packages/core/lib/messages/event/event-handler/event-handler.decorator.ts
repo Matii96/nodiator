@@ -3,7 +3,7 @@ import { MESSAGE_METADATA, SCOPE_OPTIONS_METADATA } from '../../constants';
 import { MessageTypeInterferenceException } from '../../exceptions/message-type-interference.exception';
 import { MessageMetadata } from '../../interfaces/message-metadata.interface';
 import { ScopeOptions } from '../../interfaces/scope.options';
-import { Event } from '../interfaces/event.interface';
+import { Event } from '../event';
 import { MessageTypes } from '../../message-types.enum';
 import { EVENT_HANDLER_METADATA } from '../constants';
 

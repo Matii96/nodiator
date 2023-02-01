@@ -1,6 +1,6 @@
 import { ClassConstructor } from '../../../../utils/class-constructor.interface';
 import { MediatorException } from '../../../../exceptions/mediator.exception';
-import { Request } from '../../../../messages/request/interfaces/request.interface';
+import { Request } from '../../../../messages/request/request';
 
 export class DuplicatedRequestHandlerException extends MediatorException {
   constructor(request: ClassConstructor<Request>) {

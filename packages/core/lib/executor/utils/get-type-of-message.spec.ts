@@ -1,4 +1,4 @@
-import { TestRequest } from '../../messages/request/messages.mocks';
+import { TestRequest } from '../../messages/request/requests.mocks';
 import { PlainObjectMessageException } from '../exceptions';
 import { getTypeOfMessage } from './get-type-of-message';
 

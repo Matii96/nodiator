@@ -3,7 +3,7 @@ import { of, Subject, toArray } from 'rxjs';
 import { MessageTypes } from '../messages';
 import { ProvidersManagerMock } from '../providers-manager/providers-manager.mocks';
 import { ExtensionsManagerMock } from '../extensions/extensions-manager.mocks';
-import { TestRequest } from '../messages/request/messages.mocks';
+import { TestRequest } from '../messages/request/requests.mocks';
 import { ExecutorMock } from '../executor/executor.mocks';
 import { ExtensionsManager } from '../extensions/extensions-manager';
 import { TestEvent } from '../messages/event/events.mocks';
