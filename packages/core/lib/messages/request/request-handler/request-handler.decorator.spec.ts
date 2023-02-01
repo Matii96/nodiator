@@ -5,7 +5,7 @@ import { ScopeOptions } from '../../interfaces';
 import { MessageMetadata } from '../../interfaces/message-metadata.interface';
 import { MessageTypes } from '../../message-types.enum';
 import { REQUEST_HANDLER_METADATA } from '../constants';
-import { TestRequest, TestRequestHandler } from '../messages.mocks';
+import { TestRequest, TestRequestHandler } from '../requests.mocks';
 import { RequestHandler } from './request-handler.decorator';
 
 describe('RequestHandler', () => {

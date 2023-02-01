@@ -53,19 +53,13 @@ yarn add @nodiator/core
 
 <a name="quick_start"></a>
 
+### Events
+
+<a name="quick_start_events"></a>
+
 ```ts
 // Declaration
-class ExampleRequest {
-  constructor(readonly msg: string) {}
-}
 class SomeEvent {}
-
-@RequestHandler(ExampleRequest)
-export class ExampleRequestHandler implements IRequestHandler<ExampleRequest, string> {
-  async handle(request: ExampleRequest) {
-    return request.msg;
-  }
-}
 
 @EventHandler(SomeEvent)
 export class SomeEventHandler implements IEventHandler<SomeEvent> {
@@ -74,25 +68,47 @@ export class SomeEventHandler implements IEventHandler<SomeEvent> {
   }
 }
 
-const mediator = MediatorFactory.create({ providers: [ExampleRequestHandler, SomeEventHandler] });
+const mediator = MediatorFactory.create({ providers: [SomeEventHandler] });
 
 // Execution
-mediator.request<string>(new ExampleRequest('ok')).subscribe((result) => {
-  console.log(result); // output: ok
-});
-
-console.log(await firstValueFrom(mediator.request<string>(new ExampleRequest('async ok')))); // output: async ok
-
 mediator.publish(new SomeEvent()).subscribe((result) => {
   console.log(result); // output: SomeEvent handled
 });
 ```
 
+### Requests
+
+<a name="quick_start_requests"></a>
+
+```ts
+// Declaration
+type ExampleRequestResponse = string;
+
+class ExampleRequest {
+  [ResponseType]?: ExampleRequestResponse;
+  constructor(readonly msg: string) {}
+}
+
+@RequestHandler(ExampleRequest)
+export class ExampleRequestHandler implements IRequestHandler<ExampleRequest, string> {
+  async handle(request: ExampleRequest) {
+    return request.msg;
+  }
+}
+
+const mediator = MediatorFactory.create({ providers: [ExampleRequestHandler] });
+
+// Execution
+mediator.request(new ExampleRequest('ok')).subscribe((result) => {
+  console.log(result); // output: ok
+});
+
+console.log(await firstValueFrom(mediator.request(new ExampleRequest('async ok')))); // output: async ok
+```
+
 ## 📖 Messages documentation
 
 <a name="messages"></a>
-
-Supported types are:
 
 - [Events](https://github.com/Matii96/nodiator/tree/main/packages/core/docs/events.md)
 - [Requests](https://github.com/Matii96/nodiator/tree/main/packages/core/docs/requests.md)

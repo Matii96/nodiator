@@ -7,6 +7,7 @@ Handling is deferred until first subscription to the response stream.
 ## Table of contents
 
 - [Handlers](#handlers)
+  - [Response typing](#handlers_response_typing)
 - [Pipelines](#pipelines)
 - [Global pipelines](#global_pipelines)
 - [Usage](#usage)
@@ -24,6 +25,18 @@ export class ExampleRequestHandler implements IRequestHandler<ExampleRequest, st
   async handle(request: ExampleRequest) {
     return 'ok';
   }
+}
+```
+
+### Response typing (optional)
+
+<a name="handlers_response_typing"></a>
+
+Binding response type allows to auto-type result of executing given request. It can be done via `ResponseType` attribute.
+
+```ts
+class ExampleRequest {
+  [ResponseType]?: string;
 }
 ```
 
@@ -79,7 +92,7 @@ const mediator = MediatorFactory.create({
   dynamicOptions: () => ({ requests: { timeout: 1000 } }), // Requests handling will be terminated after 1s with timeout exception
 });
 
-console.log(await firstValueFrom(mediator.request<string>(new ExampleRequest())));
+console.log(await firstValueFrom(mediator.request(new ExampleRequest())));
 // Output:
 // Accepting request ExampleRequest
 // Starting to handle ExampleRequest

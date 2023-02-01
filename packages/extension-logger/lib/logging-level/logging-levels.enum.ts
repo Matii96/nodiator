@@ -6,4 +6,4 @@ export const MediatorLoggingLevels = {
   NONE: 'none',
 } as const;
 
-export type MediatorLoggingLevels = typeof MediatorLoggingLevels[keyof typeof MediatorLoggingLevels];
+export type MediatorLoggingLevels = (typeof MediatorLoggingLevels)[keyof typeof MediatorLoggingLevels];

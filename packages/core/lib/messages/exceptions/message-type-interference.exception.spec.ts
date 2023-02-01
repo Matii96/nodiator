@@ -1,4 +1,4 @@
-import { TestRequest } from '../request/messages.mocks';
+import { TestRequest } from '../request/requests.mocks';
 import { MessageTypeInterferenceException } from './message-type-interference.exception';
 
 describe('MessageTypeInterferenceException', () => {

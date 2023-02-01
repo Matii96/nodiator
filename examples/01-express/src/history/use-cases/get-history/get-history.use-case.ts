@@ -1,1 +1,6 @@
-export class GetHistoryUseCase {}
+import { ResponseType } from '@nodiator/core';
+import { GetHistoryUseCaseResult } from './get-history.use-case.result';
+
+export class GetHistoryUseCase {
+  [ResponseType]?: GetHistoryUseCaseResult;
+}

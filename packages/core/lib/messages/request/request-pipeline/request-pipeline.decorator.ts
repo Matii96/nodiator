@@ -1,7 +1,7 @@
 import { ClassConstructor } from '../../../utils/class-constructor.interface';
 import { SCOPE_OPTIONS_METADATA } from '../../constants';
 import { ScopeOptions } from '../../interfaces/scope.options';
-import { Request } from '../interfaces/request.interface';
+import { Request } from '../request';
 import { REQUEST_PIPELINE_METADATA } from '../constants';
 
 type RequestType = ClassConstructor<Request>;

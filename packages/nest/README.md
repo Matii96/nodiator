@@ -60,7 +60,7 @@ export class CatsController {
 
   @Get()
   getAllCats() {
-    return firstValueFrom(this.mediator.request<GetAllCatsUseCaseResult>(new GetAllCatsUseCase()));
+    return firstValueFrom(this.mediator.request(new GetAllCatsUseCase()));
   }
 }
 ```
@@ -168,7 +168,7 @@ export class CatsController {
 
   @Get()
   getAllCats() {
-    return firstValueFrom(this.mediator.request<GetAllCatsUseCaseResult>(new GetAllCatsUseCase()));
+    return firstValueFrom(this.mediator.request(new GetAllCatsUseCase()));
   }
 }
 ```

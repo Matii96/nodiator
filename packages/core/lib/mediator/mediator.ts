@@ -3,6 +3,7 @@ import { Event, Request } from '../messages';
 import { MessageProcessing } from '../executor';
 import { MediatorExtension } from '../extensions';
 import { ProvidersManager } from '../providers-manager/providers-manager';
+import { GetResponseType } from '../messages/request/get-response-type';
 
 export interface Mediator {
   /**
@@ -27,7 +28,7 @@ export interface Mediator {
    * @param {Request} request
    * @returns {Observable<TResult>} response stream.
    */
-  request<TResult>(request: Request): Observable<TResult>;
+  request<TRequest extends Request, TResponse = GetResponseType<TRequest>>(request: TRequest): Observable<TResponse>;
 
   /**
    * Dispatches events instances to any number of their handlers.

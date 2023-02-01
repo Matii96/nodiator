@@ -1,5 +1,5 @@
 import { catchError, defer, from, last, map, mergeMap, of, retry, Subject, tap, throwError, timeout } from 'rxjs';
-import { Event } from '../../../messages/event/interfaces/event.interface';
+import { Event } from '../../../messages/event/event';
 import { EventsProvidersSchema } from '../../../providers-manager/messages/events/interfaces/events-providers-schema.interface';
 import { IEventHandler, MessageTypes } from '../../../messages';
 import { ProvidersManager } from '../../../providers-manager/providers-manager';

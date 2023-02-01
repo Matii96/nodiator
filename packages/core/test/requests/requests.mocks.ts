@@ -7,9 +7,11 @@ import {
   Request,
   RequestHandler,
   RequestPipeline,
+  ResponseType,
 } from '../../lib';
 
 export class TestRequest {
+  [ResponseType]?: string;
   constructor(readonly property: string) {}
 }
 

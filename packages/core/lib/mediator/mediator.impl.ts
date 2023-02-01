@@ -4,6 +4,7 @@ import { Event, Request, MessageTypes } from '../messages';
 import { Executor } from '../executor/executor.port';
 import { ExtensionsManager } from '../extensions/extensions-manager';
 import { ProvidersManager } from '../providers-manager/providers-manager';
+import { GetResponseType } from '../messages/request/get-response-type';
 import { MediatorExtension } from '../extensions';
 import { Mediator } from './mediator';
 
@@ -28,8 +29,8 @@ export class MediatorImplementation implements Mediator {
     return this;
   }
 
-  request<TResult>(request: Request) {
-    return this._executor.execute<TResult>(MessageTypes.REQUEST, request);
+  request<TRequest extends Request, TResponse = GetResponseType<TRequest>>(request: TRequest) {
+    return this._executor.execute<TResponse>(MessageTypes.REQUEST, request);
   }
 
   publish(...events: Event[]) {
