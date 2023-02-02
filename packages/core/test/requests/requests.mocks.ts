@@ -11,7 +11,7 @@ import {
 } from '../../lib';
 
 export class TestRequest {
-  [ResponseType]?: string;
+  readonly [ResponseType]?: string;
   constructor(readonly property: string) {}
 }
 

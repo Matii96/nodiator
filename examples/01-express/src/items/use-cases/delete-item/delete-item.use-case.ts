@@ -1,6 +1,6 @@
 import { ResponseType } from '@nodiator/core';
 
 export class DeleteItemUseCase {
-  [ResponseType]?: void;
+  readonly [ResponseType]?: void;
   constructor(readonly id: string) {}
 }

@@ -1,5 +1,5 @@
 import { ResponseType } from '@nodiator/core';
 export class GetCatNameRequest {
-  [ResponseType]?: string;
+  readonly [ResponseType]?: string;
   constructor(readonly name: string) {}
 }

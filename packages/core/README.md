@@ -85,7 +85,7 @@ mediator.publish(new SomeEvent()).subscribe((result) => {
 type ExampleRequestResponse = string;
 
 class ExampleRequest {
-  [ResponseType]?: ExampleRequestResponse;
+  readonly [ResponseType]?: ExampleRequestResponse;
   constructor(readonly msg: string) {}
 }
 

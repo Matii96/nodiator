@@ -2,7 +2,7 @@ import { IRequestHandler, IRequestPipeline, RequestHandler, RequestPipeline, Res
 import { from, mergeMap, Observable, throwError } from 'rxjs';
 
 export class TestRequest {
-  [ResponseType]?: string;
+  readonly [ResponseType]?: string;
   constructor(readonly property: string) {}
 }
 
