@@ -90,7 +90,7 @@ class ExampleRequest {
 }
 
 @RequestHandler(ExampleRequest)
-export class ExampleRequestHandler implements IRequestHandler<ExampleRequest, string> {
+export class ExampleRequestHandler implements IRequestHandler<ExampleRequest> {
   async handle(request: ExampleRequest) {
     return request.msg;
   }
@@ -123,7 +123,7 @@ One that's done the its instance is saved internally for application lifetime. T
 
 ```ts
 @RequestHandler({ request: ExampleRequest, scoped: true })
-export class ExampleRequestHandler implements IRequestHandler<ExampleRequest, string> {
+export class ExampleRequestHandler implements IRequestHandler<ExampleRequest> {
   ...
 }
 ```

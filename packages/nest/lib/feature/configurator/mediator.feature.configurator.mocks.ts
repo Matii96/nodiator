@@ -5,6 +5,6 @@ export class TestRequest {
 }
 
 @RequestHandler(TestRequest)
-export class TestRequestHandler implements IRequestHandler<TestRequest, any> {
+export class TestRequestHandler implements IRequestHandler<TestRequest> {
   handle = jest.fn(async (): Promise<any> => undefined);
 }

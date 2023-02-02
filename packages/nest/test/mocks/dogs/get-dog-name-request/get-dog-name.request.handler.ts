@@ -2,7 +2,7 @@ import { IRequestHandler, RequestHandler } from '@nodiator/core';
 import { GetDogNameRequest } from './get-dog-name.request';
 
 @RequestHandler({ request: GetDogNameRequest, scoped: true })
-export class GetDogNameRequestHandler implements IRequestHandler<GetDogNameRequest, string> {
+export class GetDogNameRequestHandler implements IRequestHandler<GetDogNameRequest> {
   static instancesCounter = 0;
 
   constructor() {

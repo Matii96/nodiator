@@ -1,22 +1,23 @@
-import { IRequestHandler, IRequestPipeline, RequestHandler, RequestPipeline } from '@nodiator/core';
+import { IRequestHandler, IRequestPipeline, RequestHandler, RequestPipeline, ResponseType } from '@nodiator/core';
 import { from, mergeMap, Observable, throwError } from 'rxjs';
 
 export class TestRequest {
+  [ResponseType]?: string;
   constructor(readonly property: string) {}
 }
 
 @RequestPipeline(TestRequest)
-export class TestRequestPipeline implements IRequestPipeline<TestRequest, string> {
+export class TestRequestPipeline implements IRequestPipeline<TestRequest> {
   handle = jest.fn((request: TestRequest, next: Observable<string>) => next);
 }
 
 @RequestHandler(TestRequest)
-export class TestRequestHandler implements IRequestHandler<TestRequest, string> {
+export class TestRequestHandler implements IRequestHandler<TestRequest> {
   handle = jest.fn(async (request: TestRequest) => request.property);
 }
 
 @RequestPipeline(TestRequest)
-export class FailingTestRequestPipeline implements IRequestPipeline<TestRequest, string> {
+export class FailingTestRequestPipeline implements IRequestPipeline<TestRequest> {
   handle = jest.fn((request: TestRequest, next: Observable<string>) =>
     next.pipe(mergeMap(() => from(throwError(() => new Error()))))
   );

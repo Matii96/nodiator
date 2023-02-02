@@ -21,7 +21,7 @@ Handling is deferred until first subscription to the response stream.
 class ExampleRequest {}
 
 @RequestHandler(ExampleRequest)
-export class ExampleRequestHandler implements IRequestHandler<ExampleRequest, string> {
+export class ExampleRequestHandler implements IRequestHandler<ExampleRequest> {
   async handle(request: ExampleRequest) {
     return 'ok';
   }

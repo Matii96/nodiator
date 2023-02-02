@@ -22,13 +22,13 @@ export class TestGlobalRequestPipeline implements IGlobalRequestPipeline {
 }
 
 @RequestPipeline(TestRequest)
-export class TestRequestPipeline implements IRequestPipeline<TestRequest, string> {
+export class TestRequestPipeline implements IRequestPipeline<TestRequest> {
   static handle = jest.fn((request: TestRequest, next: Observable<string>) => next);
   handle = TestRequestPipeline.handle;
 }
 
 @RequestPipeline(TestRequest)
-export class TestLaggingRequestPipeline implements IRequestPipeline<TestRequest, string> {
+export class TestLaggingRequestPipeline implements IRequestPipeline<TestRequest> {
   static handle = jest.fn((request: TestRequest, next: Observable<string>) =>
     of(1).pipe(
       delay(500),
@@ -39,7 +39,7 @@ export class TestLaggingRequestPipeline implements IRequestPipeline<TestRequest,
 }
 
 @RequestHandler(TestRequest)
-export class TestRequestHandler implements IRequestHandler<TestRequest, string> {
+export class TestRequestHandler implements IRequestHandler<TestRequest> {
   static handle = jest.fn(async (request: TestRequest) => request.property);
   handle = TestRequestHandler.handle;
 }

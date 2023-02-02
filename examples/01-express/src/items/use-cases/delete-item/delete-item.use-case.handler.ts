@@ -3,7 +3,7 @@ import { ItemsRepository } from '../../items.repository';
 import { DeleteItemUseCase } from './delete-item.use-case';
 
 @RequestHandler(DeleteItemUseCase)
-export class DeleteItemUseCaseHandler implements IRequestHandler<DeleteItemUseCase, void> {
+export class DeleteItemUseCaseHandler implements IRequestHandler<DeleteItemUseCase> {
   async handle(request: DeleteItemUseCase) {
     ItemsRepository.remove(request.id);
   }
