@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/Matii96/nodiator/compare/v4.0.0...v4.0.1) (2023-02-16)
+
+### Bug Fixes
+
+- **nest:** loading submodules providers before module ones ([7002002](https://github.com/Matii96/nodiator/commit/7002002b267eaac557f45e111e2d3b90d1efa9e6))
+
 # [4.0.0](https://github.com/Matii96/nodiator/compare/v3.2.1...v4.0.0) (2023-02-16)
 
 ### Bug Fixes

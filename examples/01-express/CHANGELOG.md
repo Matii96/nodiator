@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/Matii96/nodiator/compare/v4.0.0...v4.0.1) (2023-02-16)
+
+**Note:** Version bump only for package nodiator-example-express
+
 # [4.0.0](https://github.com/Matii96/nodiator/compare/v3.2.1...v4.0.0) (2023-02-16)
 
 ### Bug Fixes
