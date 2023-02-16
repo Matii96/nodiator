@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/Matii96/nodiator/compare/v3.2.1...v4.0.0) (2023-02-16)
+
+### Bug Fixes
+
+- **core:** auto response typing adjustments ([23a80dd](https://github.com/Matii96/nodiator/commit/23a80ddc286bda899392c87950b595f6fe5764fc))
+- **core:** auto response typing improvements ([f5ea033](https://github.com/Matii96/nodiator/commit/f5ea033f63dac8cc648b30dba4a13b74fe47a7f1))
+
+### Features
+
+- **core:** added option to type responses types in requests definitions ([660096e](https://github.com/Matii96/nodiator/commit/660096e1dd6b41d092161fadba29aa6bb2bf3250))
+
+### BREAKING CHANGES
+
+- **core:** new request mediator method API - returned type is the second generic type
+
 ## [3.2.1](https://github.com/Matii96/nodiator/compare/v3.2.0...v3.2.1) (2022-12-30)
 
 ### Bug Fixes
