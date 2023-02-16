@@ -15,7 +15,7 @@ export class MediatorFeatureExplorer {
       .filter((provider) => provider);
 
     const submodulesProviders = Array.from(module.imports).flatMap((module) => this.exploreSubmoduleProviders(module));
-    return [...moduleProviders, ...submodulesProviders];
+    return [...submodulesProviders, ...moduleProviders];
   }
 
   private exploreSubmoduleProviders(module: Module): Type<MessageProvider>[] {
