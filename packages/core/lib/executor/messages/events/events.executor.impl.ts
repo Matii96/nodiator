@@ -1,4 +1,18 @@
-import { catchError, defer, from, last, map, mergeMap, of, retry, Subject, tap, throwError, timeout } from 'rxjs';
+import {
+  catchError,
+  defaultIfEmpty,
+  defer,
+  from,
+  last,
+  map,
+  mergeMap,
+  of,
+  retry,
+  Subject,
+  tap,
+  throwError,
+  timeout,
+} from 'rxjs';
 import { Event } from '../../../messages/event/event';
 import { EventsProvidersSchema } from '../../../providers-manager/messages/events/interfaces/events-providers-schema.interface';
 import { IEventHandler, MessageTypes } from '../../../messages';
@@ -31,6 +45,7 @@ export class MediatorEventsExecutor implements EventsExecutor {
         isPromise(handler) ? from(handler as Promise<IEventHandler<Event>>) : of(handler as IEventHandler<Event>)
       ),
       mergeMap((handler) => this.handleEvent({ config, messageProcessing, event, handler })),
+      defaultIfEmpty(undefined), // There can be no handlers registered for this event
       last(),
       map(() => event)
     );

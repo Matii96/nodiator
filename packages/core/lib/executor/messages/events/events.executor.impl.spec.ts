@@ -50,25 +50,23 @@ describe('EventsExecutor', () => {
       );
     });
 
-    it('should handle event', (done) => {
-      executor.execute(subject, event).subscribe({
-        complete() {
-          expect(handler.handle).toHaveBeenCalledTimes(1);
-          done();
-        },
-      });
+    it('should handle event with its handler', async () => {
+      await lastValueFrom(executor.execute(subject, event));
+      expect(handler.handle).toHaveBeenCalledTimes(1);
     });
 
-    it('should emit event handling steps', (done) => {
-      executor.execute(subject, event).subscribe({
-        complete() {
-          expect(eventStates).toEqual([
-            new HandlingStartedEventProcessingState(handler),
-            new HandlingCompletedEventProcessingState(handler),
-          ]);
-          done();
-        },
-      });
+    it('should handle event with no handlers registered', async () => {
+      class NoHandlersEvent {}
+      const event = new NoHandlersEvent();
+      expect(await lastValueFrom(executor.execute(subject, event))).toBe(event);
+    });
+
+    it('should emit event handling steps', async () => {
+      await lastValueFrom(executor.execute(subject, event));
+      expect(eventStates).toEqual([
+        new HandlingStartedEventProcessingState(handler),
+        new HandlingCompletedEventProcessingState(handler),
+      ]);
     });
   });
 
