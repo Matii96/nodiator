@@ -1346,7 +1346,7 @@ __metadata:
     reflect-metadata: ^0.1.13
     rxjs: ^7.8.0
   peerDependencies:
-    "@nodiator/core": ^3.0.0
+    "@nodiator/core": ">=4.0.0"
     reflect-metadata: ^0.1.13
     rxjs: ^7.6.0
   languageName: unknown
@@ -1367,7 +1367,7 @@ __metadata:
   peerDependencies:
     "@nestjs/common": ">=8.0.0"
     "@nestjs/core": ">=8.0.0"
-    "@nodiator/core": ^3.0.0
+    "@nodiator/core": ">=4.0.0"
     reflect-metadata: ^0.1.13
   languageName: unknown
   linkType: soft

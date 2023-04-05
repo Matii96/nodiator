@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.2](https://github.com/Matii96/nodiator/compare/v4.0.1...v4.0.2) (2023-04-05)
+
+### Bug Fixes
+
+- **core:** proper handling for events with no handlers registered ([41eff02](https://github.com/Matii96/nodiator/commit/41eff02e11fb48c4c5100ad4152b9029c389b5c5))
+- **extension-logger:** upgraded core dependency version ([ffc3a3c](https://github.com/Matii96/nodiator/commit/ffc3a3c9195640a85a35af0a4c4cb4b8f5f623e4))
+- **nest:** upgraded core dependency version ([5255ae2](https://github.com/Matii96/nodiator/commit/5255ae25cc303af354219f011d5641387aad5105))
+
 ## [4.0.1](https://github.com/Matii96/nodiator/compare/v4.0.0...v4.0.1) (2023-02-16)
 
 ### Bug Fixes
